@@ -28,7 +28,7 @@ menu title Ubuntu NetInstall CD - Akilion
 
 label install
 kernel linux64
-append initrd=initrd64.gz vga=normal auto url=http://192.168.122.1/akilion.seed locale=en_US console-setup/layoutcode=us netcfg/choose_interface=eth0 debconf/priority=critical --
+append initrd=initrd64.gz vga=normal auto url=http://diegowspublic.s3.amazonaws.com/akilion.seed locale=en_US console-setup/layoutcode=us netcfg/choose_interface=eth0 debconf/priority=critical --
 
 label Hardware Detection Tool
 kernel hdt.c32
