@@ -39,18 +39,22 @@ echo "Creating iso image..."
 mkisofs -q -V "UbuntuNetInstall" -o /tmp/UbuntuNetInstall.iso -b isolinux.bin -c boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -r -J /tmp/iso
 echo "ISO Done!"
 
-MNTTMP=$(mktemp -d)
-umount ${DEV}* > /dev/null 2>&1
-install-mbr $DEV
-parted -s $DEV rm 1
-parted -s $DEV mkpart primary 1 100
-parted -s $DEV set 1 boot on
-mkfs.vfat ${DEV}1
-mount ${DEV}1 $MNTTMP
-cp -a /tmp/iso/* $MNTTMP
-cp /tmp/iso/isolinux.cfg /tmp/iso/syslinux.cfg
-syslinux -i ${DEV}1
-umount ${DEV}1
+if [ -n "$DEV" ]; then
+	echo "Creating USB booteable...."
+	MNTTMP=$(mktemp -d)
+	umount ${DEV}* > /dev/null 2>&1
+	install-mbr $DEV
+	parted -s $DEV rm 1
+	parted -s $DEV mkpart primary 1 100
+	parted -s $DEV set 1 boot on
+	mkfs.vfat ${DEV}1
+	mount ${DEV}1 $MNTTMP
+	cp -a /tmp/iso/* $MNTTMP
+	cp /tmp/iso/isolinux.cfg /tmp/iso/syslinux.cfg
+	syslinux -i ${DEV}1
+	umount ${DEV}1
+	echo "USB Done!"
+fi
 
 echo "clean up..."
 #rm -r /tmp/iso
