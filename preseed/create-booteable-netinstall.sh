@@ -3,10 +3,27 @@
 DIST=trusty
 DEV=$1
 
-if [ ! -f /usr/lib/syslinux/isolinux.bin ]; then
-	apt-get update
-	apt-get install -y syslinux
+if [[ $(/usr/bin/id -u) -ne 0 ]]; then
+    echo "This script must be run with root privilege. Please log as root or use sudo."
+    exit
 fi
+
+if [ ! -f /usr/lib/syslinux/isolinux.bin ]; then
+        apt-get update
+        apt-get install -y syslinux
+fi
+
+
+if [ ! -f /sbin/install-mbr ]; then
+	apt-get update
+	apt-get install -y mbr
+fi
+
+if [ ! -f /usr/bin/mkisofs ]; then
+        apt-get update
+        apt-get install -y genisoimage
+fi
+
 
 echo "copy isolinux files..."
 mkdir -p /tmp/iso
@@ -21,7 +38,10 @@ wget -cq http://archive.ubuntu.com/ubuntu/dists/${DIST}/main/installer-amd64/cur
 
 cat > /tmp/iso/isolinux.cfg << EOF
 
-default vesamenu.c32
+default seed
+#default vesamenu.c32
+
+#ui vesamenu.c32
 timeout 100
 #menu background background.jpg
 menu title Ubuntu NetInstall CD - Akilion
@@ -29,6 +49,10 @@ menu title Ubuntu NetInstall CD - Akilion
 label install
 kernel linux64
 append initrd=initrd64.gz vga=normal auto url=http://diegowspublic.s3.amazonaws.com/akilion.seed locale=en_US console-setup/layoutcode=us netcfg/choose_interface=eth0 debconf/priority=critical --
+
+label seed
+kernel linux64
+append initrd=initrd64.gz vga=768 auto url=http://diegowspublic.s3.amazonaws.com/akilion.seed locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=p6p1 debconf/priority=critical -- console=ttyS0,115200n8 quiet –
 
 label Hardware Detection Tool
 kernel hdt.c32
