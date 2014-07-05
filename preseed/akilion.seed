@@ -14,7 +14,11 @@ d-i mirror/country string manual
 d-i mirror/suite string trusty
 d-i mirror/http/hostname string de.archive.ubuntu.com
 d-i mirror/http/directory string /ubuntu/
+
+# apt-cacher auto detect
 #d-i mirror/http/proxy string http://apt-cacher:3142
+d-i preseed/early_command string \
+	ping -c 1 apt-cacher > /dev/null 2>&1 && debconf-set mirror/http/proxy "http://apt-cacher:3142/" || echo
 
 d-i debconf/priority select critical
 d-i auto-install/enabled boolean true
