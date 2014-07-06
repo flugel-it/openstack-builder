@@ -97,11 +97,8 @@ d-i partman-auto/expert_recipe string \
 	      mountpoint{ /var } \
 		.
 
-#d-i preseed/late_command string \
-#in-target wget http://preseed.panticz.de/late_command.conf -O /etc/init/late_command.conf
-
-#d-i preseed/late_command string \
-#in-target wget https://raw.github.com/panticz/preseed/master/late_command.conf -O /etc/init/late_command.conf
+d-i preseed/late_command string \
+in-target wget http://diegowspublic.s3.amazonaws.com/install-chef-client.conf -O /etc/init/install-chef-client.conf
 
 # Finishing up the installation
 #d-i finish-install/reboot_in_progress note
