@@ -1,0 +1,8 @@
+SITE
+  remote: http://community.opscode.com/api/v1
+  specs:
+    chef-server (2.1.6)
+
+DEPENDENCIES
+  chef-server (>= 0)
+
