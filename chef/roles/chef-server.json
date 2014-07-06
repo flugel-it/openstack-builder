@@ -1,6 +1,7 @@
 {
   "name": "chef-server",
   "run_list": [
-	  "recipe[chef-server"
+	  "recipe[atlas-base]",
+	  "recipe[chef-server]"
 	  ]
 }
