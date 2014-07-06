@@ -1,9 +1,14 @@
 #!/bin/bash
 
+#Read variable from file or use the defaults
+if [ -f ~/.akilion.cfg ]; then
+	. ~/.akilion.cfg
+else
+	DIST=trusty
+	SEED_URL=http://192.168.1.100/Akilion/akilion.seed
+fi
 
-DIST=trusty
 DEV=$1
-SEED_URL=http://192.168.1.100/Akilion/akilion.seed
 
 if [[ $(/usr/bin/id -u) -ne 0 ]]; then
     echo "This script must be run with root privilege. Trying to sudo command."
