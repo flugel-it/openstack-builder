@@ -38,7 +38,7 @@ file "/etc/hosts" do
   owner "root"
   group "root"
   mode "0644"
-  contents "
+  content "
 127.0.0.1 localhost.localdomain localhost
 #{ip}, #{hostname}.#{domain} #{hostname}
 
