@@ -27,3 +27,6 @@ install-server: /opt/chef-server/bin/chef-server-ctl
 
 install-client: /usr/bin/chef-client
 
+install-maas-region:
+	sudo chef-client -z -r 'role[maas-region-controller]' -c .chef/client.rb
+
