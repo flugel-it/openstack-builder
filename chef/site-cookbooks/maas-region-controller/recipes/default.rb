@@ -9,11 +9,12 @@
 
 pkgs = [
   "python-seamicroclient",
+  "python-pexpect",
   "maas-region-controller"
 ]
 
-for pkg in deps do
-  package "python-seamicroclient" do
+for pkg in pkgs do
+  package pkg do
     action :install
   end
 end
