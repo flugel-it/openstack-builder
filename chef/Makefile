@@ -1,9 +1,18 @@
 IP:=$(shell ip r sh scope link | cut -f9 -d" ")
 HOSTNAME:=$(shell hostname)
 
+OSRELEASE:=$(shell lsb_release -sc)
+
+ifeq ($(OSRELEASE),precise)
+RUBYGEMS:=rubygems
+else
+RUBYGEMS:=
+endif
+
 osdeps:
 	sudo apt-get update
-	sudo apt-get install ruby ruby-dev -y
+	sudo apt-get install ruby $(RUBYGEMS) ruby-dev -y
+	sudo gem install rdoc
 	sudo gem install bundle
 	sudo bundle install
 
