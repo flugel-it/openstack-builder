@@ -41,7 +41,7 @@ file "/etc/hosts" do
   action :create
   content "
 127.0.0.1 localhost.localdomain localhost
-#{ip}, #{hostname}.#{domain} #{hostname}
+#{ip} #{hostname}.#{domain} #{hostname}
 
 # The following lines are desirable for IPv6 capable hosts
 ::1     ip6-localhost ip6-loopback
