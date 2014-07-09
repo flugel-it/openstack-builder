@@ -2,6 +2,7 @@ IP:=$(shell ip r sh scope link | cut -f9 -d" ")
 HOSTNAME:=$(shell hostname)
 
 osdeps:
+	sudo apt-get update
 	sudo apt-get install ruby ruby-dev -y
 	sudo gem install bundle
 	sudo bundle install
