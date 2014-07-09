@@ -9,7 +9,7 @@ osdeps:
 cookbooks:
 	librarian-chef install --path cookbooks
 
-/usr/bin/chef-client:
+/usr/bin/chef-client: deps
 	wget -O /tmp/install-chef.sh \
 		https://www.opscode.com/chef/install.sh
 	sudo bash /tmp/install-chef.sh
