@@ -23,7 +23,7 @@ deps: osdeps cookbooks
 /opt/chef-server/bin/chef-server-ctl: deps install-client
 	sudo chef-client -z -r 'role[chef-server]' -c .chef/client.rb
 
-install-server: /opt/chef-server/bin/chef-server-ctl
+install-server: install-client /opt/chef-server/bin/chef-server-ctl 
 
 install-client: /usr/bin/chef-client
 
