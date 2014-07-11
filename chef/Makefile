@@ -4,14 +4,16 @@ HOSTNAME:=$(shell hostname)
 OSRELEASE:=$(shell lsb_release -sc)
 
 ifeq ($(OSRELEASE),precise)
-RUBYPKG:=ruby1.9.1-full
+RUBYPKG:=ruby1.9.1-full ruby1.9.1-dev
 else
-RUBYPKG:=ruby
+RUBYPKG:=ruby ruby-dev
 endif
 
 osdeps:
 	sudo apt-get update
-	sudo apt-get install $(RUBYPKG) ruby-dev -y
+	dpkg -l |grep ruby | awk '{ print $$2; }' | \
+		xargs sudo apt-get remove --purge --yes --force-yes
+	sudo apt-get install $(RUBYPKG) -y
 	sudo gem install rdoc
 	sudo gem install bundle
 	sudo bundle install
