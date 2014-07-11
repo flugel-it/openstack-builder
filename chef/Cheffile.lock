@@ -1,8 +1,14 @@
 SITE
   remote: http://community.opscode.com/api/v1
   specs:
+    chef-client (3.6.0)
+      cron (>= 1.2.0)
+      logrotate (>= 1.2.0)
     chef-server (2.1.6)
+    cron (1.4.0)
+    logrotate (1.6.0)
 
 DEPENDENCIES
+  chef-client (>= 0)
   chef-server (>= 0)
 
