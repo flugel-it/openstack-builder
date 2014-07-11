@@ -1,0 +1,6 @@
+{
+  "name": "maas-region-controller",
+  "run_list": [
+    "recipe[maas-region-controller]"
+  ]
+}
