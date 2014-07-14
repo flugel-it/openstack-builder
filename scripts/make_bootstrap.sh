@@ -67,7 +67,7 @@ cp /usr/lib/syslinux/vesamenu.c32 $BUILD
 cp /usr/lib/syslinux/menu.c32 $BUILD
 cp /usr/lib/syslinux/hdt.c32 $BUILD
 cp /usr/lib/syslinux/reboot.c32 $BUILD
-cp /usr/lib/syslinux/poweroff.c32 $BUILD
+#cp /usr/lib/syslinux/poweroff.c32 $BUILD
 
 wget -cq http://pciids.sourceforge.net/v2.2/pci.ids -O $TEMPDIR/pci.ids
 cp $TEMPDIR/pci.ids $BUILD/pci.ids
@@ -76,13 +76,13 @@ echo "download 64bit ${DIST} kernel and initrd..."
 wget -cq http://archive.ubuntu.com/ubuntu/dists/${DIST}/main/installer-amd64/current/images/netboot/ubuntu-installer/amd64/linux -O $TEMPDIR/linux64
 cp $TEMPDIR/linux64 $BUILD
 wget -cq http://archive.ubuntu.com/ubuntu/dists/${DIST}/main/installer-amd64/current/images/netboot/ubuntu-installer/amd64/initrd.gz -O $TEMPDIR/initrd64.gz
-cp /tmp/initrd64.gz $BUILD
+cp $TEMPDIR/initrd64.gz $BUILD
 
 echo "copying custom preseed"
-cp -a ../preseed/* $BUILD/preseed
+cp -aR ../preseed/* $BUILD/preseed
 
-#echo "copying install"
-#cp -r ../image/install $BUILD/install
+#echo "copying profiles"
+cp -aR ../profiles $BUILD/
 
 #echo "copying dists"
 #cp -r ../image/dists $BUILD/dists
@@ -95,7 +95,6 @@ cp -a ../preseed/* $BUILD/preseed
 #menu title Ubuntu NetInstall CD - Akilion
 
 cat > $BUILD/syslinux.cfg << EOF
-
 CONSOLE 0
 SERIAL 0 115200 0
 default seed
@@ -103,16 +102,23 @@ ui menu.c32
 prompt 0
 timeout 100
 
-label install
-menu label ^Install
-kernel linux64
-append initrd=initrd64.gz vga=normal auto file=/cdrom/preseed/akilion.seed locale=en_US console-setup/layoutcode=us netcfg/choose_interface=eth0 debconf/priority=critical --
+label seed
+menu label ^Seed bootstrap
+kernel /install/vmlinuz
+#append initrd=initrd64.gz vga=normal auto file=/cdrom/preseed/AkilionSeed.seed locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=p4p1 debconf/priority=critical -- console=ttyS0,115200n8 quiet –
+append initrd=/install/initrd.gz vga=normal auto file=/cdrom/preseed/AkilionSeed.seed locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=p4p1 debconf/priority=critical -- console=ttyS0,115200n8 quiet –
 
 label seed
-menu label ^Seed install
+menu label ^Hyper bootstrap
 kernel /install/vmlinuz
-#append initrd=initrd64.gz vga=normal auto url=$SEED_URL locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=p4p1 debconf/priority=critical -- console=ttyS0,115200n8 quiet –
-append initrd=/install/initrd.gz vga=normal auto file=/cdrom/preseed/akilion.seed locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=p4p1 debconf/priority=critical -- console=ttyS0,115200n8 quiet –
+#append initrd=initrd64.gz vga=normal auto file=/cdrom/preseed/AkilionHyper.seed locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=p4p1 debconf/priority=critical -- console=ttyS0,115200n8 quiet –
+append initrd=/install/initrd.gz vga=normal auto file=/cdrom/preseed/AkilionHyper.seed locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=eth0 debconf/priority=critical quiet –
+
+label compute
+menu label ^Compute bootstrap
+kernel /install/vmlinuz
+#append initrd=initrd64.gz vga=normal auto file=/cdrom/preseed/AkilionCompute.seed locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=p4p1 debconf/priority=critical -- console=ttyS0,115200n8 quiet –
+append initrd=/install/initrd.gz vga=normal auto file=/cdrom/preseed/AkilionCompute.seed locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=eth0 debconf/priority=critical quiet -
 
 label Hardware Detection Tool
 menu label ^Hardware Detection Tool
@@ -122,9 +128,6 @@ label Reboot
 menu label ^Reboot
 com32 reboot.c32
 
-label Power Off
-menu label ^Power Off
-comboot poweroff.com
 EOF
 
 echo "Creating iso image..."
