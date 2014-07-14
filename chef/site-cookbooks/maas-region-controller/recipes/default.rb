@@ -19,15 +19,3 @@ for pkg in pkgs do
   end
 end
 
-execute "create-admin-user" do
-  command "maas-region-admin createsuperuser --username=admin "\
-    "--noinput --email=admin@akilion.net && touch /.admin"
-  not_if { ::File.exists?("/.admin") }
-end
-
-execute "set-admin-passwd" do
-  command "maas-region-admin createsuperuser --username=admin "\
-    "--noinput --email=admin@akilion.net && touch /.admin"
-  not_if { ::File.exists?("/.admin") }
-end
-

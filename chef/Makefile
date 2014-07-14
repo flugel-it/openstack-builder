@@ -42,3 +42,10 @@ install-client: /usr/bin/chef-client
 install-maas-region:
 	sudo chef-client -z -r 'role[maas-region-controller]' -c .chef/client.rb
 
+upload:
+	knife upload cookbooks
+	knife upload roles
+	knife upload nodes
+	knife upload environments
+	knife upload data_bags
+
