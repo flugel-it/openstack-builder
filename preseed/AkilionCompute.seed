@@ -3,7 +3,7 @@ d-i debian-installer/locale string en_US.UTF-8
 
 # Network configuration
 d-i netcfg/choose_interface select auto
-d-i netcfg/get_hostname string AkilionSeed
+d-i netcfg/get_hostname string AtlasCompute
 
 
 # Clock and time zone setup
@@ -114,7 +114,7 @@ d-i pkgsel/include string openssh-server git-core make ntp ethtool htop iptraf
 # Grub install
 d-i grub-installer/bootdev string /dev/sdb
 
-d-i preseed/late_command string cp -a /cdrom/profiles/seed/init/* /etc/init/; cp -aR /cdrom/profiles/seed/etc/* /etc;
+d-i preseed/late_command string cp -a /cdrom/profiles/seed/init/* /etc/init/; cp -aR /cdrom/profiles/compute/etc/* /etc;
 
 # Finishing up the installation
 d-i finish-install/reboot_in_progress note

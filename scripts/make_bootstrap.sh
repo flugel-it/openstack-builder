@@ -4,11 +4,99 @@
 if [ -f ~/.akilion.cfg ]; then
 	. ~/.akilion.cfg
 else
-        TEMPDIR=/var/images/bootstrap
-	DIST=trusty
-	SEED_URL=http://192.168.1.100/Akilion/akilion.seed
+        TEMPDIR=/tmp/bootstrap
+	DIST=trusty	SEED_URL=http://192.168.1.100/Akilion/akilion.seed
 	BUILD=$TEMPDIR/iso
 	VERSION=14.04
+
+
+SERIAL_HEADER=$( cat << EOF
+CONSOLE 0\n
+SERIAL 0 115200 0\n
+\n
+EOF
+
+)
+
+SYSLINUX_HEADER=$( cat << EOF
+default seed\n
+ui menu.c32\n
+prompt 0\
+timeout 100\n
+\n
+EOF
+
+)
+
+
+ISOLINUX_HEADER=$( cat << EOF
+default seed\n
+\n
+EOF
+
+)
+
+MENU_OPTION=$( cat << EOF
+label seed\n
+menu label ^Seed bootstrap\n
+kernel /install/vmlinuz\n
+#append initrd=initrd64.gz vga=normal auto file=/cdrom/preseed/AkilionSeed.seed locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=p4p1 debconf/priority=critical -- console=ttyS0,115200n8 quiet –\n
+append initrd=/install/initrd.gz vga=normal auto file=/cdrom/preseed/AkilionSeed.seed locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=p4p1 debconf/priority=critical -- console=ttyS0,115200n8 quiet –\n
+\n
+label hyper\n
+menu label ^Hyper bootstrap\n
+kernel /install/vmlinuz\n
+#append initrd=initrd64.gz vga=normal auto file=/cdrom/preseed/AkilionHyper.seed locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=p4p1 debconf/priority=critical -- console=ttyS0,115200n8 quiet –\n
+append initrd=/install/initrd.gz vga=normal auto file=/cdrom/preseed/AkilionHyper.seed locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=eth0 debconf/priority=critical quiet –\n
+\n
+label compute\n
+menu label ^Compute bootstrap\n
+kernel /install/vmlinuz\n
+#append initrd=initrd64.gz vga=normal auto file=/cdrom/preseed/AkilionCompute.seed locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=p4p1 debconf/priority=critical -- console=ttyS0,115200n8 quiet –\n
+append initrd=/install/initrd.gz vga=normal auto file=/cdrom/preseed/AkilionCompute.seed locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=eth0 debconf/priority=critical quiet -\n
+\n
+EOF
+
+)
+
+SYSLINUX_FOOTER=$( cat << EOF
+
+label Hardware Detection Tool\n
+menu label ^Hardware Detection Tool\n
+kernel hdt.c32\n
+\n
+label Reboot\n
+menu label ^Reboot\n
+com32 reboot.c32\n
+\n
+EOF
+
+)
+
+ISOLINUX_FOOTER=$( cat << EOF
+label install\n
+  menu label ^Install Ubuntu Server\n
+  kernel /install/vmlinuz\n
+  append  file=/cdrom/preseed/ubuntu-server.seed vga=788 initrd=/install/initrd.gz quiet --\n
+label cloud\n
+  menu label ^Multiple server install with MAAS\n
+  kernel /install/vmlinuz\n
+  append   modules=maas-enlist-udeb vga=788 initrd=/install/initrd.gz quiet --\n
+label check\n
+  menu label ^Check disc for defects\n
+  kernel /install/vmlinuz\n
+  append   MENU=/bin/cdrom-checker-menu vga=788 initrd=/install/initrd.gz quiet --\n
+label memtest\n
+  menu label Test ^memory\n
+  kernel /install/mt86plus\n
+label hd\n
+  menu label ^Boot from first hard disk\n
+  localboot 0x80\n
+\n
+EOF
+
+)
+
 fi
 
 DEV=$1
@@ -94,41 +182,9 @@ cp -aR ../profiles $BUILD/
 #ui menu.c32
 #menu title Ubuntu NetInstall CD - Akilion
 
-cat > $BUILD/syslinux.cfg << EOF
-CONSOLE 0
-SERIAL 0 115200 0
-default seed
-ui menu.c32
-prompt 0
-timeout 100
 
-label seed
-menu label ^Seed bootstrap
-kernel /install/vmlinuz
-#append initrd=initrd64.gz vga=normal auto file=/cdrom/preseed/AkilionSeed.seed locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=p4p1 debconf/priority=critical -- console=ttyS0,115200n8 quiet –
-append initrd=/install/initrd.gz vga=normal auto file=/cdrom/preseed/AkilionSeed.seed locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=p4p1 debconf/priority=critical -- console=ttyS0,115200n8 quiet –
-
-label seed
-menu label ^Hyper bootstrap
-kernel /install/vmlinuz
-#append initrd=initrd64.gz vga=normal auto file=/cdrom/preseed/AkilionHyper.seed locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=p4p1 debconf/priority=critical -- console=ttyS0,115200n8 quiet –
-append initrd=/install/initrd.gz vga=normal auto file=/cdrom/preseed/AkilionHyper.seed locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=eth0 debconf/priority=critical quiet –
-
-label compute
-menu label ^Compute bootstrap
-kernel /install/vmlinuz
-#append initrd=initrd64.gz vga=normal auto file=/cdrom/preseed/AkilionCompute.seed locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=p4p1 debconf/priority=critical -- console=ttyS0,115200n8 quiet –
-append initrd=/install/initrd.gz vga=normal auto file=/cdrom/preseed/AkilionCompute.seed locale=en_US console-setup/layoutcode=ch console-setup/variantcode=fr netcfg/choose_interface=eth0 debconf/priority=critical quiet -
-
-label Hardware Detection Tool
-menu label ^Hardware Detection Tool
-kernel hdt.c32
-
-label Reboot
-menu label ^Reboot
-com32 reboot.c32
-
-EOF
+echo -e $SYSLINUX_HEADER $MENU_OPTION $SYSLINUX_FOOTER > $BUILD/syslinux.cfg
+echo -e $ISOLINUX_HEADER $MENU_OPTION $ISOLINUX_FOOTER > $BUILD/isolinux/txt.cfg
 
 echo "Creating iso image..."
 mkisofs -q -V "Atlas_bootstrap" -o $TEMPDIR/Atlas_bootstrap.iso -b isolinux.bin -c boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -r -J $BUILD
