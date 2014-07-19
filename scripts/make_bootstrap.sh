@@ -5,10 +5,11 @@ if [ -f ~/.akilion.cfg ]; then
 	. ~/.akilion.cfg
 else
         TEMPDIR=/tmp/bootstrap
-	DIST=trusty	SEED_URL=http://192.168.1.100/Akilion/akilion.seed
+	DIST=trusty	
+	SEED_URL=http://192.168.1.100/Akilion/akilion.seed
 	BUILD=$TEMPDIR/iso
 	VERSION=14.04
-
+fi
 
 SERIAL_HEADER=$( cat << EOF
 CONSOLE 0\n
@@ -97,7 +98,6 @@ EOF
 
 )
 
-fi
 
 DEV=$1
 
