@@ -25,13 +25,17 @@ for pkg in base_pkgs do
 end
 
 #Fix /etc/hosts
-domain = 'akilion.biz'
+domain = 'woitasen.com.ar'
 hostname = Socket.gethostname
 first_ip = Socket.ip_address_list.detect { |ip| ip.ipv4? and !ip.ipv4_loopback? }
 ip = first_ip.getnameinfo[0]
 
 if hostname.include? "."
   raise "dots not allowed in hostnames: #{hostnames}"
+end
+
+if not ip
+  raise "IP address could not be discovered"
 end
 
 file "/etc/hosts" do
