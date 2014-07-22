@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-saltmaster = "akilion-master.woitasen.com.ar"
+saltmaster = "akilion-control.woitasen.com.ar"
 
 remote_file "/usr/local/bin/install-salt.sh" do
   source "https://bootstrap.saltstack.com"
