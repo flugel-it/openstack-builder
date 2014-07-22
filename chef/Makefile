@@ -45,6 +45,9 @@ install-chef-client: /usr/bin/chef-client
 install-maas-region:
 	sudo chef-client -z -r 'role[maas-region-controller]' -c .chef/client.rb
 
+install-atlas-hyper:
+	sudo chef-client -z -r 'role[atlas-hyper]' -c .chef/client.rb
+
 upload:
 	knife upload cookbooks
 	knife upload roles
