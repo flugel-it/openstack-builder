@@ -35,7 +35,7 @@ fixhosts:
 
 deps: osdeps cookbooks
 
-/opt/chef-server/bin/chef-server-ctl: deps install-client
+/opt/chef-server/bin/chef-server-ctl: deps install-chef-client
 	sudo chef-client -z -r 'role[chef-server]' -c .chef/client.rb
 
 install-chef-server: install-client /opt/chef-server/bin/chef-server-ctl 
