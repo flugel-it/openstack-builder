@@ -7,10 +7,11 @@
 # All rights reserved - Do Not Redistribute
 #
 
-saltmaster = "akilion-control.woitasen.com.ar"
+saltmaster = "atlas-control.woitasen.com.ar"
 
-remote_file "/usr/local/bin/install-salt.sh" do
-  source "https://bootstrap.saltstack.com"
+cookbook_file "/usr/local/bin/install-salt.sh" do
+  source "install-salt.sh"
+  mode 00755
 end
 
 execute "install-salt" do
