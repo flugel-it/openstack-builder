@@ -24,7 +24,7 @@ librarian-update:
 librarian-install:
 	librarian-chef install --path cookbooks
 
-/usr/bin/chef-client: deps
+/usr/bin/chef-client:
 	wget -O /tmp/install-chef.sh \
 		https://www.opscode.com/chef/install.sh
 	sudo bash /tmp/install-chef.sh
@@ -33,9 +33,9 @@ fixhosts:
 	echo 127.0.0.1 localhost.localdomain localhost > /etc/hosts
 	echo $(IP) $(HOSTNAME).akilion.com $(HOSTNAME) >> /etc/hosts
 
-deps: osdeps cookbooks
+deps: osdeps librarian-install
 
-/opt/chef-server/bin/chef-server-ctl: deps install-chef-client
+/opt/chef-server/bin/chef-server-ctl: install-chef-client
 	sudo chef-client -z -r 'role[chef-server]' -c .chef/client.rb
 
 install-chef-server: /opt/chef-server/bin/chef-server-ctl 
