@@ -1,9 +1,9 @@
+
 # Localization
 d-i debian-installer/locale string en_US.UTF-8
 
 # Network configuration
-d-i netcfg/choose_interface select eth0
-d-i netcfg/get_hostname string Atlaseed
+d-i netcfg/choose_interface select auto
 
 # Clock and time zone setup
 d-i clock-setup/ntp boolean true
@@ -12,14 +12,13 @@ d-i time/zone string UTC
 ### Mirror settings
 d-i mirror/country string manual
 d-i mirror/suite string trusty
-d-i mirror/http/hostname string us.archive.ubuntu.com
-#d-i mirror/http/hostname string de.archive.ubuntu.com
+d-i mirror/http/hostname string de.archive.ubuntu.com
 d-i mirror/http/directory string /ubuntu/
 
 # apt-cacher auto detect
-d-i mirror/http/proxy string http://apt-cacher:3142
-#d-i preseed/early_command string \
-	#ping -c 1 apt-cacher > /dev/null 2>&1 && debconf-set mirror/http/proxy "http://172.21.22.104:3142/" || echo
+#d-i mirror/http/proxy string http://apt-cacher:3142
+d-i preseed/early_command string \
+	ping -c 1 apt-cacher > /dev/null 2>&1 && debconf-set mirror/http/proxy "http://apt-cacher:3142/" || echo
 
 d-i debconf/priority select critical
 d-i auto-install/enabled boolean true
@@ -41,21 +40,15 @@ d-i apt-setup/contrib boolean true
 d-i apt-setup/security-updates boolean true
 d-i apt-setup/partner boolean true
 
-#Partitioning
-# The next line prevents, the following error because we are booted from a usb stick:
-# Title: Unmount partitions that are in use?
-# The installer has detected that the following disks have mounted partitions?
-# https://bugs.launchpad.net/ubuntu/+source/partman-base/+bug/354573
-#d-i partman/filter_mounted boolean false
-# I'm still not sure what this does
-d-i partman/unmount_active boolean true
-d-i preseed/early_command string /bin/umount /dev/sda1 || echo
-d-i partman/early_command string /bin/umount /dev/sda1 || echo
+# Package selection
+tasksel tasksel/first multiselect none
+d-i pkgsel/update-policy select unattended-upgrades
 
-d-i partman-auto/disk string /dev/sda
+#Partitioning
+d-i preseed/early_command string /bin/umount /media || echo
+#d-i partman-auto/disk string /dev/vda
 d-i partman-auto/method string lvm
 d-i partman-auto-lvm/new_vg_name string vg00
-
 
 d-i partman-partitioning/confirm_write_new_label boolean true
 d-i partman/choose_partition select finish
@@ -66,7 +59,6 @@ d-i partman-basicfilesystems/no_mount_point yes
 d-i partman-lvm/confirm boolean true
 d-i partman-lvm/device_remove_lvm boolean true
 d-i partman-lvm/confirm_nooverwrite boolean true
-
 
 d-i partman-auto/expert_recipe string \
 	boot-root-var :: \
@@ -104,23 +96,7 @@ d-i partman-auto/expert_recipe string \
 	      use_filesystem{ ext4 } \
 	      filesystem{ ext4 } \
 	      mountpoint{ /var } \
+		.
 
+#d-i finish-install/reboot_in_progress note
 
-# Package selection
-# Luis --- tasksel tasksel/first multiselect none
-# The smallest possible installation
-tasksel tasksel/first multiselect minimal
-#tasksel tasksel/first multiselect standard
-d-i pkgsel/update-policy select unattended-upgrades
-d-i pkgsel/include string openssh-server git-core make ntp ethtool htop iptraf screen
-
-# Grub install
-d-i grub-installer/bootdev string /dev/sda
-
-# --- Luis d-i preseed/late_command string cp -a /cdrom/profiles/seed/init/* /etc/init/; cp -aR /cdrom/profiles/seed/etc/* /etc;
-#d-i preseed/late_command string apt-install zsh; in-target chsh -s /bin/zsh
-d-i preseed/late_command string in-target /usr/bin/wget -O /target/root/install_salt.sh https://bootstrap.saltstack.com; in-target /bin/sh /target/root/install-salt.sh -A akilion-control.woitasen.com.ar;
-
-# Finishing up the installation
-d-i finish-install/reboot_in_progress note
-# Power off the machine after installer finish
