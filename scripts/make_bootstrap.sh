@@ -167,6 +167,7 @@ wget -cq http://archive.ubuntu.com/ubuntu/dists/${DIST}/main/installer-amd64/cur
 cp $TEMPDIR/initrd64.gz $BUILD
 
 echo "copying custom preseed"
+mkdir -p $BUILD/preseed
 cp -aR ../preseed/* $BUILD/preseed
 
 #echo "copying profiles"
@@ -184,7 +185,7 @@ cp -aR ../profiles $BUILD/
 
 
 echo -e $SYSLINUX_HEADER $MENU_OPTION $SYSLINUX_FOOTER > $BUILD/syslinux.cfg
-echo -e $ISOLINUX_HEADER $MENU_OPTION $ISOLINUX_FOOTER > $BUILD/isolinux/txt.cfg
+echo -e $ISOLINUX_HEADER $MENU_OPTION $ISOLINUX_FOOTER > $BUILD/isolinux.cfg
 
 echo "Creating iso image..."
 mkisofs -q -V "Atlas_bootstrap" -o $TEMPDIR/Atlas_bootstrap.iso -b isolinux.bin -c boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -r -J $BUILD
