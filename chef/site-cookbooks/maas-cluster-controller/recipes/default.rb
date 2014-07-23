@@ -7,6 +7,8 @@
 # All rights reserved - Do Not Redistribute
 #
 
+rc_url = "atlas-maas-region-controller.woitasen.com.ar"
+
 pkgs = [
   "python-seamicroclient",
   "python-pexpect",
@@ -23,8 +25,8 @@ end
 ruby_block "set_maas_region_server" do
   block do
     file = Chef::Util::FileEdit.new("/etc/maas/maas_cluster.conf")
-    file.search_file_replace_line('^MAAS_URL=.*',
-                                  'MAAS_URL="http://107.170.185.50/MAAS"')
+    file.search_file_replace_line("^MAAS_URL=.*",
+                                  "MAAS_URL=\"#{rc_url}\"")
     file.write_file
   end
 end
