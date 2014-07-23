@@ -7,7 +7,8 @@
 # All rights reserved - Do Not Redistribute
 #
 
-rc_url = "http://atlas-maas-rc.woitasen.com.ar/MAAS"
+maas_region_controller = "atlas-maas-rc.woitasen.com.ar"
+rabbit_pass = "lqMwDXwk9vhyOItglyI4"
 
 pkgs = [
   "python-seamicroclient",
@@ -19,15 +20,6 @@ pkgs = [
 for pkg in pkgs do
   package pkg do
     action :install
-  end
-end
-
-ruby_block "set_maas_region_server" do
-  block do
-    file = Chef::Util::FileEdit.new("/etc/maas/maas_cluster.conf")
-    file.search_file_replace_line("^MAAS_URL=.*",
-                                  "MAAS_URL=\"#{rc_url}\"")
-    file.write_file
   end
 end
 
@@ -44,6 +36,26 @@ for maas_service in maas_services do
     provider Chef::Provider::Service::Upstart
     action [:enable, :start]
     subscribes :restart, "ruby_block[set_maas_region_server]", :delayed
+  end
+end
+
+conf_files = [
+  "maas_cluster.conf",
+  "maas_local_settings.py",
+  "txlongpoll.yaml"
+]
+
+for conf_file in conf_files do
+  template "/etc/maas/#{conf_file}" do
+    mode "0644"
+    source "#{conf_file}.erb"
+    variables({
+      :maas_region_controller => maas_region_controller,
+      :rabbit_pass => rabbit_pass
+    })
+    for maas_service in maas_services do
+      notifies :restart, "service[#{maas_service}]", :delayed
+    end
   end
 end
 
