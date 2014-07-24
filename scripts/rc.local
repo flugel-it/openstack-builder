@@ -11,13 +11,7 @@
 #
 # By default this script does nothing.
 
-cd /usr/local/bin
-
-wget -O /usr/local/bin/newHostnameAndAddress.sh http://www.ppmg.com.ar/newHosnameAndAddress.sh
-
-chmod +x /usr/local/bin/newHostnameAndAddress.sh
-
-/usr/local/bin/newHostnameAndAddress.sh
+/usr/local/bin/changeHostname.sh
 
 if ! `test -f /etc/salt/minion.d/99-master-address.conf`
 then

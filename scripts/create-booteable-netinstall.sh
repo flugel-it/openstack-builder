@@ -25,6 +25,16 @@ if [ ! -f /usr/bin/mkisofs ]; then
         apt-get install -y genisoimage
 fi
 
+clear
+echo "# -------------------------- WARNING!!! --------------------------------- #"
+echo "# Review this information, otherwise you'll end-up LOOSING DATA!!!        #"
+echo "# ----------------------------------------------------------------------- #"
+echo "# Linux image: $ISO"
+echo "# Target device (IMPORTANT): $DEV"
+echo "# ----------------------------------------------------------------------- #"
+echo "When you're ready press ENTER"
+read
+
 TMPMNT=$(mktemp -d)
 BUILD=/tmp/bootstrap
 
@@ -33,8 +43,10 @@ rsync -va --delete ${TMPMNT}/ ${BUILD}/
 
 echo "copy isolinux files..."
 mkdir -p $BUILD
+mkdir $BUILD/scripts
 cp /usr/lib/syslinux/menu.c32 $BUILD/isolinux
 cp ../preseed/akilion.seed $BUILD/preseed
+cp ../scripts/rc.local ../scripts/changeHostname.sh $BUILD/scripts
 
 cat > $BUILD/isolinux/isolinux.cfg << EOF
 
@@ -43,15 +55,15 @@ prompt 0
 default seed
 timeout 100
 
-label seed
+label Seed (Mini-PC)
 kernel /install/vmlinuz
 append initrd=/install/initrd.gz vga=768 auto file=/cdrom/preseed/akilion.seed netcfg/get_hostname=atlas-seed locale=en_US netcfg/choose_interface=p6p1 debconf/priority=critical -- console=ttyS0,115200n8 quiet –
 
-label hyper
+label Hyper (Regular x86 PC)
 kernel /install/vmlinuz
 append initrd=/install/initrd.gz vga=768 auto file=/cdrom/preseed/akilion.seed netcfg/get_hostname=atlas-hyper locale=en_US netcfg/choose_interface=p6p1 debconf/priority=critical -- 
 
-label seed-non-serial
+label Seed (Regular x86 PC)
 kernel /install/vmlinuz
 append initrd=/install/initrd.gz vga=normal auto file=/cdrom/preseed/akilion.seed netcfg/get_hostname=atlas-seed locale=en_US console-setup/layoutcode=us netcfg/choose_interface=eth0 debconf/priority=critical --
 
