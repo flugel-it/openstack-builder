@@ -50,6 +50,9 @@ cp ../scripts/rc.local ../scripts/changeHostname.sh $BUILD/scripts
 
 cat > $BUILD/isolinux/isolinux.cfg << EOF
 
+CONSOLE 0
+SERIAL 0 115200 0
+
 ui /isolinux/menu.c32
 prompt 0
 default seed
