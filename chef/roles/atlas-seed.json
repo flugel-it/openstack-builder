@@ -1,0 +1,7 @@
+{
+  "name": "atlas-seed",
+  "run_list": [
+    "recipe[atlas-base]",
+    "recipe[atlas-seed]"
+  ]
+}
