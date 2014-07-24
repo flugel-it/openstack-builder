@@ -1,0 +1,13 @@
+
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+	up iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+
+auto eth1
+iface eth1 inet static
+	address <%= @subnet %>.1
+	netmask 255.255.255.0
+
