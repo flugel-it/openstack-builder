@@ -1,0 +1,7 @@
+{
+  "name": "atlas-hyper",
+  "run_list": [
+    "recipe[atlas-base]",
+    "recipe[atlas-libvirt]"
+  ]
+}
