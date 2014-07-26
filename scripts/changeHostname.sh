@@ -51,9 +51,9 @@ EOF
 CURRHOSTNAME=`cat /etc/hostname | awk -F'.' '{print $1}'`
 MAC=$(ip a s dev eth0 | grep link\/eth | awk '{print $2}' | awk -F\: '{print $4$5$6}')
 
-if ! grep ${MAC}.cheff.akilion.biz /etc/hostname; then
+if ! grep ${MAC}.builder.local /etc/hostname; then
 
-   NEWHOSTNAME=atlas-${CURRHOSTNAME}-$MAC.cheff.akilion.biz
+   NEWHOSTNAME=atlas-${CURRHOSTNAME}-$MAC.builder.local
    echo ${NEWHOSTNAME} > /etc/hostname
 
    if test -f /etc/salt/minion_id; then

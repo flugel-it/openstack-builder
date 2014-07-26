@@ -45,7 +45,7 @@ echo "copy isolinux files..."
 mkdir -p $BUILD
 mkdir $BUILD/scripts
 cp /usr/lib/syslinux/menu.c32 $BUILD/isolinux
-cp ../preseed/akilion.seed $BUILD/preseed
+cp ../preseed/openstack-builder $BUILD/preseed
 cp ../scripts/rc.local ../scripts/changeHostname.sh $BUILD/scripts
 
 cat > $BUILD/isolinux/isolinux.cfg << EOF
@@ -58,27 +58,24 @@ prompt 0
 default seed
 timeout 100
 
-label Seed (Mini-PC)
+label Gateway (Regular x86 PC)
 kernel /install/vmlinuz
-append initrd=/install/initrd.gz vga=768 auto file=/cdrom/preseed/akilion.seed netcfg/get_hostname=atlas-seed locale=en_US netcfg/choose_interface=p6p1 debconf/priority=critical -- console=ttyS0,115200n8 quiet –
+append initrd=/install/initrd.gz vga=normal auto file=/cdrom/preseed/openstack-builder.seed netcfg/get_hostname=builder-gw locale=en_US console-setup/layoutcode=us netcfg/choose_interface=eth0 debconf/priority=critical --
 
-label Hyper (Regular x86 PC)
+label Gateway Serial
 kernel /install/vmlinuz
-append initrd=/install/initrd.gz vga=768 auto file=/cdrom/preseed/akilion.seed netcfg/get_hostname=atlas-hyper locale=en_US netcfg/choose_interface=p6p1 debconf/priority=critical -- 
+append initrd=/install/initrd.gz vga=768 auto file=/cdrom/preseed/openstack-builder.seed netcfg/get_hostname=builder-gw locale=en_US netcfg/choose_interface=p6p1 debconf/priority=critical -- console=ttyS0,115200n8 quiet –
 
-label Seed (Regular x86 PC)
+label OnSite Controller (Regular x86 PC)
 kernel /install/vmlinuz
-append initrd=/install/initrd.gz vga=normal auto file=/cdrom/preseed/akilion.seed netcfg/get_hostname=atlas-seed locale=en_US console-setup/layoutcode=us netcfg/choose_interface=eth0 debconf/priority=critical --
-
-label Hardware Detection Tool
-kernel hdt.c32
+append initrd=/install/initrd.gz vga=768 auto file=/cdrom/preseed/openstack-builder.seed netcfg/get_hostname=builder-controller locale=en_US netcfg/choose_interface=p6p1 debconf/priority=critical -- 
 
 EOF
 
 echo "Creating iso image..."
 cd $BUILD/isolinux
 mkisofs -q -V "UbuntuNetInstall" \
-	-o /tmp/atlas.iso \
+	-o /tmp/openstack-builder.iso \
 	-b isolinux/isolinux.bin -c boot.cat \
 	-no-emul-boot -boot-load-size 4 -boot-info-table -r -J \
        	$BUILD
