@@ -1,6 +1,0 @@
-/* 
-*  Copyright (C) 2014 Akilion.biz and Arnaud Cazenove - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- *
- */ 
