@@ -1,0 +1,2 @@
+127.0.0.1 localhost.localdomain localhost controller nova glance keystone horizon
+{{ grains.get("external_ip", "1.2.3.4") }} {{ grains["id"] }}.{{ grains.get("domainname", "flugel.it") }} {{ grains["id"] }}
