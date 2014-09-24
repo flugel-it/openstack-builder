@@ -1,21 +1,5 @@
 {%- set hostname = grains['id'] %}
 
-{%- if grains.get("environment") != "vagrant" %}
-
-/etc/profile.d/99-prompt-minion-id.sh:
-  file.managed:
-    - user: root
-    - group: root
-    - mode: 644
-    - contents: 'export PS1="[\u@{{ hostname }} \W]\\$ "'
-
-{% else %}
-
-/etc/profile.d/99-prompt-minion-id.sh:
-  file.absent
-
-{% endif %}
-
 /root/.ssh:
   file.directory:
     - user: root
@@ -36,7 +20,6 @@ base-pkgs:
 
 ntp:
   service.running:
-    - name: {{ pillar["ntp_svc"] }}
     - enable: true
 
 salt-minion:
