@@ -25,16 +25,6 @@ if [ ! -f /usr/bin/mkisofs ]; then
         apt-get install -y genisoimage
 fi
 
-clear
-echo "# -------------------------- WARNING!!! --------------------------------- #"
-echo "# Review this information, otherwise you'll end-up LOOSING DATA!!!        #"
-echo "# ----------------------------------------------------------------------- #"
-echo "# Linux image: $ISO"
-echo "# Target device (IMPORTANT): $DEV"
-echo "# ----------------------------------------------------------------------- #"
-echo "When you're ready press ENTER"
-read
-
 TMPMNT=$(mktemp -d)
 BUILD=/tmp/bootstrap
 
@@ -43,10 +33,10 @@ rsync -va --delete ${TMPMNT}/ ${BUILD}/
 
 echo "copy isolinux files..."
 mkdir -p $BUILD
-mkdir $BUILD/scripts
+mkdir $BUILD/scripts $BUILD/isolinux
 cp /usr/lib/syslinux/menu.c32 $BUILD/isolinux
-cp ../preseed/openstack-builder $BUILD/preseed
-cp ../scripts/rc.local ../scripts/changeHostname.sh $BUILD/scripts
+cp ../preseed/openstack-builder.seed $BUILD/preseed
+cp ../preseed/flugel-first-boot.conf $BUILD/scripts
 
 cat > $BUILD/isolinux/isolinux.cfg << EOF
 
@@ -57,6 +47,10 @@ ui /isolinux/menu.c32
 prompt 0
 default seed
 timeout 100
+
+label AIO OpenStack HA
+kernel /install/vmlinuz
+append initrd=/install/initrd.gz vga=normal auto file=/cdrom/preseed/openstack-builder.seed netcfg/get_hostname=openstack-aio-ha locale=en_US console-setup/layoutcode=us netcfg/choose_interface=eth0 debconf/priority=critical --
 
 label Gateway (Regular x86 PC)
 kernel /install/vmlinuz
@@ -106,5 +100,5 @@ fi
 umount $TMPMNT
 rmdir $TMPMNT
 echo "clean up..."
-#rm -r $BUILD
+rm -r $BUILD
 
