@@ -5,6 +5,7 @@ base:
 
   'G@roles:openstack':
     - match: compound
+    - drbd
     - openstack
 
   'G@roles:nagios':
