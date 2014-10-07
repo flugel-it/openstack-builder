@@ -31,7 +31,7 @@ librarian-install:
 
 fixhosts:
 	echo 127.0.0.1 localhost.localdomain localhost > /etc/hosts
-	echo $(IP) $(HOSTNAME).woitasen.com.ar $(HOSTNAME) >> /etc/hosts
+	echo $(IP) $(HOSTNAME).flugel.it $(HOSTNAME) >> /etc/hosts
 
 deps: osdeps librarian-install
 

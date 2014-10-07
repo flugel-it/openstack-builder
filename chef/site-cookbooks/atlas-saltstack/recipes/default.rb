@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-saltmaster = "atlas-control.woitasen.com.ar"
+saltmaster = "atlas-control.flugel.it"
 
 cookbook_file "/usr/local/bin/install-salt.sh" do
   source "install-salt.sh"

@@ -25,7 +25,7 @@ for pkg in base_pkgs do
 end
 
 #Fix /etc/hosts
-domain = 'woitasen.com.ar'
+domain = 'flugel.it'
 hostname = Socket.gethostname
 first_ip = Socket.ip_address_list.detect { |ip| ip.ipv4? and !ip.ipv4_loopback? }
 ip = first_ip.getnameinfo[0]

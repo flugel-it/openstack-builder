@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-maas_region_controller = "atlas-maas-rc.woitasen.com.ar"
+maas_region_controller = "atlas-maas-rc.flugel.it"
 rabbit_pass = "lqMwDXwk9vhyOItglyI4"
 
 pkgs = [
