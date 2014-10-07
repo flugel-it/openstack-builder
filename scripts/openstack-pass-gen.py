@@ -1,5 +1,12 @@
 #!/usr/bin/python
 
+#
+# This is a simple script to generate pretty strong passwords to be used
+# in a Openstack implementation.
+#
+# Luis Vinay - luis@flugel.it
+#
+
 import os,binascii
 
 passDescDict = { 'DATABASE': 'Root password for the database',
@@ -25,8 +32,8 @@ passDescDict = { 'DATABASE': 'Root password for the database',
 'RABBIT_PASS': 'guest user',
 'CINDER_PASS': 'cinder',
 'METADATA_PROXY_SECRET': 'Secret for the Metadata Proxy',
-'KEYSTONE_TOKEN': 'XXX',
-'PROXY_SECRET': 'XXX' }
+'KEYSTONE_TOKEN': 'Keystone Token',
+'PROXY_SECRET': 'Proxy Secret' }
 
 newPassDicts = { }
 
