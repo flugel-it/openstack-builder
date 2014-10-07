@@ -1,6 +1,8 @@
 PWD=$(shell pwd)
 
 all:
+	wget -O /tmp/install_salt.sh https://bootstrap.saltstack.com
+	sh install_salt.sh -M git v2014.7.0rc2
 	-test -d /etc/salt/master.d/ || mkdir -p /etc/salt/master.d/
 	-rm -fR /etc/salt/master.d/*
 	sed s%PILLAR_ROOTS%$(PWD)/pillar_roots% \
