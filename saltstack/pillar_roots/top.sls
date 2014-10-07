@@ -1,4 +1,6 @@
 
 base:
   '*':
-    - chef-client
+    - data    
+    - openstack
+    - openstack.passwords
