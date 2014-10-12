@@ -13,4 +13,5 @@ openstack-base-pkgs:
   pkg.installed:
     - pkgs:
       - python-mysqldb
+      - keystone
 
