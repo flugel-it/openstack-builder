@@ -1,7 +1,0 @@
-{
-  "name": "maas-cluster-controller",
-  "run_list": [
-    "recipe[atlas-base]",
-    "recipe[maas-cluster-controller]"
-  ]
-}

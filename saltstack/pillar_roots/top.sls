@@ -10,7 +10,3 @@ base:
     - match: compound
     - ubuntu.pkgs
     - ubuntu.paths
-
-controller:
-  'G@role:controller':
-    - rabbitmq-server_pkgs

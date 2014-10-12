@@ -1,9 +1,0 @@
-{
-  "name": "chef-server",
-  "run_list": [
-	  "recipe[swap_tuning]",
-	  "recipe[atlas-base]",
-	  "recipe[chef-server]",
-	  "recipe[atlas-saltstack]"
-	  ]
-}

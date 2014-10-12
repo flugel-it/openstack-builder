@@ -1,7 +1,0 @@
-{
-  "name": "maas-region-controller",
-  "run_list": [
-    "recipe[swap_tuning]",
-    "recipe[maas-region-controller]"
-  ]
-}

@@ -1,7 +1,0 @@
-site 'http://community.opscode.com/api/v1'
-
-cookbook "swap"
-cookbook "swap_tuning"
-cookbook "chef-server"
-cookbook "chef-client"
-
