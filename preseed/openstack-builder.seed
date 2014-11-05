@@ -48,7 +48,7 @@ d-i pkgsel/update-policy select unattended-upgrades
 d-i preseed/early_command string /bin/umount /media || echo
 #d-i partman-auto/disk string /dev/vda
 d-i partman-auto/method string lvm
-d-i partman-auto-lvm/new_vg_name string vg00
+d-i partman-auto-lvm/new_vg_name string vg-flugel
 
 d-i partman-partitioning/confirm_write_new_label boolean true
 d-i partman/choose_partition select finish
