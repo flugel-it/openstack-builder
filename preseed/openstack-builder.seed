@@ -24,10 +24,10 @@ d-i debconf/priority select critical
 d-i auto-install/enabled boolean true
 
 # Account setup
-d-i passwd/user-fullname string OpenStack Builder
-d-i passwd/username string builder
-d-i passwd/user-password password builder
-d-i passwd/user-password-again password builder
+d-i passwd/user-fullname string flugel.it OpenStack Builder
+d-i passwd/username string flugel
+d-i passwd/user-password password @flugel.it
+d-i passwd/user-password-again password @flugel.it
 d-i user-setup/allow-password-weak boolean true
 
 # Apt setup
