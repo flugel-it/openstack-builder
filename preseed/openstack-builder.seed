@@ -70,22 +70,32 @@ d-i partman-auto/expert_recipe string \
 	      filesystem{ ext2 } \
 	      mountpoint{ /boot } \
 	    	. \
-	2000 3000 4000 swap \
+	2000 300 4000 swap \
 	      $defaultignore{ } \
 	      $lvmok{ } \
 	      format{ } \
 	      lv_name{ swap } \
 	      method{ swap } \
 		. \
-	20000 30000 40000 ext4 \
+	2000 400 10000 ext4 \
 	      $defaultignore{ } \
 	      $lvmok{ } \
-	      lv_name{ root } \
+	      lv_name{ rootfs } \
 	      method{ format } \
 	      format{ } \
 	      use_filesystem{ xfs } \
 	      filesystem{ xfs } \
 	      mountpoint{ / } \
+		. \
+	2000 500 0 ext4 \
+	      $defaultignore{ } \
+	      $lvmok{ } \
+	      lv_name{ varfs } \
+	      method{ format } \
+	      format{ } \
+	      use_filesystem{ xfs } \
+	      filesystem{ xfs } \
+	      mountpoint{ /var } \
 		. 
 
 d-i preseed/late_command string cp /cdrom/scripts/flugel-first-boot.conf /target/etc/init
