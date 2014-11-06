@@ -9,6 +9,12 @@ openstack-keystone-pkgs:
     - name: luis
     - uid: 1000 
 
+keystone-minion-conf:
+  file.managed:
+    - source: salt://openstack/keystone/files/keystone.minion.conf
+    - watch_in:
+      - service: salt-minion
+
 /etc/keystone/keystone.conf:
   file.managed:
     - source: salt://openstack/keystone/files/keystone.conf
