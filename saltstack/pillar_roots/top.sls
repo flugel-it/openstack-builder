@@ -5,6 +5,7 @@ base:
     - pkgs
     - openstack
     - openstack.passwords
+    - openstack.keystone
 
   'G@os:Ubuntu or G@os:Debian':
     - match: compound
