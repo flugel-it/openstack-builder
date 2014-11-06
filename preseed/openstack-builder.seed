@@ -24,10 +24,10 @@ d-i debconf/priority select critical
 d-i auto-install/enabled boolean true
 
 # Account setup
-d-i passwd/user-fullname string OpenStack Builder
-d-i passwd/username string builder
-d-i passwd/user-password password builder
-d-i passwd/user-password-again password builder
+d-i passwd/user-fullname string flugel.it OpenStack Builder
+d-i passwd/username string flugel
+d-i passwd/user-password password @flugel.it
+d-i passwd/user-password-again password @flugel.it
 d-i user-setup/allow-password-weak boolean true
 
 # Apt setup
@@ -44,11 +44,11 @@ d-i apt-setup/partner boolean true
 tasksel tasksel/first multiselect none
 d-i pkgsel/update-policy select unattended-upgrades
 
-#Partitioning
+#Partitioning, look for partman-auto-recipe.txt
 d-i preseed/early_command string /bin/umount /media || echo
 #d-i partman-auto/disk string /dev/vda
 d-i partman-auto/method string lvm
-d-i partman-auto-lvm/new_vg_name string vg00
+d-i partman-auto-lvm/new_vg_name string vg-flugel
 
 d-i partman-partitioning/confirm_write_new_label boolean true
 d-i partman/choose_partition select finish
@@ -62,7 +62,7 @@ d-i partman-lvm/confirm_nooverwrite boolean true
 
 d-i partman-auto/expert_recipe string \
 	boot-root-var :: \
-	200 250 300 ext2 \
+	100 200 200 ext2 \
 	      $defaultignore{ } \
 	      method{ format } \
 	      format{ } \
@@ -70,22 +70,32 @@ d-i partman-auto/expert_recipe string \
 	      filesystem{ ext2 } \
 	      mountpoint{ /boot } \
 	    	. \
-	2000 3000 4000 swap \
+	1024 1024 2048 swap \
 	      $defaultignore{ } \
 	      $lvmok{ } \
 	      format{ } \
 	      lv_name{ swap } \
 	      method{ swap } \
 		. \
-	20000 30000 40000 ext4 \
+	4000 7000 15000 ext4 \
 	      $defaultignore{ } \
 	      $lvmok{ } \
-	      lv_name{ root } \
+	      lv_name{ rootfs } \
 	      method{ format } \
 	      format{ } \
 	      use_filesystem{ xfs } \
 	      filesystem{ xfs } \
 	      mountpoint{ / } \
+		. \
+	10000 50000 1000000000 ext4 \
+	      $defaultignore{ } \
+	      $lvmok{ } \
+	      lv_name{ varfs } \
+	      method{ format } \
+	      format{ } \
+	      use_filesystem{ xfs } \
+	      filesystem{ xfs } \
+	      mountpoint{ /var } \
 		. 
 
 d-i preseed/late_command string cp /cdrom/scripts/flugel-first-boot.conf /target/etc/init
