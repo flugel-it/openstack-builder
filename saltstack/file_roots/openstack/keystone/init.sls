@@ -96,8 +96,8 @@ Keystone roles:
 
 admin:
   keystone.user_present:
-    - password: R00T_4CC3SS
-    - email: admin@domain.com
+    - password: {{ pillar['KEYSTONE_ADMIN_PASS'] }}
+    - email: infradevs@fluge.it
     - roles:
       - admin:   # tenants
         - admin  # roles
