@@ -101,8 +101,8 @@ libssl1.0.0:
 
 create-swap-file:
   cmd.run:
-    - name: dd if=/dev/zero of=/.swap count=1000 bs=1M
-    - unless: test -f /.swap
+    - name: echo sarlanga && touch /.sarlanga
+    - unless: test -f /.sarlanga
 
 init-swap-file:
   cmd.run:

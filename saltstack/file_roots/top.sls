@@ -6,7 +6,7 @@ base:
 
   'G@roles:openstack':
     - match: compound
-    - drbd
+    #- drbd
     - openstack
 
   'G@roles:nagios':
@@ -14,7 +14,8 @@ base:
     - nagios
 
   'G@roles:controller':
-    - rabbitmq
     - match: compound
+    - openstack.keystone
+    - rabbitmq
     - mysql
 
