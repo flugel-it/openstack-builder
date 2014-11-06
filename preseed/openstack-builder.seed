@@ -44,7 +44,7 @@ d-i apt-setup/partner boolean true
 tasksel tasksel/first multiselect none
 d-i pkgsel/update-policy select unattended-upgrades
 
-#Partitioning
+#Partitioning, look for partman-auto-recipe.txt
 d-i preseed/early_command string /bin/umount /media || echo
 #d-i partman-auto/disk string /dev/vda
 d-i partman-auto/method string lvm
@@ -62,7 +62,7 @@ d-i partman-lvm/confirm_nooverwrite boolean true
 
 d-i partman-auto/expert_recipe string \
 	boot-root-var :: \
-	200 250 300 ext2 \
+	100 200 200 ext2 \
 	      $defaultignore{ } \
 	      method{ format } \
 	      format{ } \
@@ -70,14 +70,14 @@ d-i partman-auto/expert_recipe string \
 	      filesystem{ ext2 } \
 	      mountpoint{ /boot } \
 	    	. \
-	2000 300 4000 swap \
+	1024 1024 2048 swap \
 	      $defaultignore{ } \
 	      $lvmok{ } \
 	      format{ } \
 	      lv_name{ swap } \
 	      method{ swap } \
 		. \
-	2000 400 10000 ext4 \
+	4000 7000 15000 ext4 \
 	      $defaultignore{ } \
 	      $lvmok{ } \
 	      lv_name{ rootfs } \
@@ -87,7 +87,7 @@ d-i partman-auto/expert_recipe string \
 	      filesystem{ xfs } \
 	      mountpoint{ / } \
 		. \
-	2000 500 -1 ext4 \
+	10000 50000 1000000000 ext4 \
 	      $defaultignore{ } \
 	      $lvmok{ } \
 	      lv_name{ varfs } \
