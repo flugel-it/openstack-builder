@@ -9,19 +9,33 @@ openstack-keystone-pkgs:
     - name: luis
     - uid: 1000 
 
-keystone-minion-conf:
+/etc/salt/minion.d/keystone-minion.conf:
   file.managed:
+    - template: jinja
     - source: salt://openstack/keystone/files/keystone.minion.conf
     - watch_in:
       - service: salt-minion
+
+/var/log/keystone/:
+  file.directory:
+    - user: keystone
+    - group: keystone
+    - mode: 755
 
 /etc/keystone/keystone.conf:
   file.managed:
     - source: salt://openstack/keystone/files/keystone.conf
     - template: jinja
-    - user: root
-    - group: root
+    - user: keystone
+    - group: keystone
     - mode: 640
+
+keystone-service:
+  service.running:
+    - name: keystone
+    - enable: true
+    - watch:
+      - file: /etc/keystone/keystone.conf
 
 /root/.keystone_supercredentials:
   file.managed:
@@ -63,10 +77,12 @@ keystone_db:
     - require:
       - mysql_user: {{ pillar['KEYSTONE_DBUSER'] }}
 
-/usr/bin/keystone-manage db_sync:
+
+keystone-initdb:
   cmd.run:
-    - creates: /etc/keystone/.already_synced
+    - name: /usr/bin/keystone-manage db_sync && touch /etc/keystone/.already_synced
     - unless: test -f /etc/keystone/.already_synced
+    - user: keystone
 
 Keystone tenants:
   keystone.tenant_present:
