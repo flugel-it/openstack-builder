@@ -22,20 +22,6 @@ ntp:
   service.running:
     - enable: true
 
-salt-minion:
-  service.running:
-    - enable: true
-
-salt-mine:
-  file.managed:
-    - name: /etc/salt/minion.d/mine.conf
-    - source: salt://base/files/salt-mine.conf
-    - user: root
-    - group: root
-    - mode: 644
-    - watch_in:
-      - service: salt-minion
-
 {% if grains.get("os") == "Ubuntu" %}
 
 /etc/apt/sources.list:
