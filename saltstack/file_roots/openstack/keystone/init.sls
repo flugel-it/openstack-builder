@@ -5,9 +5,6 @@ openstack-keystone-pkgs:
       - mysql-server
       - {{ pillar["rabbitmq-server_pkg"] }}
       - {{ pillar["keystone_pkg"] }}
-  user.present:
-    - name: luis
-    - uid: 1000 
 
 /etc/salt/minion.d/keystone-minion.conf:
   file.managed:
