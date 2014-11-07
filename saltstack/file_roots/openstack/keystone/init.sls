@@ -77,9 +77,9 @@ keystone_db:
 
 keystone-initdb:
   cmd.run:
-    - name: /usr/bin/keystone-manage db_sync && touch /etc/keystone/.already_synced
+    - name: su -s /bin/sh -c "keystone-manage db_sync" keystone && touch /etc/keystone/.already_synced
     - unless: test -f /etc/keystone/.already_synced
-    - user: keystone
+    - user: root
 
 Keystone tenants:
   keystone.tenant_present:
