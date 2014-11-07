@@ -12,4 +12,4 @@ all: /usr/bin/salt-master
 
 /usr/bin/salt-master:
 	wget -O /tmp/install_salt.sh https://bootstrap.saltstack.com
-	sh /tmp/install_salt.sh -M git v2014.7.0rc2
+	sh /tmp/install_salt.sh -M git v2014.7.0rc7
