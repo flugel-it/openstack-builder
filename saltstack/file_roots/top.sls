@@ -1,8 +1,7 @@
 base:
   '*':
     - base
-    #- hostsfile
-    - openstack
+    - hostsfile
 
   'G@roles:openstack':
     - match: compound
@@ -15,6 +14,7 @@ base:
 
   'G@roles:controller':
     - match: compound
+    - openstack
     - openstack.keystone
     - rabbitmq
     - mysql
