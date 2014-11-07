@@ -6,7 +6,7 @@ openstack-glance-pkgs:
 
 
 /var/lib/glance/glance.sqlite:
-  file.absent:
+  file.absent
 
 /etc/salt/minion.d/glance-minion.conf:
   file.managed:
@@ -73,9 +73,9 @@ glance-initdb:
   cmd.run:
     - name: su -s /bin/sh -c "glance-manage db_sync" glance && touch /etc/glance/.already_synced
     - unless: test -f /etc/glance/.already_synced
-    - user: glance
+    - user: root
 
-Keystone tenants:
+Glance tenants:
   keystone.tenant_present:
     - names:
       - glance
@@ -86,16 +86,27 @@ Keystone roles:
       - admin
       - Member
 
-glance:
+glance_admin_user:
   keystone.user_present:
+    - name: glance
     - password: {{ pillar['GLANCE_PASS'] }}
     - email: infradevs@fluge.it
     - roles:
       - admin:   # tenants
         - admin  # roles
-      - service:
-        - admin
-        - Member
-        #- require:
-      #- glance: Keystone tenants
-      #- glance: Keystone roles
+      - require:
+        - keystone: Keystone roles
+        - keystone: Glance tenants
+
+glancene_keystone_service:
+  keystone.service_present:
+    - name: glance
+    - service_type: image
+    - description: Openstack Image Service
+
+glance_keypoint_endpoint:
+  keystone.endpoint_present:
+    - name: glance
+    - publicurl: http://{{ grains.fqdn_ip4 }}:9292
+    - internalurl: http://{{ grains.fqdn_ip4 }}:9292
+    - adminurl: http://{{ grains.fqdn_ip4 }}:9292
