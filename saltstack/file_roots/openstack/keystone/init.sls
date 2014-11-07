@@ -101,10 +101,6 @@ admin:
     - roles:
       - admin:   # tenants
         - admin  # roles
-
-      - service:
-        - admin
-        - Member
     - require:
       - keystone: Keystone tenants
       - keystone: Keystone roles
@@ -112,8 +108,8 @@ admin:
 keystone service:
   keystone.service_present:
     - name: keystone
-    - service_type: compute
-    - description: OpenStack Compute Service
+    - service_type: identity
+    - description: OpenStack Identity Service
 
 keystone endpoint:
   keystone.endpoint_present:
