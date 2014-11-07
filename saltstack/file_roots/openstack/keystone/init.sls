@@ -107,3 +107,9 @@ admin:
     - require:
       - keystone: Keystone tenants
       - keystone: Keystone roles
+
+keystone:
+  keystone.endpoint_present:
+    - publicurl: http://{{ grains.fqdn_ip4 }}:5000/v2.0
+    - internalurl: http://{{ grains.fqdn_ip4 }}:5000/v2.0
+    - adminurl: http://{{ grains.fqdn_ip4 }}:35357/v2.0
