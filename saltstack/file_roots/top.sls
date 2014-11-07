@@ -1,6 +1,7 @@
 base:
   '*':
     - base
+    - swap
     - hostsfile
     - openstack
     - salt-minion
