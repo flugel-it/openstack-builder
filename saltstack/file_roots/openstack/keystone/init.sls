@@ -5,23 +5,34 @@ openstack-keystone-pkgs:
       - mysql-server
       - {{ pillar["rabbitmq-server_pkg"] }}
       - {{ pillar["keystone_pkg"] }}
-  user.present:
-    - name: luis
-    - uid: 1000 
 
-keystone-minion-conf:
+/etc/salt/minion.d/keystone-minion.conf:
   file.managed:
+    - template: jinja
     - source: salt://openstack/keystone/files/keystone.minion.conf
     - watch_in:
       - service: salt-minion
+
+/var/log/keystone/:
+  file.directory:
+    - user: keystone
+    - group: keystone
+    - mode: 755
 
 /etc/keystone/keystone.conf:
   file.managed:
     - source: salt://openstack/keystone/files/keystone.conf
     - template: jinja
-    - user: root
-    - group: root
+    - user: keystone
+    - group: keystone
     - mode: 640
+
+keystone-service:
+  service.running:
+    - name: keystone
+    - enable: true
+    - watch:
+      - file: /etc/keystone/keystone.conf
 
 /root/.keystone_supercredentials:
   file.managed:
@@ -63,10 +74,12 @@ keystone_db:
     - require:
       - mysql_user: {{ pillar['KEYSTONE_DBUSER'] }}
 
-/usr/bin/keystone-manage db_sync:
+
+keystone-initdb:
   cmd.run:
-    - creates: /etc/keystone/.already_synced
+    - name: su -s /bin/sh -c "keystone-manage db_sync" keystone && touch /etc/keystone/.already_synced
     - unless: test -f /etc/keystone/.already_synced
+    - user: root
 
 Keystone tenants:
   keystone.tenant_present:
@@ -83,8 +96,8 @@ Keystone roles:
 
 admin:
   keystone.user_present:
-    - password: R00T_4CC3SS
-    - email: admin@domain.com
+    - password: {{ pillar['KEYSTONE_ADMIN_PASS'] }}
+    - email: infradevs@fluge.it
     - roles:
       - admin:   # tenants
         - admin  # roles
@@ -94,3 +107,9 @@ admin:
     - require:
       - keystone: Keystone tenants
       - keystone: Keystone roles
+
+keystone:
+  keystone.endpoint_present:
+    - publicurl: http://{{ grains.fqdn_ip4 }}:5000/v2.0
+    - internalurl: http://{{ grains.fqdn_ip4 }}:5000/v2.0
+    - adminurl: http://{{ grains.fqdn_ip4 }}:35357/v2.0

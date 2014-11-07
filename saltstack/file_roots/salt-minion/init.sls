@@ -6,7 +6,7 @@ salt-minion:
 salt-mine:
   file.managed:
     - name: /etc/salt/minion.d/mine.conf
-    - source: salt://base/files/salt-mine.conf
+    - source: salt://salt-minion/files/salt-mine.conf
     - user: root
     - group: root
     - mode: 644
