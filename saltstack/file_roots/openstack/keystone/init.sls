@@ -101,6 +101,7 @@ admin:
     - roles:
       - admin:   # tenants
         - admin  # roles
+
       - service:
         - admin
         - Member
@@ -108,8 +109,16 @@ admin:
       - keystone: Keystone tenants
       - keystone: Keystone roles
 
-keystone:
+keystone service:
+  keystone.service_present:
+    - name: keystone
+    - service_type: compute
+    - description: OpenStack Compute Service
+
+keystone endpoint:
   keystone.endpoint_present:
-    - publicurl: http://{{ grains.fqdn_ip4 }}:5000/v2.0
-    - internalurl: http://{{ grains.fqdn_ip4 }}:5000/v2.0
-    - adminurl: http://{{ grains.fqdn_ip4 }}:35357/v2.0
+    - name: keystone
+    - publicurl: http://controller:5000/v2.0
+    - internalurl: http://controller:5000/v2.0
+    - adminurl: http://controller:35357/v2.0
+    - region: RegionOne

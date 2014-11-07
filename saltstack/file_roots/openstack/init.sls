@@ -13,5 +13,13 @@ openstack-base-pkgs:
   pkg.installed:
     - pkgs:
       - python-mysqldb
-      - keystone
+      - python-software-properties
 
+openstack-ppa:
+  pkgrepo.managed:
+    - humanname: Cloud Archive PPA
+    - name: deb http://ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/juno main
+    - dist: trusty-updates/juno
+    - file: /etc/apt/sources.list.d/cloud-archive.list
+    - keyid: EC4926EA
+    - keyserver: keyserver.ubuntu.com  

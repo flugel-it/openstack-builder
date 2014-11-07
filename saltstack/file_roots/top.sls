@@ -2,10 +2,11 @@ base:
   '*':
     - base
     - hostsfile
+    - openstack
+    - salt-minion
 
   'G@roles:openstack':
     - match: compound
-    #- drbd
     - openstack
 
   'G@roles:nagios':
@@ -14,8 +15,12 @@ base:
 
   'G@roles:controller':
     - match: compound
-    - openstack
-    - openstack.keystone
     - rabbitmq
     - mysql
+    - openstack
+    - openstack.keystone
+
+  'G@roles:glance':
+    - match: compound
+    - openstack.glance
 
