@@ -74,7 +74,7 @@ keystone_db:
 
 Root fix-db-access.sh:
   cmd.run:
-    - name: /usr/local/bin/fix-db-access.sh root {{ pillar['DATABASE'] }} {{ pillar['DATABASE'] }} localhost
+    - name: /usr/local/bin/fix-db-access.sh root {{ pillar['DATABASE'] }} {{ pillar['DATABASE'] }} "*" localhost
     - unless: test -f /etc/salt/.root-access-fixed
 
 Keystone fix-db-access.sh:
