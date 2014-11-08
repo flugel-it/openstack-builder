@@ -50,11 +50,6 @@ keystone-service:
     - group: root
     - mode: 600
 
-fix-db-access.sh:
-  cmd.run:
-    - name: /usr/local/bin/fix-db-access.sh {{ pillar['KEYSTONE_DBUSER' }} pillar['KEYSTONE_DBPASS' }} pillar['DATABASE']' }} keystone
-    - unless: test -f /etc/salt/.{{ pillar['KEYSTONE_DBUSER' }}-access-fixed
-
 keystone_db:
   mysql_database.present:
     - connection_pass: {{ pillar['DATABASE'] }}
@@ -81,6 +76,10 @@ keystone_db:
     - require:
       - mysql_user: {{ pillar['KEYSTONE_DBUSER'] }}
 
+Keystone fix-db-access.sh:
+  cmd.run:
+    - name: /usr/local/bin/fix-db-access.sh {{ pillar['KEYSTONE_DBUSER'] }} {{ pillar['KEYSTONE_DBPASS'] }} {{ pillar['DATABASE'] }} keystone
+    - unless: test -f /etc/salt/.{{ pillar['KEYSTONE_DBUSER'] }}-access-fixed
 
 keystone-initdb:
   cmd.run:
