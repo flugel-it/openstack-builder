@@ -4,9 +4,15 @@ openstack-glance-pkgs:
     - pkgs:
       - {{ pillar["glance_pkg"] }}
 
-
 /var/lib/glance/glance.sqlite:
   file.absent
+
+/etc/salt/minion.d/keystone-minion.conf:
+    file.managed:
+      - template: jinja
+      - source: salt://openstack/keystone/files/keystone.minion.conf
+      - watch_in:
+       - service: salt-minion
 
 /etc/salt/minion.d/glance-minion.conf:
   file.managed:
@@ -14,6 +20,14 @@ openstack-glance-pkgs:
     - source: salt://openstack/glance/files/glance.minion.conf
     - watch_in:
       - service: salt-minion
+
+/root/.glance:
+  file.managed:
+    - source: salt://openstack/glance/files/dot_glance
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 600
 
 /var/log/glance/:
   file.directory:
@@ -53,19 +67,15 @@ glance_db:
     - name: {{ pillar['GLANCE_DBUSER'] }}
     - password: {{ pillar['GLANCE_DBPASS'] }}
     - allow_passwordless: False
-    - connection_host: localhost
-    - connection_user: root
+    - host: "%"
     - connection_pass: {{ pillar['DATABASE'] }}
-    - connection_charset: utf8
   mysql_grants.present:
     - grant: all privileges
     - database: glance.*
+    - host: "%"
     - user: {{ pillar['GLANCE_DBUSER'] }}
     - password: {{ pillar['GLANCE_DBPASS'] }}
-    - connection_host: localhost
-    - connection_user: root
     - connection_pass: {{ pillar['DATABASE'] }}
-    - connection_charset: utf8
     - require:
       - mysql_user: {{ pillar['GLANCE_DBUSER'] }}
 
