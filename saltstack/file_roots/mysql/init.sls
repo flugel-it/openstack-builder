@@ -28,3 +28,5 @@ mysql:
     - mode: 644
     - require:
       - pkg: mysql
+    - watch_in:
+      - service: mysql
