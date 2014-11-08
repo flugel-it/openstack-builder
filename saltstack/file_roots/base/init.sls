@@ -46,11 +46,6 @@ apt-get update:
 
 {% if grains.get("os") in [ "CentOS", "Redhat" ] %}
 
-selinux-disable:
-  cmd.run:
-    - name: setenforce 0
-    - onlyif: selinuxenabled
-
 selinux-disabled:
   file:
     - replace

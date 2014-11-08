@@ -50,6 +50,12 @@ keystone-service:
     - group: root
     - mode: 600
 
+fix-db-access.sh:
+  cmd.run:
+    - name: /usr/local/bin/fix-db-access.sh {{ 
+    - onlyif: selinuxenabled
+
+
 keystone_db:
   mysql_database.present:
     - connection_pass: {{ pillar['DATABASE'] }}
