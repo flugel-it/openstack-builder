@@ -57,20 +57,22 @@ keystone_db:
   mysql_user.present:
     - name: {{ pillar['KEYSTONE_DBUSER'] }}
     - password: {{ pillar['KEYSTONE_DBPASS'] }}
+    - host: "%"
     - allow_passwordless: False
-    - connection_host: localhost
     - connection_user: root
+    - connection_host: "%"
     - connection_pass: {{ pillar['DATABASE'] }}
     - connection_charset: utf8
   mysql_grants.present:
     - grant: all privileges
     - database: keystone.*
+    - host: "%"
     - user: {{ pillar['KEYSTONE_DBUSER'] }}
     - password: {{ pillar['KEYSTONE_DBPASS'] }}
-    - connection_host: localhost
     - connection_user: root
     - connection_pass: {{ pillar['DATABASE'] }}
     - connection_charset: utf8
+    - connection_host: "%"
     - require:
       - mysql_user: {{ pillar['KEYSTONE_DBUSER'] }}
 

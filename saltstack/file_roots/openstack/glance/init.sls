@@ -80,12 +80,6 @@ Glance tenants:
     - names:
       - glance
 
-Keystone roles:
-  keystone.role_present:
-    - names:
-      - admin
-      - Member
-
 glance_admin_user:
   keystone.user_present:
     - name: glance
@@ -95,7 +89,6 @@ glance_admin_user:
       - admin:   # tenants
         - admin  # roles
       - require:
-        - keystone: Keystone roles
         - keystone: Glance tenants
 
 glancene_keystone_service:
