@@ -81,7 +81,7 @@ glance_db:
 
 fix-db-access.sh:
   cmd.run:
-    - name: /usr/local/bin/fix-db-access.sh {{ pillar['GLANCE_DBUSER' }} pillar['GLANCE_DBPASS' }} pillar['DATABASE']' }} glance
+    - name: /usr/local/bin/fix-db-access.sh {{ pillar['GLANCE_DBUSER' }} pillar['GLANCE_DBPASS'] }} pillar['DATABASE'] }} glance
     - unless: test -f /etc/salt/.{{ pillar['GLANCE_DBUSER' }}-access-fixed
 
 glance-initdb:
