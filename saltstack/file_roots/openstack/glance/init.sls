@@ -52,12 +52,18 @@ openstack-glance-pkgs:
     - group: glance
     - mode: 640
 
-glance-service:
+glance-api-service:
   service.running:
-    - name: glance
+    - name: glance-api
     - enable: true
     - watch:
       - file: /etc/glance/glance-api.conf
+
+glance-registry-service:
+  service.running:
+    - name: glance-registry
+    - enable: true
+    - watch:
       - file: /etc/glance/glance-registry.conf
 
 glance_db:
@@ -111,8 +117,8 @@ glancene_keystone_service:
     - service_type: image
     - description: Openstack Image Service
     - watch_in:
-      - service:glance-registry
-      - service:glance-api
+      - service: glance-registry
+      - service: glance-api
 
 glance_keypoint_endpoint:
   keystone.endpoint_present:
