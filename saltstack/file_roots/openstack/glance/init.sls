@@ -12,7 +12,7 @@ openstack-glance-pkgs:
       - template: jinja
       - source: salt://openstack/keystone/files/keystone.minion.conf
       - watch_in:
-       - service: salt-minion
+        - service: salt-minion
 
 /etc/salt/minion.d/glance-minion.conf:
   file.managed:
@@ -63,10 +63,14 @@ glance_db:
   mysql_database.present:
     - connection_pass: {{ pillar['DATABASE'] }}
     - name: {{ pillar['GLANCE_DBNAME'] }}
+    - connection_host: controller
+    - require:
+      - pkg: mysql-client
   mysql_user.present:
     - name: {{ pillar['GLANCE_DBUSER'] }}
     - password: {{ pillar['GLANCE_DBPASS'] }}
     - allow_passwordless: False
+    - connection_host: controller
     - host: "%"
     - connection_pass: {{ pillar['DATABASE'] }}
   mysql_grants.present:
@@ -76,19 +80,20 @@ glance_db:
     - user: {{ pillar['GLANCE_DBUSER'] }}
     - password: {{ pillar['GLANCE_DBPASS'] }}
     - connection_pass: {{ pillar['DATABASE'] }}
+    - connection_host: controller
     - require:
       - mysql_user: {{ pillar['GLANCE_DBUSER'] }}
-
-fix-db-access.sh:
-  cmd.run:
-    - name: /usr/local/bin/fix-db-access.sh {{ pillar['GLANCE_DBUSER' }} pillar['GLANCE_DBPASS'] }} pillar['DATABASE'] }} glance
-    - unless: test -f /etc/salt/.{{ pillar['GLANCE_DBUSER' }}-access-fixed
 
 glance-initdb:
   cmd.run:
     - name: su -s /bin/sh -c "glance-manage db_sync" glance && touch /etc/glance/.already_synced
     - unless: test -f /etc/glance/.already_synced
     - user: root
+
+glance fix-db-access.sh:
+  cmd.run:
+    - name: /usr/local/bin/fix-db-access.sh {{ pillar['GLANCE_DBUSER'] }} {{ pillar['GLANCE_DBPASS'] }} {{ pillar['DATABASE'] }} glance
+    - unless: test -f /etc/salt/.{{ pillar['GLANCE_DBUSER'] }}-access-fixed
 
 Glance tenants:
   keystone.tenant_present:
