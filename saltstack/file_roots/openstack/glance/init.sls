@@ -100,14 +100,14 @@ Glance tenants:
     - names:
       - glance
 
-glance_admin_user:
+glance_user:
   keystone.user_present:
     - name: glance
     - password: {{ pillar['GLANCE_PASS'] }}
-    - email: infradevs@fluge.it
+    - email: infradevs@flugel.it
     - roles:
-      - admin:   # tenants
-        - admin  # roles
+      - service:
+        - admin
       - require:
         - keystone: Glance tenants
 
