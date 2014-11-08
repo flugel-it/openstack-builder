@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 user=$1
 user_password=$2
 root_password=$3
