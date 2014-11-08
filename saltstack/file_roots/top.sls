@@ -1,6 +1,7 @@
 base:
   '*':
     - base
+    - hostsfile
     - openstack
     - salt-minion
 
@@ -14,10 +15,12 @@ base:
 
   'G@roles:controller':
     - match: compound
-    - openstack.keystone
     - rabbitmq
     - mysql
+    - openstack
+    - openstack.keystone
 
   'G@roles:glance':
     - match: compound
     - openstack.glance
+

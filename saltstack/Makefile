@@ -8,7 +8,9 @@ all: /usr/bin/salt-master
 	sed s%FILE_ROOTS%$(PWD)/file_roots% \
 		master.d/file_roots.conf > /etc/salt/master.d/file.conf
 	-service salt-master stop
+	-service salt-minion stop
 	service salt-master start
+	service salt-minion start
 
 /usr/bin/salt-master:
 	wget -O /tmp/install_salt.sh https://bootstrap.saltstack.com
