@@ -129,4 +129,3 @@ glance_keypoint_endpoint:
     - watch_in:
       - service:glance-registry
       - service:glance-api
-
