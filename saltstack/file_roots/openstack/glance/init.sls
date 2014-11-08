@@ -37,7 +37,7 @@ openstack-glance-pkgs:
 
 /etc/glance/glance-api.conf:
   file.managed:
-    - source: salt://openstack/glance/files/glance-registry.conf
+    - source: salt://openstack/glance/files/glance-api.conf
     - template: jinja
     - user: glance
     - group: glance
@@ -94,6 +94,8 @@ glance fix-db-access.sh:
   cmd.run:
     - name: /usr/local/bin/fix-db-access.sh {{ pillar['GLANCE_DBUSER'] }} {{ pillar['GLANCE_DBPASS'] }} {{ pillar['DATABASE'] }} glance
     - unless: test -f /etc/salt/.{{ pillar['GLANCE_DBUSER'] }}-access-fixed
+    - require:
+      - pkg: mysql-client
 
 Glance tenants:
   keystone.tenant_present:
@@ -116,10 +118,17 @@ glancene_keystone_service:
     - name: glance
     - service_type: image
     - description: Openstack Image Service
+    - watch_in:
+      - service:glance-registry
+      - service:glance-api
 
 glance_keypoint_endpoint:
   keystone.endpoint_present:
     - name: glance
-    - publicurl: http://{{ grains.fqdn_ip4 }}:9292
-    - internalurl: http://{{ grains.fqdn_ip4 }}:9292
-    - adminurl: http://{{ grains.fqdn_ip4 }}:9292
+    - publicurl: http://{{ grains.fqdn_ip4[0] }}:9292
+    - internalurl: http://{{ grains.fqdn_ip4[0] }}:9292
+    - adminurl: http://{{ grains.fqdn_ip4[0] }}:9292
+    - watch_in:
+      - service:glance-registry
+      - service:glance-api
+
