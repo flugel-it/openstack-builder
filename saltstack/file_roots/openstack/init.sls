@@ -26,7 +26,7 @@ openstack-ppa:
 
 fix-db-access.sh:
   file.managed:
-    - name: /usr/local/bin/fix-db-access.sh:
+    - name: /usr/local/bin/fix-db-access.sh
     - source: salt://openstack/files/fix-db-access.sh
     - user: root
     - group: root
