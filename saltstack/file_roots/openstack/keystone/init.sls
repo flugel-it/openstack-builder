@@ -52,7 +52,7 @@ keystone-service:
 
 fix-db-access.sh:
   cmd.run:
-    - name: /usr/local/bin/fix-db-access.sh {{ 
+    - name: /usr/local/bin/fix-db-access.sh {{ pillar['KEYSTONE_DBUSER' }} pillar['KEYSTONE_DBPASS' }} pillar['DATABASE']' }} keystone
     - onlyif: selinuxenabled
 
 
