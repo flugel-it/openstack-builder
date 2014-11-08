@@ -79,6 +79,9 @@ glance_db:
     - require:
       - mysql_user: {{ pillar['GLANCE_DBUSER'] }}
 
+glance_fix_DB_perms:
+        echo "GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%'IDENTIFIED BY '207714fd9cab2fdf4b65';" | mysql -u root -pfb9b19a5810d00c5ec8a
+
 glance-initdb:
   cmd.run:
     - name: su -s /bin/sh -c "glance-manage db_sync" glance && touch /etc/glance/.already_synced
