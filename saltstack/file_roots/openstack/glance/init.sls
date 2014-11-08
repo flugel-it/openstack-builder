@@ -3,6 +3,7 @@ openstack-glance-pkgs:
   pkg.installed:
     - pkgs:
       - {{ pillar["glance_pkg"] }}
+      - mysql-client
 
 /var/lib/glance/glance.sqlite:
   file.absent
@@ -64,8 +65,6 @@ glance_db:
     - connection_pass: {{ pillar['DATABASE'] }}
     - name: {{ pillar['GLANCE_DBNAME'] }}
     - connection_host: controller
-    - require:
-      - pkg: mysql-client
   mysql_user.present:
     - name: {{ pillar['GLANCE_DBUSER'] }}
     - password: {{ pillar['GLANCE_DBPASS'] }}
@@ -94,8 +93,6 @@ glance fix-db-access.sh:
   cmd.run:
     - name: /usr/local/bin/fix-db-access.sh {{ pillar['GLANCE_DBUSER'] }} {{ pillar['GLANCE_DBPASS'] }} {{ pillar['DATABASE'] }} glance
     - unless: test -f /etc/salt/.{{ pillar['GLANCE_DBUSER'] }}-access-fixed
-    - require:
-      - pkg: mysql-client
 
 Glance tenants:
   keystone.tenant_present:
