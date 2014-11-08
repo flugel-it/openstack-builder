@@ -83,16 +83,17 @@ glance_db:
     - require:
       - mysql_user: {{ pillar['GLANCE_DBUSER'] }}
 
+glance fix-db-access.sh:
+  cmd.run:
+    - match: P@role:(controller)
+    - name: /usr/local/bin/fix-db-access.sh {{ pillar['GLANCE_DBUSER'] }} {{ pillar['GLANCE_DBPASS'] }} {{ pillar['DATABASE'] }} glance
+    - unless: test -f /etc/salt/.{{ pillar['GLANCE_DBUSER'] }}-access-fixed
+
 glance-initdb:
   cmd.run:
     - name: su -s /bin/sh -c "glance-manage db_sync" glance && touch /etc/glance/.already_synced
     - unless: test -f /etc/glance/.already_synced
     - user: root
-
-glance fix-db-access.sh:
-  cmd.run:
-    - name: /usr/local/bin/fix-db-access.sh {{ pillar['GLANCE_DBUSER'] }} {{ pillar['GLANCE_DBPASS'] }} {{ pillar['DATABASE'] }} glance
-    - unless: test -f /etc/salt/.{{ pillar['GLANCE_DBUSER'] }}-access-fixed
 
 Glance tenants:
   keystone.tenant_present:
