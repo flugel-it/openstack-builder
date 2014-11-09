@@ -52,34 +52,25 @@ keystone-service:
 
 keystone_db:
   mysql_database.present:
-    - connection_pass: {{ pillar['DATABASE'] }}
     - name: {{ pillar['KEYSTONE_DBNAME'] }}
   mysql_user.present:
     - name: {{ pillar['KEYSTONE_DBUSER'] }}
     - password: {{ pillar['KEYSTONE_DBPASS'] }}
     - allow_passwordless: False
-    - connection_host: localhost
-    - connection_user: root
-    - connection_pass: {{ pillar['DATABASE'] }}
-    - connection_charset: utf8
   mysql_grants.present:
     - grant: all privileges
     - database: keystone.*
     - user: {{ pillar['KEYSTONE_DBUSER'] }}
     - password: {{ pillar['KEYSTONE_DBPASS'] }}
-    - connection_host: localhost
-    - connection_user: root
-    - connection_pass: {{ pillar['DATABASE'] }}
-    - connection_charset: utf8
+    - host: "'%'"
     - require:
       - mysql_user: {{ pillar['KEYSTONE_DBUSER'] }}
 
-
 keystone-initdb:
   cmd.run:
-    - name: su -s /bin/sh -c "keystone-manage db_sync" keystone && touch /etc/keystone/.already_synced
+    - name: keystone-manage db_sync && touch /etc/keystone/.already_synced
     - unless: test -f /etc/keystone/.already_synced
-    - user: root
+    - user: keystone
 
 Keystone tenants:
   keystone.tenant_present:
