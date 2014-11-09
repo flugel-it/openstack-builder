@@ -77,20 +77,3 @@ libssl1.0.0:
 
 {% endif %}
 
-#XXX: fix, check if swap exist before enable this
-{%- if grains.get("swap") %}
-
-create-swap-file:
-  cmd.run:
-    - name: echo sarlanga && touch /.sarlanga
-    - unless: test -f /.sarlanga
-
-init-swap-file:
-  cmd.run:
-    - name: mkswap /.swap && touch /.swap.mkswap
-    - unless: test -f /.swap.mkswap
-
-/.swap:
-  mount.swap
-
-{%- endif %}
