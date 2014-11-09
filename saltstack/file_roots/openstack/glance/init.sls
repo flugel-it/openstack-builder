@@ -8,13 +8,6 @@ openstack-glance-pkgs:
 /var/lib/glance/glance.sqlite:
   file.absent
 
-/etc/salt/minion.d/keystone-minion.conf:
-    file.managed:
-      - template: jinja
-      - source: salt://openstack/keystone/files/keystone.minion.conf
-      - watch_in:
-        - service: salt-minion
-
 /etc/salt/minion.d/glance-minion.conf:
   file.managed:
     - template: jinja
@@ -123,9 +116,9 @@ glancene_keystone_service:
 glance_keypoint_endpoint:
   keystone.endpoint_present:
     - name: glance
-    - publicurl: http://{{ grains.fqdn_ip4[0] }}:9292
-    - internalurl: http://{{ grains.fqdn_ip4[0] }}:9292
-    - adminurl: http://{{ grains.fqdn_ip4[0] }}:9292
+    - publicurl: http://controller:9292
+    - internalurl: http://controller:9292
+    - adminurl: http://controller:9292
     - watch_in:
       - service:glance-registry
       - service:glance-api
