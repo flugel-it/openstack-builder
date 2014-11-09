@@ -57,14 +57,12 @@ keystone_db:
     - name: {{ pillar['KEYSTONE_DBUSER'] }}
     - password: {{ pillar['KEYSTONE_DBPASS'] }}
     - allow_passwordless: False
-  mysql_grants.present:
-    - grant: all privileges
-    - database: keystone.*
-    - user: {{ pillar['KEYSTONE_DBUSER'] }}
-    - password: {{ pillar['KEYSTONE_DBPASS'] }}
-    - host: "'%'"
-    - require:
-      - mysql_user: {{ pillar['KEYSTONE_DBUSER'] }}
+
+#XXX: workaround, host: % bug. Check!
+Keystone fix-db-access.sh:
+  cmd.run:
+    - name: /usr/local/bin/fix-db-access.sh {{ pillar['KEYSTONE_DBUSER'] }} {{ pillar['KEYSTONE_DBPASS'] }} {{ pillar['DATABASE'] }} keystone
+    - unless: test -f /etc/salt/.{{ pillar['KEYSTONE_DBUSER'] }}-access-fixed
 
 keystone-initdb:
   cmd.run:
@@ -109,3 +107,4 @@ keystone endpoint:
     - internalurl: http://controller:5000/v2.0
     - adminurl: http://controller:35357/v2.0
     - region: RegionOne
+

@@ -3,7 +3,7 @@ openstack-glance-pkgs:
   pkg.installed:
     - pkgs:
       - {{ pillar["glance_pkg"] }}
-
+      - mysql-client
 
 /var/lib/glance/glance.sqlite:
   file.absent
@@ -15,6 +15,14 @@ openstack-glance-pkgs:
     - watch_in:
       - service: salt-minion
 
+/root/.glance:
+  file.managed:
+    - source: salt://openstack/glance/files/dot_glance
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 600
+
 /var/log/glance/:
   file.directory:
     - user: glance
@@ -23,7 +31,7 @@ openstack-glance-pkgs:
 
 /etc/glance/glance-api.conf:
   file.managed:
-    - source: salt://openstack/glance/files/glance-registry.conf
+    - source: salt://openstack/glance/files/glance-api.conf
     - template: jinja
     - user: glance
     - group: glance
@@ -37,35 +45,40 @@ openstack-glance-pkgs:
     - group: glance
     - mode: 640
 
-glance-service:
+glance-api-service:
   service.running:
-    - name: glance
+    - name: glance-api
     - enable: true
     - watch:
       - file: /etc/glance/glance-api.conf
+
+glance-registry-service:
+  service.running:
+    - name: glance-registry
+    - enable: true
+    - watch:
       - file: /etc/glance/glance-registry.conf
 
 glance_db:
   mysql_database.present:
     - connection_pass: {{ pillar['DATABASE'] }}
     - name: {{ pillar['GLANCE_DBNAME'] }}
+    - connection_host: controller
   mysql_user.present:
     - name: {{ pillar['GLANCE_DBUSER'] }}
     - password: {{ pillar['GLANCE_DBPASS'] }}
     - allow_passwordless: False
-    - connection_host: localhost
-    - connection_user: root
+    - connection_host: controller
+    - host: "%"
     - connection_pass: {{ pillar['DATABASE'] }}
-    - connection_charset: utf8
   mysql_grants.present:
     - grant: all privileges
     - database: glance.*
+    - host: "%"
     - user: {{ pillar['GLANCE_DBUSER'] }}
     - password: {{ pillar['GLANCE_DBPASS'] }}
-    - connection_host: localhost
-    - connection_user: root
     - connection_pass: {{ pillar['DATABASE'] }}
-    - connection_charset: utf8
+    - connection_host: controller
     - require:
       - mysql_user: {{ pillar['GLANCE_DBUSER'] }}
 
@@ -80,22 +93,15 @@ Glance tenants:
     - names:
       - glance
 
-Keystone roles:
-  keystone.role_present:
-    - names:
-      - admin
-      - Member
-
-glance_admin_user:
+glance_user:
   keystone.user_present:
     - name: glance
     - password: {{ pillar['GLANCE_PASS'] }}
-    - email: infradevs@fluge.it
+    - email: infradevs@flugel.it
     - roles:
-      - admin:   # tenants
-        - admin  # roles
+      - service:
+        - admin
       - require:
-        - keystone: Keystone roles
         - keystone: Glance tenants
 
 glancene_keystone_service:
@@ -103,10 +109,16 @@ glancene_keystone_service:
     - name: glance
     - service_type: image
     - description: Openstack Image Service
+    - watch_in:
+      - service: glance-registry
+      - service: glance-api
 
 glance_keypoint_endpoint:
   keystone.endpoint_present:
     - name: glance
-    - publicurl: http://{{ grains.fqdn_ip4 }}:9292
-    - internalurl: http://{{ grains.fqdn_ip4 }}:9292
-    - adminurl: http://{{ grains.fqdn_ip4 }}:9292
+    - publicurl: http://controller:9292
+    - internalurl: http://controller:9292
+    - adminurl: http://controller:9292
+    - watch_in:
+      - service:glance-registry
+      - service:glance-api
