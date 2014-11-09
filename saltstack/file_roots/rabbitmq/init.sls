@@ -11,7 +11,6 @@ rabbit_query_user:
     - name: {{ pillar["RABBIT_USER"] }}
     - password: {{ pillar["RABBIT_PASS"] }}
     - force: True
-    - tags: administrator,monitoring,user
     - perms:
       - '/':
         - '.*'
