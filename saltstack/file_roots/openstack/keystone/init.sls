@@ -52,29 +52,13 @@ keystone-service:
 
 keystone_db:
   mysql_database.present:
-    - connection_pass: {{ pillar['DATABASE'] }}
-    - connection_host: localhost
     - name: {{ pillar['KEYSTONE_DBNAME'] }}
   mysql_user.present:
     - name: {{ pillar['KEYSTONE_DBUSER'] }}
     - password: {{ pillar['KEYSTONE_DBPASS'] }}
     - allow_passwordless: False
-    - connection_user: root
-    - connection_pass: {{ pillar['DATABASE'] }}
-    - connection_charset: utf8
-    - connection_host: localhost
-  mysql_grants.present:
-    - grant: all privileges
-    - database: keystone.*
-    - user: {{ pillar['KEYSTONE_DBUSER'] }}
-    - password: {{ pillar['KEYSTONE_DBPASS'] }}
-    - connection_user: root
-    - connection_pass: {{ pillar['DATABASE'] }}
-    - connection_charset: utf8
-    - connection_host: localhost
-    - require:
-      - mysql_user: {{ pillar['KEYSTONE_DBUSER'] }}
 
+#XXX: workaround, host: % bug. Check!
 Keystone fix-db-access.sh:
   cmd.run:
     - name: /usr/local/bin/fix-db-access.sh {{ pillar['KEYSTONE_DBUSER'] }} {{ pillar['KEYSTONE_DBPASS'] }} {{ pillar['DATABASE'] }} keystone
@@ -82,9 +66,9 @@ Keystone fix-db-access.sh:
 
 keystone-initdb:
   cmd.run:
-    - name: su -s /bin/sh -c "keystone-manage db_sync" keystone && touch /etc/keystone/.already_synced
+    - name: keystone-manage db_sync && touch /etc/keystone/.already_synced
     - unless: test -f /etc/keystone/.already_synced
-    - user: root
+    - user: keystone
 
 Keystone tenants:
   keystone.tenant_present:
@@ -123,3 +107,4 @@ keystone endpoint:
     - internalurl: http://controller:5000/v2.0
     - adminurl: http://controller:35357/v2.0
     - region: RegionOne
+
