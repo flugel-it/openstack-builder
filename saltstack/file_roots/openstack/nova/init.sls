@@ -65,7 +65,7 @@ nova-scheduler:
 
 {% if pillar['networking_service'] == 'nova-network' and "nova-compute" in grains.get("roles", [])%}
 nova-compute-network_pkgs:
-  require:
+  pkg.installed:
     - pkg:
       - nova-network
       - nova-api-metadata
