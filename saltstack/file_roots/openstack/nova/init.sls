@@ -11,6 +11,48 @@ openstack-nova-pkgs:
       - nova-scheduler
       - python-novaclient
 
+nova-api:
+  pkg:
+    - installed
+  service:
+    - running
+    - enable: True
+
+nova-cert:
+  pkg:
+    - installed
+  service:
+    - running
+    - enable: True
+
+nova-conductor:
+  pkg:
+    - installed
+  service:
+    - running
+    - enable: True
+
+nova-consoleauth:
+  pkg:
+    - installed
+  service:
+    - running
+    - enable: True
+
+nova-novncproxy:
+  pkg:
+    - installed
+  service:
+    - running
+    - enable: True
+
+nova-scheduler:
+  pkg:
+    - installed
+  service:
+    - running
+    - enable: True
+
 /etc/salt/minion.d/nova-minion.conf:
   file.managed:
     - template: jinja
@@ -22,6 +64,17 @@ openstack-nova-pkgs:
   file.absent
 
 {%if "nova-compute" in grains.get("roles", []) %}
+
+nova-compute:
+  pkg:
+    - installed
+  service:
+    - running
+    - enable: True
+  require:
+    - pkg:
+      - sysfsutils
+
 /etc/nova/nova-compute.conf:
   file.managed:
     - template: jinja
@@ -121,7 +174,7 @@ nova_keystone_service:
 nova_keypoint_endpoint:
   keystone.endpoint_present:
     - name: nova
-    - publicurl: http://controller:8774/v2/%\(tenant_id\)s
-    - internalurl: http://controller:8774/v2/%\(tenant_id\)s
-    - adminurl: http://controller:8774/v2/%\(tenant_id\)s
-    - region: regionOne
+    - publicurl: http://controller:8774/v2/%(tenant_id)s
+    - internalurl: http://controller:8774/v2/%(tenant_id)s
+    - adminurl: http://controller:8774/v2/%(tenant_id)s
+    - region: RegionOne
