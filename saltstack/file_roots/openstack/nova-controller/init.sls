@@ -2,19 +2,40 @@
 openstack-nova-pkgs:
   pkg.installed:
     - pkgs:
-      - {{ pillar["nova_pkg"] }}
       - mysql-client
+      - nova-api
+      - nova-cert
+      - nova-conductor
+      - nova-consoleauth
+      - nova-novncproxy
+      - nova-scheduler
+      - python-novaclient
 
 /etc/salt/minion.d/nova-minion.conf:
   file.managed:
     - template: jinja
-    - source: salt://openstack/nova/files/nova.minion.conf
+    - source: salt://openstack/nova-controller/files/nova.minion.conf
     - watch_in:
       - service: salt-minion
 
+/var/lib/nova/nova.sqlite:
+  file.absent
+
+/etc/nova/nova.conf:
+  file.managed:
+    - template: jinja
+    - source: salt://openstack/nova-controller/files/nova.conf
+    - watch_in:
+      - service: nova-api
+      - service: nova-cert
+      - service: nova-consoleauth
+      - service: nova-scheduler
+      - service: nova-conductor
+      - service: nova-novncproxy
+
 /root/.nova:
   file.managed:
-    - source: salt://openstack/nova/files/dot_nova
+    - source: salt://openstack/nova-controller/files/dot_nova
     - template: jinja
     - user: root
     - group: root
@@ -57,11 +78,11 @@ Nova fix-db-access.sh:
 
 nova-initdb:
   cmd.run:
-    - name: su -s /bin/sh -c "nova-manage db_sync" nova && touch /etc/nova/.already_synced
+    - name: su -s /bin/sh -c "nova-manage db sync" nova && touch /etc/nova/.already_synced
     - unless: test -f /etc/nova/.already_synced
     - user: root
 
-Glance tenants:
+Nova tenants:
   keystone.tenant_present:
     - names:
       - nova
@@ -75,7 +96,7 @@ nova_user:
       - service:
         - admin
       - require:
-        - keystone: Glance tenants
+        - keystone: Nova tenants
 
 nova_keystone_service:
   keystone.service_present:
