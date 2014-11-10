@@ -39,3 +39,9 @@ mysql:
     - require:
       - mysql_user: mysql
 
+Root fix-db-access.sh:
+  cmd.run:
+    - name: /usr/local/bin/fix-db-access.sh root {{ pillar['DATABASE'] }} {{ pillar['DATABASE'] }} "*"
+    - unless: test -f /etc/salt/.{{ pillar['KEYSTONE_DBUSER'] }}-access-fixed
+    - user: root
+
