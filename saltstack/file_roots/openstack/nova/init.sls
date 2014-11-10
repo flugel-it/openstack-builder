@@ -63,6 +63,15 @@ nova-scheduler:
 /var/lib/nova/nova.sqlite:
   file.absent
 
+{% if pillar['networking_service'] == 'nova-network' and "nova-compute" in grains.get("roles", [])%}
+nova-compute-network_pkgs:
+  require:
+    - pkg:
+      - nova-network
+      - nova-api-metadata
+{% endif %}
+
+
 {%if "nova-compute" in grains.get("roles", []) %}
 
 nova-compute:
