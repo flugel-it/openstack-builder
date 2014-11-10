@@ -3,7 +3,6 @@ base:
     - base
     - swap
     - hostsfile
-    - openstack
     - salt-minion
 
   'G@roles:openstack':
@@ -23,13 +22,6 @@ base:
 
   'G@roles:glance':
     - match: compound
+    - openstack
     - openstack.glance
-
-  'G@roles:ceph-mon':
-    - match: compound
-    - ceph
-
-  'G@roles:ceph-osd':
-    - match: compound
-    - ceph
 
