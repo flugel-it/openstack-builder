@@ -71,9 +71,7 @@ nova-compute-network_pkgs:
       - nova-api-metadata
 {% endif %}
 
-
 {%if "nova-compute" in grains.get("roles", []) %}
-
 nova-compute:
   pkg:
     - installed
