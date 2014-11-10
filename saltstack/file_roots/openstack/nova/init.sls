@@ -14,17 +14,31 @@ openstack-nova-pkgs:
 /etc/salt/minion.d/nova-minion.conf:
   file.managed:
     - template: jinja
-    - source: salt://openstack/nova-controller/files/nova.minion.conf
+    - source: salt://openstack/nova/files/nova.minion.conf
     - watch_in:
       - service: salt-minion
 
 /var/lib/nova/nova.sqlite:
   file.absent
 
+{%if "nova-compute" in grains.get("roles", []) %}
+/etc/nova/nova-compute.conf:
+  file.managed:
+    - template: jinja
+    - source: salt://openstack/nova/files/nova-compute.conf
+    - watch_in:
+      - service: nova-api
+      - service: nova-cert
+      - service: nova-consoleauth
+      - service: nova-scheduler
+      - service: nova-conductor
+      - service: nova-novncproxy
+{% endif %}
+
 /etc/nova/nova.conf:
   file.managed:
     - template: jinja
-    - source: salt://openstack/nova-controller/files/nova.conf
+    - source: salt://openstack/nova/files/nova.conf
     - watch_in:
       - service: nova-api
       - service: nova-cert
@@ -35,7 +49,7 @@ openstack-nova-pkgs:
 
 /root/.nova:
   file.managed:
-    - source: salt://openstack/nova-controller/files/dot_nova
+    - source: salt://openstack/nova/files/dot_nova
     - template: jinja
     - user: root
     - group: root

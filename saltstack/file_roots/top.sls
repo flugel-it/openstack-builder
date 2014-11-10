@@ -25,6 +25,10 @@ base:
     - match: compound
     - openstack.glance
 
+  'G@roles:nova':
+    - match: compound
+    - openstack.nova
+
   'G@roles:nova-compute':
     - match: compound
     - openstack.nova-compute
