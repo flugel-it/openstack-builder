@@ -7,6 +7,7 @@ base:
     - openstack
     - openstack.passwords
     - openstack.keystone
+    - openstack.networking
 
   'G@os:Ubuntu or G@os:Debian':
     - match: compound

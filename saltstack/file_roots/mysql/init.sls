@@ -15,7 +15,7 @@ mysql:
     - enable: true
   mysql_user.present:
     - name: root
-    - password: {{ pillar['DATABASE_ROOT_PASS'] }}
+    - password: {{ pillar['DATABASE'] }}
     - require:
       - service: mysql
   
@@ -38,4 +38,10 @@ mysql:
       - service: salt-minion
     - require:
       - mysql_user: mysql
+
+Root fix-db-access.sh:
+  cmd.run:
+    - name: /usr/local/bin/fix-db-access.sh root {{ pillar['DATABASE'] }} {{ pillar['DATABASE'] }} "*"
+    - unless: test -f /etc/salt/.{{ pillar['KEYSTONE_DBUSER'] }}-access-fixed
+    - user: root
 

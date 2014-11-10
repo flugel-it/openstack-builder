@@ -63,12 +63,12 @@ glance_db:
   mysql_database.present:
     - connection_pass: {{ pillar['DATABASE'] }}
     - name: {{ pillar['GLANCE_DBNAME'] }}
-    - connection_host: controller
+    - connection_host: localhost
   mysql_user.present:
     - name: {{ pillar['GLANCE_DBUSER'] }}
     - password: {{ pillar['GLANCE_DBPASS'] }}
     - allow_passwordless: False
-    - connection_host: controller
+    - connection_host: localhost
     - host: "%"
     - connection_pass: {{ pillar['DATABASE'] }}
   mysql_grants.present:
@@ -78,9 +78,15 @@ glance_db:
     - user: {{ pillar['GLANCE_DBUSER'] }}
     - password: {{ pillar['GLANCE_DBPASS'] }}
     - connection_pass: {{ pillar['DATABASE'] }}
-    - connection_host: controller
+    - connection_host: localhost
     - require:
       - mysql_user: {{ pillar['GLANCE_DBUSER'] }}
+
+Glance fix-db-access.sh:
+  cmd.run:
+    - name: /usr/local/bin/fix-db-access.sh {{ pillar['GLANCE_DBUSER'] }} {{ pillar['GLANCE_DBPASS'] }} {{ pillar['DATABASE'] }} glance
+    - user: root
+    - unless: test -f /etc/salt/.{{ pillar['GLANCE_DBUSER'] }}-access-fixed
 
 glance-initdb:
   cmd.run:
@@ -104,7 +110,7 @@ glance_user:
       - require:
         - keystone: Glance tenants
 
-glancene_keystone_service:
+glance_keystone_service:
   keystone.service_present:
     - name: glance
     - service_type: image
