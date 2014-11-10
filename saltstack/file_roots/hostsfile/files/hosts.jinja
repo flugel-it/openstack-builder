@@ -1,6 +1,9 @@
 127.0.0.1 localhost.localdomain localhost
-#{{ grains.get("external_ip", "1.2.3.4") }} {{ grains["id"] }}.{{ grains.get("domainname", "flugel.it") }} {{ grains["id"] }}
 
-10.133.244.150  salt.flugel.it master.flugel.it salt master
-10.133.244.148  salt05.flugel.it salt05
-10.133.244.55   salt04.flugel.it salt04 controller glance
+{%- set addrs = salt['mine.get']('*', 'network.ip_addrs') %}
+{%- if addrs is defined %}
+{%- for name, addrlist in addrs.items() %}
+{{ addrlist|first() }} {{ name }}.{{ pillar["domain"] }} {{ name }}
+{%- endfor %}
+{%- endif %}
+

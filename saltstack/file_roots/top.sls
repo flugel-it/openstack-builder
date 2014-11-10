@@ -25,3 +25,11 @@ base:
     - match: compound
     - openstack.glance
 
+  'G@roles:ceph-mon':
+    - match: compound
+    - ceph
+
+  'G@roles:ceph-osd':
+    - match: compound
+    - ceph
+
