@@ -110,7 +110,7 @@ glance_user:
       - require:
         - keystone: Glance tenants
 
-glancene_keystone_service:
+glance_keystone_service:
   keystone.service_present:
     - name: glance
     - service_type: image
