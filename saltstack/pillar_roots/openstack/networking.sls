@@ -1,2 +1,2 @@
 
-networking_service: 'nova-netwkork'
+networking_service: 'nova-network'
