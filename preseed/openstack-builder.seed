@@ -24,6 +24,12 @@ d-i debconf/priority select critical
 d-i auto-install/enabled boolean true
 
 # Account setup
+# Root password, either in clear text
+d-i passwd/root-password password @flugel.it
+d-i passwd/root-password-again password @flugel.it
+# or encrypted using an MD5 hash.
+#d-i passwd/root-password-crypted password [MD5 hash]
+
 d-i passwd/user-fullname string flugel.it OpenStack Builder
 d-i passwd/username string flugel
 d-i passwd/user-password password @flugel.it
