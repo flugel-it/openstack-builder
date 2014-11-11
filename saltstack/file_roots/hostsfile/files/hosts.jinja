@@ -3,7 +3,11 @@
 {%- set addrs = salt['mine.get']('*', 'network.ip_addrs') %}
 {%- if addrs is defined %}
 {%- for name, addrlist in addrs.items() %}
+{%- if name == "sanmartin" %}
+{{ addrlist|first() }} {{ name }}.{{ pillar["domain"] }} {{ name }} controller
+{%- else %}
 {{ addrlist|first() }} {{ name }}.{{ pillar["domain"] }} {{ name }}
+{%- endif %}
 {%- endfor %}
 {%- endif %}
 
