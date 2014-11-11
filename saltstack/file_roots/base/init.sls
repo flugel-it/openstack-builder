@@ -9,6 +9,7 @@
 base-pkgs:
   pkg.installed:
     - pkgs:
+      - ssh
       - screen
       - strace
       - tcpdump
