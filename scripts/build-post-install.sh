@@ -24,7 +24,7 @@ setup_hostname(){
 
 setup_hostname &&
 wget -O install_salt.sh https://bootstrap.saltstack.com &&
-sh install_salt.sh -i $HOSTNAME -A cloud-master.flugel.it git v2014.7.0rc2 &&
+sh install_salt.sh -i $HOSTNAME -A cloud-master.flugel.it git v2014.7.0rc7 &&
 exit 0
 
 exit 1

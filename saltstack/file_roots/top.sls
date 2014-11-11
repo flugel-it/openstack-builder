@@ -27,3 +27,6 @@ base:
     - match: compound
     - openstack.nova
 
+  'G@roles:horizon':
+    - match: compound
+    - openstack.horizon
