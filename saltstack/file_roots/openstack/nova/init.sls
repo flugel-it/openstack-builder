@@ -66,7 +66,14 @@ nova-scheduler:
 {% if pillar['networking_service'] == 'nova-network' and "nova-compute" in grains.get("roles", [])%}
 nova-compute-network_pkgs:
   pkg.installed:
-    - pkg:
+    - pkgs:
+      - nova-network
+{% endif %}
+
+{% if pillar['networking_service'] == 'nova-network' and not "nova-compute" in grains.get("roles", [])%}
+nova-compute-network_pkgs:
+  pkg.installed:
+    - pkgs:
       - nova-network
       - nova-api-metadata
 {% endif %}
