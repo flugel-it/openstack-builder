@@ -4,7 +4,6 @@ base:
     - base
     - data    
     - pkgs
-    - openstack
     - openstack.passwords
     - openstack.keystone
     - openstack.networking

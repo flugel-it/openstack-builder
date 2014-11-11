@@ -17,14 +17,13 @@ base:
     - match: compound
     - rabbitmq
     - mysql
-    - openstack
     - openstack.keystone
 
   'G@roles:glance':
     - match: compound
-    - openstack
     - openstack.glance
 
   'G@roles:nova':
     - match: compound
     - openstack.nova
+
