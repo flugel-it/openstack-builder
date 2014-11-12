@@ -1,4 +1,5 @@
 
+{% if "controller" in grains.get("roles", [])%}
 openstack-nova-pkgs:
   pkg.installed:
     - pkgs:
@@ -52,6 +53,7 @@ nova-scheduler:
   service:
     - running
     - enable: True
+{% endif %}
 
 /etc/salt/minion.d/nova-minion.conf:
   file.managed:
@@ -73,12 +75,19 @@ nova-compute-network_pkgs:
 {% if pillar['networking_service'] == 'nova-network' and not "nova-compute" in grains.get("roles", [])%}
 nova-compute-network_pkgs:
   pkg.installed:
-    - pkgs:
+   - pkgs:
       - nova-network
       - nova-api-metadata
 {% endif %}
 
 {%if "nova-compute" in grains.get("roles", []) %}
+nova-api-metadata:
+  pkg:
+    - installed
+  service:
+    - running
+    - enable: True
+
 nova-compute:
   pkg:
     - installed
@@ -86,13 +95,21 @@ nova-compute:
     - running
     - enable: True
   require:
-    - pkg:
+    - pkgs:
       - sysfsutils
+      - nova-api-metadata
 
 /etc/nova/nova-compute.conf:
   file.managed:
     - template: jinja
     - source: salt://openstack/nova/files/nova-compute.conf
+{% endif %}
+
+/etc/nova/nova.conf:
+  file.managed:
+    - template: jinja
+    - source: salt://openstack/nova/files/nova.conf
+{%if "nova" in grains.get("roles", []) and "controller" in grains.get("roles", []) %}
     - watch_in:
       - service: nova-api
       - service: nova-cert
@@ -101,18 +118,11 @@ nova-compute:
       - service: nova-conductor
       - service: nova-novncproxy
 {% endif %}
-
-/etc/nova/nova.conf:
-  file.managed:
-    - template: jinja
-    - source: salt://openstack/nova/files/nova.conf
+{%if "nova-compute" in grains.get("roles", []) %}
     - watch_in:
-      - service: nova-api
-      - service: nova-cert
-      - service: nova-consoleauth
-      - service: nova-scheduler
-      - service: nova-conductor
-      - service: nova-novncproxy
+      - service: nova-compute
+      - service: nova-api-metadata
+{% endif %}
 
 /root/.nova:
   file.managed:
@@ -128,16 +138,17 @@ nova-compute:
     - group: nova
     - mode: 755
 
+{%if "controller" in grains.get("roles", []) %}
 nova_db:
   mysql_database.present:
     - connection_pass: {{ pillar['DATABASE'] }}
     - name: {{ pillar['NOVA_DBNAME'] }}
-    - connection_host: localhost
+    - connection_host: controller
   mysql_user.present:
     - name: {{ pillar['NOVA_DBUSER'] }}
     - password: {{ pillar['NOVA_DBPASS'] }}
     - allow_passwordless: False
-    - connection_host: localhost
+    - connection_host: controller
     - host: "%"
     - connection_pass: {{ pillar['DATABASE'] }}
   mysql_grants.present:
@@ -147,7 +158,7 @@ nova_db:
     - user: {{ pillar['NOVA_DBUSER'] }}
     - password: {{ pillar['NOVA_DBPASS'] }}
     - connection_pass: {{ pillar['DATABASE'] }}
-    - connection_host: localhost
+    - connection_host: controller
     - require:
       - mysql_user: {{ pillar['NOVA_DBUSER'] }}
 
@@ -192,3 +203,4 @@ nova_keypoint_endpoint:
     - internalurl: http://controller:8774/v2/%(tenant_id)s
     - adminurl: http://controller:8774/v2/%(tenant_id)s
     - region: RegionOne
+{% endif %}
