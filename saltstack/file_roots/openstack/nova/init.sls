@@ -12,6 +12,9 @@ openstack-nova-pkgs:
       - nova-scheduler
       - python-novaclient
 
+nova-api-metadata:
+  pkg.removed
+
 nova-api:
   pkg:
     - installed
@@ -77,32 +80,41 @@ nova-compute-network_pkgs:
   pkg.installed:
    - pkgs:
       - nova-network
-      - nova-api-metadata
+
+nova-network:
+  service.running:
+    - watch:
+      - file: /etc/nova/nova.conf
 {% endif %}
 
-{%if "nova-compute" in grains.get("roles", []) %}
+{%if not "controller" in grains.get("roles", []) %}
 nova-api-metadata:
   pkg:
     - installed
   service:
     - running
     - enable: True
+{% endif %}
 
+{%if "nova-compute" in grains.get("roles", []) %}
 nova-compute:
   pkg:
     - installed
   service:
     - running
     - enable: True
+    - watch:
+      - file: /etc/nova/nova.conf
   require:
     - pkgs:
       - sysfsutils
-      - nova-api-metadata
 
 /etc/nova/nova-compute.conf:
   file.managed:
     - template: jinja
     - source: salt://openstack/nova/files/nova-compute.conf
+    - watch_in:
+      - service: nova-compute
 {% endif %}
 
 /etc/nova/nova.conf:
@@ -121,7 +133,6 @@ nova-compute:
 {%if "nova-compute" in grains.get("roles", []) %}
     - watch_in:
       - service: nova-compute
-      - service: nova-api-metadata
 {% endif %}
 
 /root/.nova:
@@ -204,3 +215,22 @@ nova_keypoint_endpoint:
     - adminurl: http://controller:8774/v2/%(tenant_id)s
     - region: RegionOne
 {% endif %}
+
+{%if "nova-compute" in grains.get("roles", []) %}
+
+/var/tmp/libvirt-ceph.xml:
+  file.managed:
+    - source: salt://openstack/nova/files/libvirt-ceph.xml
+    - template: jinja
+
+libvirt-ceph-secret-define:
+  cmd.run:
+    - name: virsh secret-define --file /var/tmp/libvirt-ceph.xml
+    - unless: virsh secret-list | grep ceph
+
+libvirt-ceph-secret-set:
+  cmd.run:
+    - name: virsh secret-set-value --secret 457eb676-33da-42ec-9a8c-9293d545c337 --base64 $(ceph auth get-key client.cinder)
+
+{%- endif %}
+

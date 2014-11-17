@@ -4,6 +4,7 @@ base:
     - swap
     - hostsfile
     - salt-minion
+    - ceph
 
   'G@roles:openstack':
     - match: compound
@@ -30,3 +31,11 @@ base:
   'G@roles:horizon':
     - match: compound
     - openstack.horizon
+
+  'G@roles:cinder':
+    - match: compound
+    - openstack.cinder
+
+  'G@roles:ceph-client':
+    - match: compound
+    - ceph

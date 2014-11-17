@@ -41,11 +41,22 @@ ceph-mon-keyring:
     - source: salt://ceph/files/ceph.mon.keyring
     - mode: 640
 
+#XXX: fix mode. Allow read access to a specific group !?
 ceph-admin-keyring:
   file.managed:
     - name: {{ ceph.admin_keyring }}
     - source: salt://ceph/files/ceph.client.admin.keyring
-    - mode: 640
+    - mode: 644
+
+/etc/ceph/ceph.client.cinder.keyring:
+  file.managed:
+    - source: salt://ceph/files/ceph.client.cinder.keyring
+    - mode: 644
+
+/etc/ceph/ceph.client.cinder-backup.keyring:
+  file.managed:
+    - source: salt://ceph/files/ceph.client.cinder-backup.keyring
+    - mode: 644
 
 ceph-all:
   service.running:

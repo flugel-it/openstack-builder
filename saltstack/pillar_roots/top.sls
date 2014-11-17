@@ -4,6 +4,7 @@ base:
     - base
     - data    
     - pkgs
+    - ceph
     - openstack.passwords
     - openstack.keystone
     - openstack.networking
@@ -18,6 +19,3 @@ base:
     - rabbitmq-server
     - openstack.keystone
 
-  'P@roles:ceph.*':
-    - match: compound
-    - ceph

@@ -20,7 +20,7 @@ local_settings.py:
     - template: jinja
     - name: /etc/openstack-dashboard/local_settings.py
     - mode: 644
-    - owner: root
     - source: salt://openstack/horizon/files/local_settings.py
     - watch_in:
       - service: apache2
+
