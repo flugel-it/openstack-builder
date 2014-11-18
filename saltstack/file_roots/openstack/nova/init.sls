@@ -213,7 +213,7 @@ nova_keypoint_endpoint:
     - publicurl: http://controller:8774/v2/%(tenant_id)s
     - internalurl: http://controller:8774/v2/%(tenant_id)s
     - adminurl: http://controller:8774/v2/%(tenant_id)s
-    - region: RegionOne
+    - region: FlugelitRegion
 {% endif %}
 
 {%if "nova-compute" in grains.get("roles", []) %}

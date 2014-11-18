@@ -1,0 +1,4 @@
+export OS_USERNAME=ironic
+export OS_PASSWORD={{ pillar['IRONIC_PASS'] }}
+export OS_TENANT_NAME=service
+export OS_AUTH_URL=http://{{ grains["host"] }}:63855
