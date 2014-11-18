@@ -1,4 +1,4 @@
-
+{%- set use_ceph = False %}
 {% if "controller" in grains.get("roles", [])%}
 openstack-nova-pkgs:
   pkg.installed:
@@ -216,7 +216,7 @@ nova_keypoint_endpoint:
     - region: FlugelitRegion
 {% endif %}
 
-{%if "nova-compute" in grains.get("roles", []) %}
+{%if "nova-compute" in grains.get("roles", []) and use_ceph %}
 
 /var/tmp/libvirt-ceph.xml:
   file.managed:

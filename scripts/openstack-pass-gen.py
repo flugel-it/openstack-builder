@@ -45,7 +45,7 @@ passDescDict = { 'DATABASE': 'Root password for the database',
 'KEYSTONE_TOKEN': 'Keystone Token',
 'IRONIC_DBPASS': 'Database password for the Ironic service',
 'IRONIC_PASS': 'Password for Telemetry service user ceilometer',
-'IRONIC_USER': 'User for Telemetry service user ceilometer',
+'IRONIC_USER': 'ironic',
 'PROXY_SECRET': 'Proxy Secret' }
 
 newPassDicts = { }
@@ -54,5 +54,8 @@ for key in passDescDict.keys():
    newPassDicts[key] = binascii.b2a_hex(os.urandom(10))
 
 for key in newPassDicts.keys():
-  print("%s: %s" % (key, newPassDicts[key]))
+    if not key.__contains__('USER'):
+        print("%s: %s" % (key, newPassDicts[key]))
+    else:
+        print("%s: %s" % (key, passDescDict[key]))
    #print("%s		%s	%s" % (key, newPassDicts[key], passDescDict[key]))
