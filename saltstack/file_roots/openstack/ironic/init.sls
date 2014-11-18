@@ -1,16 +1,11 @@
 
-{% if "controller" in grains.get("roles", [])%}
+{% if "ironic" in grains.get("roles", [])%}
 openstack-nova-pkgs:
   pkg.installed:
     - pkgs:
-      - mysql-client
-      - nova-api
-      - nova-cert
-      - nova-conductor
-      - nova-consoleauth
-      - nova-novncproxy
-      - nova-scheduler
-      - python-novaclient
+      - ironic-api
+      - ironic-conductor
+      - python-ironicclient
 
 nova-api-metadata:
   pkg.removed
