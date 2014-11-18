@@ -67,9 +67,12 @@ Ironic fix-db-access.sh:
 
 ironic-initdb:
   cmd.run:
-    - name: su -s /bin/sh -c "ironic-manage db sync" ironic && touch /etc/ironic/.already_synced
+    - name: su -s /bin/sh -c "ironic-dbsync --config-file /etc/ironic/ironic.conf create_schema" ironic && touch /etc/ironic/.already_synced
     - unless: test -f /etc/ironic/.already_synced
     - user: root
+    - watch_in:
+      - service: ironic-api
+      - service: ironic-conductor
 
 Ironic tenants:
   keystone.tenant_present:
@@ -100,7 +103,6 @@ ironic_keypoint_endpoint:
     - internalurl: http://{{ grains["host"] }}:6385
     - adminurl: http://{{ grains["host"] }}:6385
     - region: FlugelitRegion
-{% endif %}
 
 {%if "ironic-compute" in grains.get("roles", []) %}
 
