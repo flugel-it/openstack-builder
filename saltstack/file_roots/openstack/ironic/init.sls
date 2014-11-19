@@ -7,6 +7,24 @@ openstack-ironic-pkgs:
       - ironic-conductor
       - python-ironicclient
 
+ironic-api:
+  pkg:
+    - installed
+  service:
+    - running
+    - enable: True
+
+ironic-conductor:
+  pkg:
+    - installed
+  service:
+    - running
+    - enable: True
+
+python-ironicclient:
+  pkg:
+    - installed
+
 btrfs-tools:
   pkg.removed
 {% endif %}
@@ -39,7 +57,7 @@ ironic_db:
   mysql_database.present:
     - connection_pass: {{ pillar['DATABASE'] }}
 
-    - name: {{ pillar['IRONIC_DBNAME'] }}
+    - name: ironic
     - connection_host: controller
   mysql_user.present:
     - name: {{ pillar['IRONIC_DBUSER'] }}
@@ -67,7 +85,7 @@ Ironic fix-db-access.sh:
 
 ironic-initdb:
   cmd.run:
-    - name: su -s /bin/sh -c "ironic-dbsync --config-file /etc/ironic/ironic.conf create_schema" ironic && touch /etc/ironic/.already_synced
+    - name: ironic-dbsync --config-file /etc/ironic/ironic.conf create_schema && touch /etc/ironic/.already_synced
     - unless: test -f /etc/ironic/.already_synced
     - user: root
     - watch_in:
@@ -102,7 +120,7 @@ ironic_keypoint_endpoint:
     - publicurl: http://{{ grains["host"] }}:6385
     - internalurl: http://{{ grains["host"] }}:6385
     - adminurl: http://{{ grains["host"] }}:6385
-    - region: FlugelitRegion
+    - region: flugelRegion
 
 {%if "ironic-compute" in grains.get("roles", []) %}
 

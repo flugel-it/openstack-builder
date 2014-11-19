@@ -45,7 +45,7 @@ passDescDict = { 'DATABASE': 'Root password for the database',
 'KEYSTONE_TOKEN': 'Keystone Token',
 'IRONIC_DBPASS': 'Database password for the Ironic service',
 'IRONIC_PASS': 'Password for Telemetry service user ceilometer',
-'IRONIC_USER': 'ironic',
+'IRONIC_DBUSER': 'ironic',
 'PROXY_SECRET': 'Proxy Secret' }
 
 newPassDicts = { }
