@@ -1,4 +1,7 @@
 
+{%- if salt['ps.swap_memory']()['total'] == 0 %}
+
+#XXX: create a swap device if there is space available
 create-swap-file:
   cmd.run:
     - name: dd if=/dev/zero of=/.swap count=1000 bs=1M
@@ -12,3 +15,4 @@ init-swap-file:
 /.swap:
   mount.swap
 
+{%- endif %}

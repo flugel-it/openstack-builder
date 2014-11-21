@@ -18,6 +18,7 @@ base-pkgs:
       - vim
       - unzip
       - git
+      - psutils
 
 ntp:
   service.running:
