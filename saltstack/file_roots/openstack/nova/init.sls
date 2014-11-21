@@ -1,4 +1,4 @@
-
+{%- set use_ceph = False %}
 {% if "controller" in grains.get("roles", [])%}
 openstack-nova-pkgs:
   pkg.installed:
@@ -213,10 +213,10 @@ nova_keypoint_endpoint:
     - publicurl: http://controller:8774/v2/%(tenant_id)s
     - internalurl: http://controller:8774/v2/%(tenant_id)s
     - adminurl: http://controller:8774/v2/%(tenant_id)s
-    - region: RegionOne
+    - region: flugelRegion
 {% endif %}
 
-{%if "nova-compute" in grains.get("roles", []) %}
+{%if "nova-compute" in grains.get("roles", []) and use_ceph %}
 
 /var/tmp/libvirt-ceph.xml:
   file.managed:

@@ -38,3 +38,7 @@ base:
   'G@roles:ceph-client':
     - match: compound
     - ceph
+
+  'G@roles:ironic':
+    - match: compound
+    - openstack.ironic

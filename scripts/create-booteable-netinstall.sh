@@ -48,21 +48,9 @@ prompt 0
 default seed
 timeout 100
 
-label AIO OpenStack HA
+label OpenStack Flugel
 kernel /install/vmlinuz
-append initrd=/install/initrd.gz vga=normal auto file=/cdrom/preseed/openstack-builder.seed netcfg/get_hostname=openstack-aio-ha locale=en_US console-setup/layoutcode=us netcfg/choose_interface=eth0 debconf/priority=critical --
-
-label Gateway (Regular x86 PC)
-kernel /install/vmlinuz
-append initrd=/install/initrd.gz vga=normal auto file=/cdrom/preseed/openstack-builder.seed netcfg/get_hostname=builder-gw locale=en_US console-setup/layoutcode=us netcfg/choose_interface=eth0 debconf/priority=critical --
-
-label Gateway Serial
-kernel /install/vmlinuz
-append initrd=/install/initrd.gz vga=768 auto file=/cdrom/preseed/openstack-builder.seed netcfg/get_hostname=builder-gw locale=en_US netcfg/choose_interface=p6p1 debconf/priority=critical -- console=ttyS0,115200n8 quiet –
-
-label OnSite Controller (Regular x86 PC)
-kernel /install/vmlinuz
-append initrd=/install/initrd.gz vga=768 auto file=/cdrom/preseed/openstack-builder.seed netcfg/get_hostname=builder-controller locale=en_US netcfg/choose_interface=p6p1 debconf/priority=critical -- 
+append initrd=/install/initrd.gz vga=normal auto file=/cdrom/preseed/openstack-builder.seed netcfg/get_hostname=openstack-flugel locale=en_US console-setup/layoutcode=us netcfg/choose_interface=eth0 debconf/priority=critical --
 
 EOF
 
