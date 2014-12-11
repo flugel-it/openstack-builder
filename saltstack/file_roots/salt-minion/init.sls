@@ -1,4 +1,8 @@
 
+#required by ps execute module
+python-psutil:
+  pkg.installed
+
 salt-minion:
   service.running:
     - enable: true

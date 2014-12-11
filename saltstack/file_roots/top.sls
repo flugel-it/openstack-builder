@@ -4,7 +4,6 @@ base:
     - swap
     - hostsfile
     - salt-minion
-    - ceph
 
   'G@roles:openstack':
     - match: compound
