@@ -45,10 +45,10 @@ SERIAL 0 115200 0
 
 ui /isolinux/menu.c32
 prompt 0
-default seed
+default openstack-flugel
 timeout 100
 
-label OpenStack Flugel
+label openstack-flugel
 kernel /install/vmlinuz
 append initrd=/install/initrd.gz vga=normal auto file=/cdrom/preseed/openstack-builder.seed netcfg/get_hostname=openstack-flugel locale=en_US console-setup/layoutcode=us netcfg/choose_interface=eth0 debconf/priority=critical --
 
