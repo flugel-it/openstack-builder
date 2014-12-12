@@ -5,6 +5,8 @@ base:
     - data    
     - pkgs
     - ceph
+
+  'P@roles:openstack.*':
     - openstack.passwords
     - openstack.keystone
     - openstack.networking

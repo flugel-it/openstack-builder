@@ -12,8 +12,8 @@ sysctl-update:
 openstack-base-pkgs:
   pkg.installed:
     - pkgs:
-      - python-mysqldb
-      - python-software-properties
+      - {{ pillar.pkgs.python_mysqldb }}
+      - {{ pillar.pkgs.python_software_properties }}
 
 openstack-ppa:
   pkgrepo.managed:
@@ -24,10 +24,3 @@ openstack-ppa:
     - keyid: EC4926EA
     - keyserver: keyserver.ubuntu.com  
 
-fix-db-access.sh:
-  file.managed:
-    - name: /usr/local/bin/fix-db-access.sh
-    - source: salt://openstack/files/fix-db-access.sh
-    - user: root
-    - group: root
-    - mode: 700

@@ -1,2 +1,6 @@
 
-keystone_conf: /etc/keystone/keystone.conf
+paths:
+  keystone_conf: /etc/keystone/keystone.conf
+
+  my_cnf: /etc/mysql/my.cnf
+

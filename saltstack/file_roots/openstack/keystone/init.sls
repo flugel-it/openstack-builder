@@ -1,15 +1,17 @@
 
-openstack-keystone-pkgs:
+openstack-keystone:
   pkg.installed:
-    - pkgs:
-      - mysql-server
-      - {{ pillar["rabbitmq-server_pkg"] }}
-      - {{ pillar["keystone_pkg"] }}
+    - name: {{ pillar.pkgs.keystone }}
+
+/var/lib/keystone/keystone.db:
+    file.absent
 
 /etc/salt/minion.d/keystone-minion.conf:
   file.managed:
     - template: jinja
     - source: salt://openstack/keystone/files/keystone.minion.conf
+    - context:
+      controller: {{ salt.openstack.get_controller() }}
     - watch_in:
       - service: salt-minion
 
@@ -23,6 +25,8 @@ openstack-keystone-pkgs:
   file.managed:
     - source: salt://openstack/keystone/files/keystone.conf
     - template: jinja
+    - context:
+      controller: {{ salt.openstack.get_controller() }}
     - user: keystone
     - group: keystone
     - mode: 640
@@ -38,6 +42,8 @@ keystone-service:
   file.managed:
     - source: salt://openstack/keystone/files/dot_keystone_supercredentials
     - template: jinja
+    - context:
+      controller: {{ salt.openstack.get_controller() }}
     - user: root
     - group: root
     - mode: 600
@@ -46,65 +52,63 @@ keystone-service:
   file.managed:
     - source: salt://openstack/keystone/files/dot_keystone
     - template: jinja
+    - context:
+      controller: {{ salt.openstack.get_controller() }}
     - user: root
     - group: root
     - mode: 600
 
 keystone_db:
   mysql_database.present:
-    - name: {{ pillar['KEYSTONE_DBNAME'] }}
+    - name: keystone
   mysql_user.present:
-    - name: {{ pillar['KEYSTONE_DBUSER'] }}
-    - password: {{ pillar['KEYSTONE_DBPASS'] }}
-    - allow_passwordless: False
+    - name: keystone
+    - password: {{ pillar.openstack.keystone_dbpass }}
+    - host: '%'
+  mysql_grants.present:
+    - grant: all privileges
+    - database: keystone.*
+    - user: keystone
+    - host: '%'
 
-#XXX: workaround, host: % bug. Check!
-Keystone fix-db-access.sh:
-  cmd.run:
-    - name: /usr/local/bin/fix-db-access.sh {{ pillar['KEYSTONE_DBUSER'] }} {{ pillar['KEYSTONE_DBPASS'] }} {{ pillar['DATABASE'] }} keystone
-    - unless: test -f /etc/salt/.{{ pillar['KEYSTONE_DBUSER'] }}-access-fixed
-
-keystone-initdb:
+keystone-syncdb:
   cmd.run:
     - name: keystone-manage db_sync && touch /etc/keystone/.already_synced
     - unless: test -f /etc/keystone/.already_synced
     - user: keystone
 
-Keystone tenants:
+keystone-tenants:
   keystone.tenant_present:
     - names:
       - admin
-      - democ
       - service
 
-Keystone roles:
+keystone-roles:
   keystone.role_present:
     - names:
       - admin
-      - Member
+      - _member_
 
-admin:
+openstack-admin:
   keystone.user_present:
-    - password: {{ pillar['KEYSTONE_ADMIN_PASS'] }}
-    - email: infradevs@fluge.it
+    - name: admin
+    - password: {{ pillar.openstack.admin_pass }}
+    - email: infradevs@flugel.it
     - roles:
-      - admin:   # tenants
-        - admin  # roles
-    - require:
-      - keystone: Keystone tenants
-      - keystone: Keystone roles
+      - admin:
+        - admin
 
-keystone service:
+keystone-openstack-service:
   keystone.service_present:
     - name: keystone
     - service_type: identity
     - description: OpenStack Identity Service
 
-keystone endpoint:
+keystone-endpoint:
   keystone.endpoint_present:
     - name: keystone
-    - publicurl: http://controller:5000/v2.0
-    - internalurl: http://controller:5000/v2.0
-    - adminurl: http://controller:35357/v2.0
+    - publicurl: http://{{ salt.openstack.get_controller() }}:5000/v2.0
+    - internalurl: http://{{ salt.openstack.get_controller() }}:5000/v2.0
+    - adminurl: http://{{ salt.openstack.get_controller() }}:35357/v2.0
     - region: flugelRegion
 

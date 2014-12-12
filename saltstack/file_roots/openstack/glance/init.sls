@@ -1,11 +1,9 @@
 
-openstack-glance-pkgs:
+openstack-glance:
   pkg.installed:
-    - pkgs:
-      - {{ pillar["glance_pkg"] }}
-      - mysql-client
+    - name: {{ pillar.pkgs.glance }}
 
-/var/lib/glance/glance.sqlite:
+/var/lib/glance/glance.db:
   file.absent
 
 /etc/salt/minion.d/glance-minion.conf:

@@ -1,5 +1,6 @@
 
-python-mysqldb:
+# Required for Salt to manage MySQL
+{{ pillar.pkgs.python_mysqldb }}:
   pkg.installed:
     - watch_in:
       - service: salt-minion
@@ -7,19 +8,31 @@ python-mysqldb:
 mysql:
   pkg.installed:
     - pkgs:
-      - mysql-server
-      - mysql-client
+      - {{ pillar.pkgs.mysql_server }}
+      - {{ pillar.pkgs.mysql_client }}
     - require:
-      - pkg: python-mysqldb
+      - pkg: {{ pillar.pkgs.python_mysqldb }}
   service.running:
     - enable: true
   mysql_user.present:
     - name: root
-    - password: {{ pillar['DATABASE'] }}
+    - password: {{ pillar.db_root_pass }}
     - require:
       - service: mysql
+
+/etc/salt/minion.d/mysql.conf:
+  file.managed:
+    - source: salt://mysql/files/mysql.minion.conf
+    - template: jinja
+    - user: root
+    - group: root
+    - mode: 640
+    - require:
+      - mysql_user: mysql
+    - watch_in:
+      - service: salt-minion
   
-/etc/mysql/my.cnf:
+{{ pillar.paths.my_cnf }}:
   file.managed:
     - source: salt://mysql/files/my.cnf.template
     - user: root
@@ -29,19 +42,4 @@ mysql:
       - pkg: mysql
     - watch_in:
       - service: mysql
-
-/etc/salt/minion.d/mysql-minion.conf:
-  file.managed:
-    - template: jinja
-    - source: salt://mysql/files/mysql.minion.conf
-    - watch_in:
-      - service: salt-minion
-    - require:
-      - mysql_user: mysql
-
-Root fix-db-access.sh:
-  cmd.run:
-    - name: /usr/local/bin/fix-db-access.sh root {{ pillar['DATABASE'] }} {{ pillar['DATABASE'] }} "*"
-    - unless: test -f /etc/salt/.{{ pillar['KEYSTONE_DBUSER'] }}-access-fixed
-    - user: root
 

@@ -54,6 +54,27 @@ append initrd=/install/initrd.gz vga=normal auto file=/cdrom/preseed/openstack-b
 
 EOF
 
+cat > $BUILD/boot/grub/grub.cfg << EOF
+
+if loadfont /boot/grub/font.pf2 ; then
+        set gfxmode=auto
+        insmod efi_gop
+        insmod efi_uga
+        insmod gfxterm
+        terminal_output gfxterm
+fi
+
+set menu_color_normal=white/black
+set menu_color_highlight=black/light-gray
+
+menuentry "openstack-flugel" {
+        set gfxpayload=keep
+        linux   /install/vmlinuz vga=normal auto file=/cdrom/preseed/openstack-builder.seed netcfg/get_hostname=openstack-flugel locale=en_US console-setup/layoutcode=us netcfg/choose_interface=eth0 debconf/priority=critical --
+        initrd  /install/initrd.gz
+}
+
+EOF
+
 echo "Creating iso image..."
 cd $BUILD/isolinux
 mkisofs -q -V "UbuntuNetInstall" \

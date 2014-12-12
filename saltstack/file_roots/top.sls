@@ -5,35 +5,20 @@ base:
     - hostsfile
     - salt-minion
 
-  'G@roles:openstack':
-    - match: compound
-    - openstack
-
   'G@roles:nagios':
     - match: compound
     - nagios
 
-  'G@roles:controller':
+  'G@roles:openstack-controller':
     - match: compound
-    - rabbitmq
     - mysql
+    - rabbitmq
+    - openstack
     - openstack.keystone
-
-  'G@roles:glance':
-    - match: compound
     - openstack.glance
-
-  'G@roles:nova':
-    - match: compound
-    - openstack.nova
-
-  'G@roles:horizon':
-    - match: compound
-    - openstack.horizon
-
-  'G@roles:cinder':
-    - match: compound
-    - openstack.cinder
+    #- openstack.nova.controller
+    #- openstack.horizon
+    #- openstack.cinder
 
   'G@roles:ceph-client':
     - match: compound
