@@ -1,4 +1,4 @@
 export OS_USERNAME=nova
-export OS_PASSWORD={{ pillar['NOVA_PASS'] }}
+export OS_PASSWORD={{ pillar.openstack.nova_pass }}
 export OS_TENANT_NAME=service
-export OS_AUTH_URL=http://controller:35357/v2.0
+export OS_AUTH_URL=http://{{ controller }}:35357/v2.0

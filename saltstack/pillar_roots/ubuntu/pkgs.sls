@@ -10,4 +10,13 @@ pkgs:
   glance: glance
   keystone: keystone
   rabbitmq_server: rabbitmq-server
+  nova_controller:
+    - nova-api
+    - nova-cert
+    - nova-conductor
+    - nova-consoleauth
+    - nova-novncproxy
+    - nova-scheduler
+  nova_compute:
+    - nova-compute
 

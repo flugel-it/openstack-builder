@@ -128,7 +128,7 @@ glance-create-{{ img.slug }}-image:
         --disk-format {{ img.format}} 
         --container-format {{ img.container_format }} 
         --is-public True
-    - unless: glance image-list | grep {{ img.name }}
+    - unless: glance image-list | grep "{{ img.name }}"
     - env:
       - OS_USERNAME: admin
       - OS_PASSWORD: {{ pillar.openstack.admin_pass }}
