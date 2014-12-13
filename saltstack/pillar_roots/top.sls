@@ -7,6 +7,7 @@ base:
     - ceph
 
   'P@roles:openstack.*':
+    - openstack
     - openstack.passwords
     - openstack.keystone
     - openstack.networking

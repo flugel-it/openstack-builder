@@ -110,5 +110,5 @@ keystone-endpoint:
     - publicurl: http://{{ salt.openstack.get_controller() }}:5000/v2.0
     - internalurl: http://{{ salt.openstack.get_controller() }}:5000/v2.0
     - adminurl: http://{{ salt.openstack.get_controller() }}:35357/v2.0
-    - region: flugelRegion
+    - region: {{ pillar.openstack.region }}
 

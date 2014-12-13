@@ -64,5 +64,5 @@ openstack-nova-keypoint-endpoint:
     - publicurl: http://{{ salt.openstack.get_controller() }}:8774/v2/%(tenant_id)s
     - internalurl: http://{{ salt.openstack.get_controller() }}:8774/v2/%(tenant_id)s
     - adminurl: http://{{ salt.openstack.get_controller() }}:8774/v2/%(tenant_id)s
-    - region: flugelRegion
+    - region: {{ pillar.openstack.region }}
 

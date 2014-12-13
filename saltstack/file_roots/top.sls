@@ -19,6 +19,7 @@ base:
     - openstack.glance
     - openstack.nova
     - openstack.nova.controller
+    - openstack.neutron.controller
     #- openstack.horizon
     #- openstack.cinder
 
