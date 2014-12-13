@@ -86,12 +86,6 @@ libssl1.0.0:
     - mode: 400
     - source: salt://base/files/root_authorized_keys
 
-ubuntu-minimal:
-  pkg.removed
-
-resolvconf:
-  pkg.removed
-
 /etc/resolv.conf:
   file.managed:
     - contents: "nameserver 8.8.8.8\n"

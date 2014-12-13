@@ -1,0 +1,4 @@
+
+openstack:
+  region: regionOne
+

@@ -1,17 +1,17 @@
 
-openstack-glance-pkgs:
+openstack-glance:
   pkg.installed:
-    - pkgs:
-      - {{ pillar["glance_pkg"] }}
-      - mysql-client
+    - name: {{ pillar.pkgs.glance }}
 
-/var/lib/glance/glance.sqlite:
+/var/lib/glance/glance.db:
   file.absent
 
 /etc/salt/minion.d/glance-minion.conf:
   file.managed:
     - template: jinja
     - source: salt://openstack/glance/files/glance.minion.conf
+    - context:
+      controller: {{ salt.openstack.get_controller() }}
     - watch_in:
       - service: salt-minion
 
@@ -19,6 +19,8 @@ openstack-glance-pkgs:
   file.managed:
     - source: salt://openstack/glance/files/dot_glance
     - template: jinja
+    - context:
+      controller: {{ salt.openstack.get_controller() }}
     - user: root
     - group: root
     - mode: 600
@@ -33,6 +35,8 @@ openstack-glance-pkgs:
   file.managed:
     - source: salt://openstack/glance/files/glance-api.conf
     - template: jinja
+    - context:
+      controller: {{ salt.openstack.get_controller() }}
     - user: glance
     - group: glance
     - mode: 640
@@ -41,6 +45,8 @@ openstack-glance-pkgs:
   file.managed:
     - source: salt://openstack/glance/files/glance-registry.conf
     - template: jinja
+    - context:
+      controller: {{ salt.openstack.get_controller() }}
     - user: glance
     - group: glance
     - mode: 640
@@ -61,56 +67,33 @@ glance-registry-service:
 
 glance_db:
   mysql_database.present:
-    - connection_pass: {{ pillar['DATABASE'] }}
-    - name: {{ pillar['GLANCE_DBNAME'] }}
-    - connection_host: localhost
+    - name: glance
   mysql_user.present:
-    - name: {{ pillar['GLANCE_DBUSER'] }}
-    - password: {{ pillar['GLANCE_DBPASS'] }}
-    - allow_passwordless: False
-    - connection_host: localhost
+    - name: glance
+    - password: {{ pillar.openstack.glance_dbpass }}
     - host: "%"
-    - connection_pass: {{ pillar['DATABASE'] }}
   mysql_grants.present:
     - grant: all privileges
     - database: glance.*
+    - user: glance
     - host: "%"
-    - user: {{ pillar['GLANCE_DBUSER'] }}
-    - password: {{ pillar['GLANCE_DBPASS'] }}
-    - connection_pass: {{ pillar['DATABASE'] }}
-    - connection_host: localhost
-    - require:
-      - mysql_user: {{ pillar['GLANCE_DBUSER'] }}
-
-Glance fix-db-access.sh:
-  cmd.run:
-    - name: /usr/local/bin/fix-db-access.sh {{ pillar['GLANCE_DBUSER'] }} {{ pillar['GLANCE_DBPASS'] }} {{ pillar['DATABASE'] }} glance
-    - user: root
-    - unless: test -f /etc/salt/.{{ pillar['GLANCE_DBUSER'] }}-access-fixed
 
 glance-initdb:
   cmd.run:
-    - name: su -s /bin/sh -c "glance-manage db_sync" glance && touch /etc/glance/.already_synced
+    - name: glance-manage db_sync && touch /etc/glance/.already_synced
     - unless: test -f /etc/glance/.already_synced
-    - user: root
+    - user: glance
 
-Glance tenants:
-  keystone.tenant_present:
-    - names:
-      - glance
-
-glance_user:
+glance-user:
   keystone.user_present:
     - name: glance
-    - password: {{ pillar['GLANCE_PASS'] }}
+    - password: {{ pillar.openstack.glance_pass }}
     - email: infradevs@flugel.it
     - roles:
       - service:
         - admin
-      - require:
-        - keystone: Glance tenants
 
-glance_keystone_service:
+glance-keystone-service:
   keystone.service_present:
     - name: glance
     - service_type: image
@@ -119,12 +102,38 @@ glance_keystone_service:
       - service: glance-registry
       - service: glance-api
 
-glance_keypoint_endpoint:
+glance-keypoint-endpoint:
   keystone.endpoint_present:
     - name: glance
-    - publicurl: http://controller:9292
-    - internalurl: http://controller:9292
-    - adminurl: http://controller:9292
+    - publicurl: http://{{ salt.openstack.get_controller() }}:9292
+    - internalurl: http://{{ salt.openstack.get_controller() }}:9292
+    - adminurl: http://{{ salt.openstack.get_controller() }}:9292
     - watch_in:
-      - service:glance-registry
-      - service:glance-api
+      - service: glance-registry
+      - service: glance-api
+
+{%- for img in pillar.glance.default_images %}
+
+glance-download-{{ img.slug }}-image:
+  file.managed:
+    - name: /var/tmp/{{ img.slug }}
+    - source: {{ img.url }}
+    - source_hash: {{ img.hash_url }}
+
+glance-create-{{ img.slug }}-image:
+  cmd.run:
+    - name: >
+        glance image-create --name "{{ img.name }}"
+        --file /var/tmp/{{ img.slug}} 
+        --disk-format {{ img.format}} 
+        --container-format {{ img.container_format }} 
+        --is-public True
+    - unless: glance image-list | grep "{{ img.name }}"
+    - env:
+      - OS_USERNAME: admin
+      - OS_PASSWORD: {{ pillar.openstack.admin_pass }}
+      - OS_TENANT_NAME: admin
+      - OS_AUTH_URL: http://{{ salt.openstack.get_controller() }}:35357/v2.0
+
+{%- endfor %}
+

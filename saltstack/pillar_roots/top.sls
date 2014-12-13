@@ -5,9 +5,13 @@ base:
     - data    
     - pkgs
     - ceph
+
+  'P@roles:openstack.*':
+    - openstack
     - openstack.passwords
     - openstack.keystone
     - openstack.networking
+    - openstack.glance
 
   'G@os:Ubuntu or G@os:Debian':
     - match: compound

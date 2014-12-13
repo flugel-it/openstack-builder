@@ -1,8 +1,22 @@
 
-vim_pkg: vim
+pkgs:
+  vim: vim
+  mysql_server: mysql-server
+  mysql_client: mysql-client
+  python_mysqldb: python-mysqldb
+  rabbit_server: rabbitmq-server
+  python_software_properties: python-software-properties
 
-#OpenStack
-glance_pkg: glance
-keystone_pkg: keystone
-rabbitmq-server_pkg: rabbitmq-server
+  glance: glance
+  keystone: keystone
+  rabbitmq_server: rabbitmq-server
+  nova_controller:
+    - nova-api
+    - nova-cert
+    - nova-conductor
+    - nova-consoleauth
+    - nova-novncproxy
+    - nova-scheduler
+  nova_compute:
+    - nova-compute
 
