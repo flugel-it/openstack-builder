@@ -33,6 +33,12 @@ python-neutronclient:
     - group: neutron
     - mode: 755
 
+/etc/neutron/:
+  file.directory:
+    - user: neutron
+    - group: neutron
+    - mode: 755
+
 /etc/neutron/neutron.conf:
   file.managed:
     - source: salt://openstack/neutron/files/neutron.conf
@@ -43,12 +49,21 @@ python-neutronclient:
     - group: neutron
     - mode: 640
 
+/etc/neutron/plugins/ml2/ml2_conf.ini:
+  file.managed:
+    - source: salt://openstack/neutron/files/ml2_conf.ini
+    - template: jinja
+    - user: neutron
+    - group: neutron
+    - mode: 640
+
 neutron-service:
   service.running:
     - name: neutron-server
     - enable: true
     - watch:
       - file: /etc/neutron/neutron.conf
+      - file: /etc/neutron/plugins/ml2/ml2_conf.ini
 
 neutron_db:
   mysql_database.present:
@@ -63,6 +78,15 @@ neutron_db:
     - user: neutron
     - host: "%"
 
+neutron-initdb:
+  cmd.run:
+    - name: >
+        neutron-db-manage --config-file /etc/neutron/neutron.conf 
+        --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade juno && 
+        touch /etc/neutron/.already_synced
+    - user: neutron
+    - unless: test -f /etc/neutron/.already_synced
+
 neutron-user:
   keystone.user_present:
     - name: neutron
@@ -75,17 +99,20 @@ neutron-user:
 neutron-keystone-service:
   keystone.service_present:
     - name: neutron
-    - service_type: image
+    - service_type: network
     - description: Openstack Network Service
     - watch_in:
       - service: neutron-service
 
-neutron-keypoint-endpoint:
+neutron-keystone-endpoint:
   keystone.endpoint_present:
     - name: neutron
     - publicurl: http://{{ salt.openstack.get_controller() }}:9696
     - internalurl: http://{{ salt.openstack.get_controller() }}:9696
     - adminurl: http://{{ salt.openstack.get_controller() }}:9696
+    - require:
+      - keystone: neutron-keystone-service
     - watch_in:
       - service: neutron-service
+
 
