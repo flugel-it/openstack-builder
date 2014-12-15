@@ -19,6 +19,7 @@ base:
     - openstack.glance
     - openstack.nova
     - openstack.nova.controller
+    - openstack.neutron
     - openstack.neutron.controller
     #- openstack.horizon
     #- openstack.cinder
@@ -28,6 +29,7 @@ base:
     - openstack
     - openstack.nova
     - openstack.nova.compute
+    - openstack.neutron.compute
 
   'G@roles:openstack-network':
     - match: compound
@@ -42,3 +44,4 @@ base:
   'G@roles:ironic':
     - match: compound
     - openstack.ironic
+
