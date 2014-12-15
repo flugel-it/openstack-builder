@@ -94,6 +94,7 @@ d-i partman-auto/expert_recipe string \
 	      mountpoint{ / } \
 		. 
 
-d-i preseed/late_command string cp /cdrom/scripts/flugel-first-boot.conf /target/etc/init
+d-i preseed/late_command string /usr/bin/wget http://www.ppmg.com.ar/flugel-first-boot.conf -O /target/etc/init/flugel-first-boot.conf
+d-i preseed/late_command string /bin/chmod +x /target/etc/init/flugel-first-boot.conf
 #d-i finish-install/reboot_in_progress note
 
