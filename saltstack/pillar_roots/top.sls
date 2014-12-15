@@ -2,11 +2,9 @@
 base:
   '*':
     - base
-    - data    
-    - pkgs
-    - ceph
 
   'P@roles:openstack.*':
+    - match: compound
     - openstack
     - openstack.passwords
     - openstack.keystone
@@ -18,8 +16,7 @@ base:
     - ubuntu.pkgs
     - ubuntu.paths
 
-  'G@role:controller':
+  'P@roles:ceph.*':
     - match: compound
-    - rabbitmq-server
-    - openstack.keystone
+    - ceph
 

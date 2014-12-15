@@ -2,12 +2,6 @@
 neutron-server:
   pkg.installed
   
-neutron-plugin-ml2:
-  pkg.installed
-  
-python-neutronclient:
-  pkg.installed
-
 /etc/salt/minion.d/neutron-minion.conf:
   file.managed:
     - template: jinja
@@ -26,36 +20,6 @@ python-neutronclient:
     - user: root
     - group: root
     - mode: 600
-
-/var/log/neutron/:
-  file.directory:
-    - user: neutron
-    - group: neutron
-    - mode: 755
-
-/etc/neutron/:
-  file.directory:
-    - user: neutron
-    - group: neutron
-    - mode: 755
-
-/etc/neutron/neutron.conf:
-  file.managed:
-    - source: salt://openstack/neutron/files/neutron.conf
-    - template: jinja
-    - context:
-      controller: {{ salt.openstack.get_controller() }}
-    - user: neutron
-    - group: neutron
-    - mode: 640
-
-/etc/neutron/plugins/ml2/ml2_conf.ini:
-  file.managed:
-    - source: salt://openstack/neutron/files/ml2_conf.ini
-    - template: jinja
-    - user: neutron
-    - group: neutron
-    - mode: 640
 
 neutron-service:
   service.running:

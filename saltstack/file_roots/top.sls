@@ -26,7 +26,14 @@ base:
   'G@roles:openstack-compute':
     - match: compound
     - openstack
+    - openstack.nova
     - openstack.nova.compute
+
+  'G@roles:openstack-network':
+    - match: compound
+    - openstack
+    - openstack.neutron
+    - openstack.neutron.network
 
   'G@roles:ceph-client':
     - match: compound
