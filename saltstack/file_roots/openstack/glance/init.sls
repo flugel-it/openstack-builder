@@ -6,15 +6,6 @@ openstack-glance:
 /var/lib/glance/glance.db:
   file.absent
 
-/etc/salt/minion.d/glance-minion.conf:
-  file.managed:
-    - template: jinja
-    - source: salt://openstack/glance/files/glance.minion.conf
-    - context:
-      controller: {{ salt.openstack.get_controller() }}
-    - watch_in:
-      - service: salt-minion
-
 /root/.glance:
   file.managed:
     - source: salt://openstack/glance/files/dot_glance

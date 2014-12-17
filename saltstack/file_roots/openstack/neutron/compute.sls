@@ -13,3 +13,8 @@ neutron-compute-plugin-openvswitch-agent:
   pkg.installed:
     - name: neutron-plugin-openvswitch-agent
 
+neutron-compute-plugin-openvswitch-agent-service:
+  service.running:
+    - name: neutron-plugin-openvswitch-agent
+    - watch:
+      - file: /etc/neutron/neutron.conf

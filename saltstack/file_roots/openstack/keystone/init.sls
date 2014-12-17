@@ -6,15 +6,6 @@ openstack-keystone:
 /var/lib/keystone/keystone.db:
     file.absent
 
-/etc/salt/minion.d/keystone-minion.conf:
-  file.managed:
-    - template: jinja
-    - source: salt://openstack/keystone/files/keystone.minion.conf
-    - context:
-      controller: {{ salt.openstack.get_controller() }}
-    - watch_in:
-      - service: salt-minion
-
 /var/log/keystone/:
   file.directory:
     - user: keystone

@@ -11,13 +11,6 @@ openstack-cinder-pkgs:
 /var/lib/cinder/cinder.sqlite:
   file.absent
 
-/etc/salt/minion.d/cinder-minion.conf:
-  file.managed:
-    - template: jinja
-    - source: salt://openstack/cinder/files/cinder.minion.conf
-    - watch_in:
-      - service: salt-minion
-
 /root/.cinder:
   file.managed:
     - source: salt://openstack/cinder/files/dot_cinder

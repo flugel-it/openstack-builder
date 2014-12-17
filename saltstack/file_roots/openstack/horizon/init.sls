@@ -17,10 +17,12 @@ apache2:
 
 local_settings.py:
   file.managed:
+    - source: salt://openstack/horizon/files/local_settings.py
     - template: jinja
+    - content:
+      controller: {{ salt.openstack.get_controller() }}
     - name: /etc/openstack-dashboard/local_settings.py
     - mode: 644
-    - source: salt://openstack/horizon/files/local_settings.py
     - watch_in:
       - service: apache2
 

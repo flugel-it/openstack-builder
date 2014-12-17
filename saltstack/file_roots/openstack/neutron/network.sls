@@ -20,7 +20,10 @@ neutron-network-pkgs:
       - neutron-dhcp-agent
 
 neutron-plugin-openvswitch-agent:
-  service.running
+  service.running:
+    - watch:
+      - file: /etc/neutron/plugins/ml2/ml2_conf.ini
+      - file: /etc/neutron/neutron.conf
 
 neutron-l3-agent:
   service.running:
@@ -74,5 +77,5 @@ neutron-create-ext-br:
         ovs-vsctl add-port br-ex {{ pillar.openstack.external_iface }} && 
         touch /etc/neutron/.ovs.configured
     - user: root
-    - unless: /etc/neutron/.ovs.configured
+    - unless: test -f /etc/neutron/.ovs.configured
 

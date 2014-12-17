@@ -14,7 +14,6 @@ openstack-base-pkgs:
     - pkgs:
       - {{ pillar.pkgs.python_mysqldb }}
       - {{ pillar.pkgs.python_software_properties }}
-      - python-ipy
 
 openstack-ppa:
   pkgrepo.managed:

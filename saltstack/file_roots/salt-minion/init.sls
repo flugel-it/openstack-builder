@@ -1,7 +1,10 @@
 
-#required by ps execute module
-python-psutil:
-  pkg.installed
+#pkgs required by stock and custom modules
+salt-mine-pkgs:
+  pkg.installed:
+    - pkgs:
+      - python-psutil
+      - python-ipy
 
 salt-minion:
   service.running:

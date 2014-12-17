@@ -1,5 +1,5 @@
 
 openstack:
-  region: regionOne
+  region: RegionOne
 
 

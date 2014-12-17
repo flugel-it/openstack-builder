@@ -2,15 +2,6 @@
 neutron-server:
   pkg.installed
   
-/etc/salt/minion.d/neutron-minion.conf:
-  file.managed:
-    - template: jinja
-    - source: salt://openstack/neutron/files/neutron.minion.conf
-    - context:
-      controller: {{ salt.openstack.get_controller() }}
-    - watch_in:
-      - service: salt-minion
-
 /root/.neutron:
   file.managed:
     - source: salt://openstack/neutron/files/dot_neutron

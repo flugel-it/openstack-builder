@@ -14,6 +14,7 @@ base:
     - mysql
     - rabbitmq
     - openstack
+    - openstack.minion
     - openstack.controller
     - openstack.keystone
     - openstack.glance
@@ -21,19 +22,22 @@ base:
     - openstack.nova.controller
     - openstack.neutron
     - openstack.neutron.controller
-    #- openstack.horizon
+    - openstack.horizon
     #- openstack.cinder
 
   'G@roles:openstack-compute':
     - match: compound
     - openstack
+    - openstack.minion
     - openstack.nova
     - openstack.nova.compute
+    - openstack.neutron
     - openstack.neutron.compute
 
   'G@roles:openstack-network':
     - match: compound
     - openstack
+    - openstack.minion
     - openstack.neutron
     - openstack.neutron.network
 
