@@ -89,9 +89,6 @@ glance-keystone-service:
     - name: glance
     - service_type: image
     - description: Openstack Image Service
-    - watch_in:
-      - service: glance-registry
-      - service: glance-api
 
 glance-keypoint-endpoint:
   keystone.endpoint_present:
@@ -99,9 +96,6 @@ glance-keypoint-endpoint:
     - publicurl: http://{{ salt.openstack.get_controller() }}:9292
     - internalurl: http://{{ salt.openstack.get_controller() }}:9292
     - adminurl: http://{{ salt.openstack.get_controller() }}:9292
-    - watch_in:
-      - service: glance-registry
-      - service: glance-api
 
 {%- for img in pillar.glance.default_images %}
 
