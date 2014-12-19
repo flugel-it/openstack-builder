@@ -27,7 +27,7 @@ def get_controller_ip():
     if minion is None:
         return None
 
-    for ip in __grains__["ipv4"]:
+    for ip in grains["ipv4"]:
         if IP(ip).iptype() == "PRIVATE":
             return ip
 
