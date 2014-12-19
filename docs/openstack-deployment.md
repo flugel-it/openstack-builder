@@ -24,8 +24,9 @@ neutron router-gateway-set demo-router ext-net
 
 ```
 nova keypair-add --pub-key ~/.ssh/authorized_keys demo-key
+NET_ID=$(neutron net-show demo-net | grep '| id' | awk '{ print $4; }')
 nova boot --flavor m1.small --image "Ubuntu 14.04 Trusty" \
-  --nic net-id=295bfc51-646c-4399-b054-938b35d51450 \
+  --nic net-id=$NET_ID \
   --security-group default --key-name demo-key demo-instance1
 ```
 
