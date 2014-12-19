@@ -24,6 +24,8 @@ openstack:
   nova_pass: 51e93b39dde738a2aef4
   rabbit_user: 9ffed40e9b7d07d715a8
   rabbit_pass: 9ffed40e9b7d07d715a8
+  sahara_pass: c525207e9c700fe79947
+  sahara_dbpass: c525207e9c700fe79947
   trove_dbpass: c525207e9c700fe79947
   trove_pass: 9cc9d6ed59222b35c9fc
 

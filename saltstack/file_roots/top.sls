@@ -23,6 +23,7 @@ base:
     - openstack.neutron
     - openstack.neutron.controller
     - openstack.horizon
+    - openstack.sahara
     #- openstack.cinder
 
   'G@roles:openstack-compute':
