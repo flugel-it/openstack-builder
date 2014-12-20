@@ -5,6 +5,15 @@ salt-mine-pkgs:
     - pkgs:
       - python-psutil
       - python-ipy
+      - python-pip
+      - python-dev
+      - build-essential
+
+python-netifaces:
+  pkg.removed
+
+netifaces:
+  pip.installed
 
 salt-minion:
   service.running:
