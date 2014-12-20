@@ -1,5 +1,6 @@
 
 from IPy import IP
+import netifaces
 
 def _get_controller():
     mine_get = __salt__['mine.get']
@@ -60,4 +61,12 @@ def external_iface():
                     return iface
 
     return False
+
+def iface_info(iface):
+    info = netifaces.ifaddresses(iface)
+    info = info[netifaces.AF_INET][0]
+    gws = netifaces.gateways()
+    info["gateway"] = gws['default'][netifaces.AF_INET][0]
+
+    return info
 
