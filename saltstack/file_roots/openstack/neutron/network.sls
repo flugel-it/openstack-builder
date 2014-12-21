@@ -74,7 +74,7 @@ neutron-create-ext-br:
   cmd.run:
     - name: >
         ovs-vsctl add-br br-ex && 
-        ovs-vsctl add-port br-ex {{ pillar.openstack.external_iface }} && 
+        ovs-vsctl add-port br-ex {{ salt.openstack.external_iface() }} && 
         touch /etc/neutron/.ovs.configured
     - user: root
     - unless: test -f /etc/neutron/.ovs.configured
