@@ -29,3 +29,13 @@ salt-mine:
     - watch_in:
       - service: salt-minion
 
+salt-tcp:
+  file.managed:
+    - name: /etc/salt/minion.d/tcp.conf
+    - source: salt://salt-minion/files/tcp.conf
+    - user: root
+    - group: root
+    - mode: 644
+    - watch_in:
+      - service: salt-minion
+
