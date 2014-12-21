@@ -1,15 +1,13 @@
 127.0.0.1 localhost.localdomain localhost
 
-{%- set addrs = salt['mine.get']('*', 'network.ip_addrs') %}
+{%- set addrs = salt['mine.get']('*', 'openstack.get_private_ip') %}
 {%- if addrs is defined %}
-{%- for name, addrlist in addrs.items() %}
-{%- if name == "ohiggins" %}
-{{ addrlist|first() }} {{ name }}.{{ pillar["domain"] }} {{ name }} controller
-{%- else %}
-{{ addrlist|first() }} {{ name }}.{{ pillar["domain"] }} {{ name }}
-{%- endif %}
+
+{%- for name, addr in addrs.items() %}
+{{ addr }} {{ name }}.{{ pillar["domain"] }} {{ name }}
 {%- endfor %}
+
 {%- endif %}
 
 104.236.27.237 flugel-cloud-master.openstack.flugel.it flugel-cloud-master
-178.62.86.148 saltmaster-luis.openstack.flugel.it saltmaster-luis
+
