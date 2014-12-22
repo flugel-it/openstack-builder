@@ -12,7 +12,7 @@ d-i time/zone string UTC
 ### Mirror settings
 d-i mirror/country string manual
 d-i mirror/suite string trusty
-d-i mirror/http/hostname string de.archive.ubuntu.com
+d-i mirror/http/hostname string ar.archive.ubuntu.com
 d-i mirror/http/directory string /ubuntu/
 
 # apt-cacher auto detect
@@ -95,6 +95,5 @@ d-i partman-auto/expert_recipe string \
 		. 
 
 d-i preseed/late_command string /usr/bin/wget http://www.ppmg.com.ar/flugel-first-boot.conf -O /target/etc/init/flugel-first-boot.conf
-d-i preseed/late_command string /bin/chmod +x /target/etc/init/flugel-first-boot.conf
 #d-i finish-install/reboot_in_progress note
 

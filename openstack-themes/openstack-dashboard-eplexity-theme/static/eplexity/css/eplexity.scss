@@ -1,0 +1,317 @@
+/*
+ * mixins
+ *
+ * @section mixins
+ */
+
+@mixin font-size ($size: 16) {
+  font-size: ($size / $base)+em;
+  margin-bottom: (12 / $size)+em;
+}
+
+@mixin box-sizing ($type: border-box) {
+  -webkit-box-sizing: $type;
+  -moz-box-sizing:    $type;
+  box-sizing:         $type;
+}
+
+@mixin rounded-corners($radius: 4px 4px 4px 4px) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin box-shadow($shadow...) {
+  -moz-box-shadow: $shadow;
+  -webkit-box-shadow: $shadow;
+  box-shadow: $shadow;
+}
+
+@mixin gradient($from, $to) {
+  background-color: $to;
+  background-image: -moz-linear-gradient($from, $to);
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from($from), to($to));
+  background-image: -webkit-linear-gradient($from, $to);
+  background-image: -o-linear-gradient($from, $to);
+}
+
+@mixin footer($background) {
+  padding: $gutter-width $two-col $gutter-width $four-col;
+  margin-bottom: 0;
+  background: url($background) no-repeat scroll $one-col center #F7F7F7;
+}
+
+@mixin clearfix() {
+  *zoom:1;
+
+  &:before,
+  &:after {
+      content:"";
+      display:table;
+  }
+  &:after {
+      clear:both;
+  }
+}
+
+/**
+ * standard colors
+ *
+ * @colordef standard colors
+ */
+
+$eplexity-orange:			  #dd4814; /* eplexity orange (used for text links also on any site except canonical) */
+$light-orange:        #fdf6f2; /* used as background on pre text */
+$canonical-aubergine:	#772953; /* canonical aubergine */
+$light-aubergine:		  #77216f; /* light aubergine (consumer) */
+$mid-aubergine:			  #5e2750; /* mid aubergine (both) */
+$dark-aubergine:		  #2c001e; /* dark aubergine (enterprise) */
+$warm-grey:				    #888888; /* warm grey */
+$cool-grey:				    #333333; /* cool grey */
+$light-grey:			    #f7f7f7; /* light grey */
+
+/* notifications */
+$error:					      #df382c; /* red */
+$warning:				      #eca918; /* yellow */
+$success:				      #38b44a; /* green */
+$information:			    #19b6ee; /* cyan */
+
+/* colour coded status - from negative to positive (Icon: canonical circle) */
+$status-red:			    #df382c; /* red, for status that require immediate attention */
+$status-grey:			    #888888; /* grey, for disabled status or ones that don’t require attention */
+$status-yellow:			  #efb73e; /* yellow, for status that require attention */
+$status-blue:			    #19b6ee; /* blue, for status that don’t require action */
+$status-green:			  #38b44a; /* green, for positive status */
+
+/* misc colours */
+$box-solid-grey:		  #efefef;
+$link-color:			    $eplexity-orange; /* This is the global link color, mainly used for links in content */
+
+/* grid variables */
+$base:                14;
+$gutter-width:        20px;
+$grid-gutter:         20px;
+$gutter:              2.12766%;
+
+$one-col:             6.38297%;
+$two-col:             14.89361%;
+$three-col:           23.40425%;
+$four-col:            31.91489%;
+$five-col:            40.42553%;
+$six-col:             48.93617%;
+$seven-col:           57.4468%;
+$eight-col:           65.95744%;
+$nine-col:            74.46808%;
+$ten-col:             82.97872%;
+$eleven-col:          91.48936%;
+
+$nav-bg:			        #f0f0f0;
+$nav-link-color:	    #333;
+$nav-border-dark:	    #d4d7d4;
+$nav-border-light:	  #f2f2f4;
+$nav-hover-bg:        #d0d0d0;
+$nav-active-bg:       #ddd;
+
+@media only screen and (min-width : 768px) {
+	$base: 15;
+}
+
+@media only screen and (min-width: 984px) {
+	$base: 14;
+}
+
+/* Fonts */
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 300;
+  src: url('http://themes.googleusercontent.com/static/fonts/eplexity/v5/e7URzK__gdJcp1hLJYAEag.woff') format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Ubuntu'), url('http://themes.googleusercontent.com/static/fonts/eplexity/v5/mZSs29ggGoaqrCNB3kDfZQ.woff') format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Ubuntu Medium'), local('Ubuntu-Medium'), url('http://themes.googleusercontent.com/static/fonts/eplexity/v5/I5PmmDkYShUQg-ah7wh25w.woff') format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Ubuntu Bold'), local('Ubuntu-Bold'), url('http://themes.googleusercontent.com/static/fonts/eplexity/v5/trnbTfqisuuhRVI3i45C5w.woff') format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Ubuntu Light Italic'), local('Ubuntu-LightItalic'), url('http://themes.googleusercontent.com/static/fonts/eplexity/v5/j-TYDdXcC_eQzhhp386SjT8E0i7KZn-EPnyo3HZu7kw.woff') format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Ubuntu Italic'), local('Ubuntu-Italic'), url('http://themes.googleusercontent.com/static/fonts/eplexity/v5/GZMdC02DTXXx8AdUvU2etw.woff') format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: italic;
+  font-weight: 500;
+  src: local('Ubuntu Medium Italic'), local('Ubuntu-MediumItalic'), url('http://themes.googleusercontent.com/static/fonts/eplexity/v5/NWdMogIO7U6AtEM4dDdf_T8E0i7KZn-EPnyo3HZu7kw.woff') format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Ubuntu Bold Italic'), local('Ubuntu-BoldItalic'), url('http://themes.googleusercontent.com/static/fonts/eplexity/v5/pqisLQoeO9YTDCNnlQ9bfz8E0i7KZn-EPnyo3HZu7kw.woff') format('woff');
+}
+
+body {
+  color: #333;
+  font-family: Ubuntu, Arial, "libra sans", sans-serif;
+  font-weight: 300;
+}
+
+/* Headings */
+.page-header {
+  color: #333;
+  font-family: Ubuntu, Arial, "libra sans", sans-serif;
+  font-weight: 300;
+  border: none;
+  h1, h2 {
+    font-size: 2.8125em;
+    font-weight: 300;
+    line-height: 1.3;
+    margin-bottom: .5em;
+  }
+}
+
+.table_header h3 {
+  font-family: Ubuntu, Arial, "libra sans", sans-serif;
+  font-weight: 300;
+}
+
+
+/* Links */
+a,
+a:link,
+a:hover,
+a:focus,
+a:active {
+  color: $eplexity-orange;
+}
+
+/* CTA Buttons */
+
+.btn,
+.btn:link {
+  @include box-sizing();
+  @include font-size (14);
+  @include rounded-corners(3px);
+  background: $eplexity-orange;
+  border: none;
+  color: #fff;
+  text-decoration:none;
+  display: inline-block;
+  margin: 0;
+  padding: 8px 14px;
+  font-family: Ubuntu, Arial, "libra sans", sans-serif;
+  font-weight: 300;
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-font-smoothing: subpixel-antialiased;
+    -o-font-smoothing: subpixel-antialiased;
+  font-smoothing: subpixel-antialiased;
+  padding: 4px 14px;
+  text-align: center;
+}
+
+.btn-primary.disabled,
+.btn-primary.disabled:hover {
+  background-color: $eplexity-orange;
+}
+
+a.link-cta-inverted,
+button.cta-inverted {
+  background: #fff;
+  color: $cool-grey;
+}
+
+.btn:hover,
+.btn:focus,
+.btn:active,
+{
+  color: #fff;
+  text-decoration: none;
+  background: #c03f11;
+}
+
+.btn.close,
+.modal-footer .btn.close,
+.btn.cancel,
+.modal-footer .btn.cancel {
+  color: $cool-grey;
+  font-weight: 300;
+  background-color: #ccc;
+}
+
+.btn.close:hover,
+.modal-footer .btn.close:hover,
+.btn.cancel:hover,
+.modal-footer .btn.cancel:hover {
+  text-decoration: none;
+  background-color: $warm-grey;
+  color: #fff;
+  text-shadow: none;
+}
+
+/* Login Screen */
+#splash .login {
+  background-color: $eplexity-orange;
+  background-image: url("../img/eplexity.png");
+  padding-top: 100px;
+  div {
+    background-color: #fff;
+  }
+}
+
+/* Header / Menu */
+.topbar {
+  background-color: $eplexity-orange;
+  border: none;
+    -moz-box-shadow: 0 1px 2px 1px rgba(0,0,0,0.2);
+    -webkit-box-shadow: 0 1px 2px 1px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 2px 1px rgba(0,0,0,0.2);
+  color: #fff;
+  height: 50px;
+  padding: 15px 0 0 0;
+  .dropdown-toggle:hover {
+      text-decoration: none;
+  }
+}
+
+.topbar .context-box .context-selection .dropdown-toggle {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: #fff;
+}
+
+#profile_editor_switcher {
+  margin-top: -3px;
+}
+
+#user_info > a {
+  color: #fff;
+}
+
+h1.brand a {
+  background-image: url("../img/eplexity.png");
+  margin-top: -5px;
+  min-width: 400px;
+}
+
