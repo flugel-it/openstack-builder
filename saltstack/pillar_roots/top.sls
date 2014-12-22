@@ -20,3 +20,7 @@ base:
     - match: compound
     - ceph
 
+  'G@cluster_name:hosting':
+    - match: compound
+    - providers.hosting
+

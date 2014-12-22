@@ -23,8 +23,9 @@ base:
     - openstack.neutron
     - openstack.neutron.controller
     - openstack.horizon
+    - openstack.cinder
+    - openstack.cinder.controller
     - openstack.sahara
-    #- openstack.cinder
 
   'G@roles:openstack-compute':
     - match: compound
@@ -41,6 +42,13 @@ base:
     - openstack.minion
     - openstack.neutron
     - openstack.neutron.network
+
+  'G@roles:openstack-volume':
+    - match: compound
+    - openstack
+    - openstack.minion
+    - openstack.cinder
+    - openstack.cinder.volume
 
   'G@roles:ceph-client':
     - match: compound
