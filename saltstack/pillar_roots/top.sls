@@ -22,5 +22,6 @@ base:
 
   'G@cluster_name:hosting':
     - match: compound
+    - providers
     - providers.hosting
 
