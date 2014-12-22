@@ -26,6 +26,7 @@ base:
     - openstack.cinder
     - openstack.cinder.controller
     - openstack.sahara
+    - openstack.heat
 
   'G@roles:openstack-compute':
     - match: compound
