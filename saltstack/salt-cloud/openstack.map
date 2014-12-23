@@ -3,7 +3,7 @@ openstack-controller:
   - openstack-controller
 
 openstack-compute:
-  - openstack-compute01
+  - openstack-compute00
 
 openstack-network:
   - openstack-network
