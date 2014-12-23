@@ -46,7 +46,7 @@ def get_public_ip():
 
 def get_private_ip():
     for ip in __grains__["ipv4"]:
-        if IP(ip).iptype() == "PRIVATE":
+        if IP(ip).iptype() == "PRIVATE" and ip != "127.0.0.1":
             return ip
 
     return False
