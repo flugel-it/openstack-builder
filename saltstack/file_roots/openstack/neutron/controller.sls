@@ -62,7 +62,7 @@ neutron-keystone-service:
 neutron-keystone-endpoint:
   keystone.endpoint_present:
     - name: neutron
-    - publicurl: http://{{ salt.openstack.get_controller() }}:9696
+    - publicurl: http://{{ salt.openstack.get_controller_public() }}:9696
     - internalurl: http://{{ salt.openstack.get_controller() }}:9696
     - adminurl: http://{{ salt.openstack.get_controller() }}:9696
     - require:

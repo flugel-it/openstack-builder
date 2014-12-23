@@ -77,14 +77,14 @@ cinder-keystone-service-v2:
 cinder-keystone-endpoint:
   keystone.endpoint_present:
     - name: cinder
-    - publicurl: http://{{ salt.openstack.get_controller() }}:8776/v1/%(tenant_id)s
+    - publicurl: http://{{ salt.openstack.get_controller_public() }}:8776/v1/%(tenant_id)s
     - internalurl: http://{{ salt.openstack.get_controller() }}:8776/v1/%(tenant_id)s
     - adminurl: http://{{ salt.openstack.get_controller() }}:8776/v1/%(tenant_id)s
 
 cinder-keystone-endpoint-v2:
   keystone.endpoint_present:
     - name: cinderv2
-    - publicurl: http://{{ salt.openstack.get_controller() }}:8776/v2/%(tenant_id)s
+    - publicurl: http://{{ salt.openstack.get_controller_public() }}:8776/v2/%(tenant_id)s
     - internalurl: http://{{ salt.openstack.get_controller() }}:8776/v2/%(tenant_id)s
     - adminurl: http://{{ salt.openstack.get_controller() }}:8776/v2/%(tenant_id)s
 

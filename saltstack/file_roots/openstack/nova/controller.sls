@@ -61,7 +61,7 @@ openstack-nova-keystone-service:
 openstack-nova-keypoint-endpoint:
   keystone.endpoint_present:
     - name: nova
-    - publicurl: http://{{ salt.openstack.get_controller() }}:8774/v2/%(tenant_id)s
+    - publicurl: http://{{ salt.openstack.get_controller_public() }}:8774/v2/%(tenant_id)s
     - internalurl: http://{{ salt.openstack.get_controller() }}:8774/v2/%(tenant_id)s
     - adminurl: http://{{ salt.openstack.get_controller() }}:8774/v2/%(tenant_id)s
     - region: {{ pillar.openstack.region }}
