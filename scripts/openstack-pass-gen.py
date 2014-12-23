@@ -53,9 +53,9 @@ passDescDict = { 'DATABASE': 'Root password for the database',
 newPassDicts = { }
 
 for key in passDescDict.keys():
-   newPassDicts[key] = binascii.b2a_hex(os.urandom(10))
+   newPassDicts[key.lower()] = binascii.b2a_hex(os.urandom(10))
 
-for key in newPassDicts.keys():
+for key in sorted(newPassDicts.keys()):
     if not key.__contains__('USER'):
         print("%s: %s" % (key, newPassDicts[key]))
     else:
