@@ -6,7 +6,7 @@ base:
   'P@roles:openstack.*':
     - match: compound
     - openstack
-    - openstack.passwords
+    - openstack.luisv.passwords
     - openstack.keystone
     - openstack.networking
     - openstack.glance
