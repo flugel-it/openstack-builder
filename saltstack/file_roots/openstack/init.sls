@@ -14,7 +14,7 @@ openstack-base-pkgs:
     - pkgs:
       - {{ pillar.pkgs.python_mysqldb }}
       - {{ pillar.pkgs.python_software_properties }}
-{%- if pillar.openstack.cinder.driver == "nfs" %}
+{%- if pillar.openstack.cinder.get("driver") == "nfs" %}
       - nfs-common
 {% endif %}
 
