@@ -288,7 +288,7 @@ TIME_ZONE = "UTC"
 # To disable these extensions set the permission here to something
 # unusable such as ["!"].
 # TROVE_ADD_USER_PERMS = []
-# TROVE_ADD_DATABASE_PERMS = []
+# TROVE_ADD_database_PERMS = []
 
 LOGGING = {
     'version': 1,

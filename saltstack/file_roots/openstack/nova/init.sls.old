@@ -152,32 +152,32 @@ nova-compute:
 {%if "controller" in grains.get("roles", []) %}
 nova_db:
   mysql_database.present:
-    - connection_pass: {{ pillar['DATABASE'] }}
+    - connection_pass: {{ pillar['database'] }}
     - name: {{ pillar['NOVA_DBNAME'] }}
     - connection_host: controller
   mysql_user.present:
-    - name: {{ pillar['NOVA_DBUSER'] }}
-    - password: {{ pillar['NOVA_DBPASS'] }}
+    - name: {{ pillar['nova_dbuser'] }}
+    - password: {{ pillar['nova_dbpass'] }}
     - allow_passwordless: False
     - connection_host: controller
     - host: "%"
-    - connection_pass: {{ pillar['DATABASE'] }}
+    - connection_pass: {{ pillar['database'] }}
   mysql_grants.present:
     - grant: all privileges
     - database: nova.*
     - host: "%"
-    - user: {{ pillar['NOVA_DBUSER'] }}
-    - password: {{ pillar['NOVA_DBPASS'] }}
-    - connection_pass: {{ pillar['DATABASE'] }}
+    - user: {{ pillar['nova_dbuser'] }}
+    - password: {{ pillar['nova_dbpass'] }}
+    - connection_pass: {{ pillar['database'] }}
     - connection_host: controller
     - require:
-      - mysql_user: {{ pillar['NOVA_DBUSER'] }}
+      - mysql_user: {{ pillar['nova_dbuser'] }}
 
 Nova fix-db-access.sh:
   cmd.run:
-    - name: /usr/local/bin/fix-db-access.sh {{ pillar['NOVA_DBUSER'] }} {{ pillar['NOVA_DBPASS'] }} {{ pillar['DATABASE'] }} nova
+    - name: /usr/local/bin/fix-db-access.sh {{ pillar['nova_dbuser'] }} {{ pillar['nova_dbpass'] }} {{ pillar['database'] }} nova
     - user: root
-    - unless: test -f /etc/salt/.{{ pillar['NOVA_DBUSER'] }}-access-fixed
+    - unless: test -f /etc/salt/.{{ pillar['nova_dbuser'] }}-access-fixed
 
 nova-initdb:
   cmd.run:
@@ -193,7 +193,7 @@ Nova tenants:
 nova_user:
   keystone.user_present:
     - name: nova
-    - password: {{ pillar['NOVA_PASS'] }}
+    - password: {{ pillar['nova_pass'] }}
     - email: infradevs@flugel.it
     - roles:
       - service:
