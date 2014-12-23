@@ -2,17 +2,14 @@
 openstack-horizon-pkgs:
   pkg.installed:
     - pkgs:
-      - openstack-dashboard
       - apache2
       - libapache2-mod-wsgi
       - memcached
       - python-memcache
+      - openstack-dashboard
 
 apache2:
-  pkg:
-    - installed
-  service:
-    - running
+  service.running:
     - enable: True
 
 local_settings.py:
