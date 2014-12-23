@@ -1,14 +1,14 @@
-sahara_pkgs:
-  - pkg.installed
-    - pkgs:
-      - python-setuptools
-      - python-virtualenv
-      - python-dev
-      - python-pip
+python-setuptools:
+  pkg.installed
+python-virtualenv:
+  pkg.installed
+python-dev:
+  pkg.installed
+python-pip:
+  pkg.installed
 
 sahara:
   pip.installed: []
-    - require: sahara_pkgs
   group.present:
     - gid: 10000
   user.present:
@@ -27,9 +27,6 @@ python-saharaclient:
 sahara-image-elements:
   pip.installed
 
-ahara-guestagent:
-  pip.installed
-
 /etc/sahara:
   file.directory:
     - user: sahara
@@ -46,13 +43,34 @@ ahara-guestagent:
     - group: sahara
     - mode: 755
 
-keystone-openstack-service:
+openstack-sahara-db:
+  mysql_database.present:
+    - name: sahara
+  mysql_user.present:
+    - name: sahara
+    - password: {{ pillar.openstack.sahara_dbpass }}
+    - host: "%"
+  mysql_grants.present:
+    - grant: all privileges
+    - database: sahara.*
+    - user: sahara
+    - password: {{ pillar.openstack.sahara_dbpass }}
+    - host: "%"
+
+openstack-sahara-initdb:
+  cmd.run:
+    - name: sahara-manage db sync && touch /etc/sahara/.already_synced
+    - unless: test -f /etc/sahara/.already_synced
+    - user: sahara
+
+
+sahara-service:
   keystone.service_present:
     - name: sahara
     - service_type: data_processing
     - description: Sahara Data Processing
 
-keystone-endpoint:
+sahara-endpoint:
   keystone.endpoint_present:
     - name: sahara
     - publicurl: http://{{ salt.openstack.get_controller() }}:8386/v1.1/%(tenant_id)s

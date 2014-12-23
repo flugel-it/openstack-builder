@@ -1,5 +1,5 @@
 
 openstack:
   region: RegionOne
-
+  cinder: {}
 

@@ -25,3 +25,9 @@ base:
     - providers
     - providers.hosting
 
+  'G@cluster_name:do_test':
+    - match: compound
+    - providers
+    - providers.hosting
+
+
