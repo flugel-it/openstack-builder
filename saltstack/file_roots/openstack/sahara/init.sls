@@ -27,11 +27,26 @@ python-saharaclient:
 sahara-image-elements:
   pip.installed
 
+sahara-service:
+  service.running:
+    - name: sahara
+    - watch:
+      - file: /etc/sahara/sahara.conf
+
 /etc/sahara:
   file.directory:
     - user: sahara
     - group: sahara
     - mode: 755
+
+/etc/init/sahara.conf:
+  file.managed:
+    - source: salt://openstack/sahara/files/init-sahara.conf
+    - context:
+      controller: {{ salt.openstack.get_controller() }}
+    - user: root
+    - group: root
+    - mode: 644
 
 /etc/sahara/sahara.conf:
   file.managed:
@@ -59,10 +74,18 @@ openstack-sahara-db:
 
 openstack-sahara-initdb:
   cmd.run:
-    - name: sahara-manage db sync && touch /etc/sahara/.already_synced
+    - name: sahara-db-manage --config-file /etc/sahara/sahara.conf upgrade head && touch /etc/sahara/.already_synced
     - unless: test -f /etc/sahara/.already_synced
     - user: sahara
 
+openstack-sahara-user:
+  keystone.user_present:
+    - name: sahara
+    - password: {{ pillar.openstack.sahara_pass }}
+    - email: infradevs@flugel.it
+    - roles:
+      - service:
+        - admin
 
 sahara-service:
   keystone.service_present:

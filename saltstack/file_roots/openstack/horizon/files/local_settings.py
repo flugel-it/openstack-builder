@@ -547,9 +547,9 @@ except ImportError:
 
 # Default Ubuntu apache configuration uses /horizon as the application root.
 # Configure auth redirects here accordingly.
-LOGIN_URL='/horizon/auth/login/'
-LOGOUT_URL='/horizon/auth/logout/'
-LOGIN_REDIRECT_URL='/horizon'
+LOGIN_URL='/auth/login/'
+LOGOUT_URL='/auth/logout/'
+LOGIN_REDIRECT_URL='/'
 
 # By default, validation of the HTTP Host header is disabled.  Production
 # installations should have this set accordingly.  For more information

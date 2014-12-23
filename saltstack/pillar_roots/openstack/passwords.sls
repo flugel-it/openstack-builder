@@ -1,4 +1,3 @@
-
 #XXX: move this to other place.
 db_root_pass: 08637e971b61355cbe75
 
@@ -28,4 +27,3 @@ openstack:
   sahara_dbpass: c525207e9c700fe79947
   trove_dbpass: c525207e9c700fe79947
   trove_pass: 9cc9d6ed59222b35c9fc
-

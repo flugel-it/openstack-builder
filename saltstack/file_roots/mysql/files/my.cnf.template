@@ -17,7 +17,13 @@ lc-messages-dir = /usr/share/mysql
 skip-external-locking
 bind-address            = 0.0.0.0
 key_buffer              = 16M
+
+{%- if "openstack-controller" in grains.get("roles", []) %}
+max_allowed_packet      = 256M
+{%- else %}
 max_allowed_packet      = 16M
+{%- endif %}
+
 thread_stack            = 192K
 thread_cache_size       = 8
 myisam-recover         = BACKUP
