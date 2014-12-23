@@ -59,3 +59,7 @@ base:
     - match: compound
     - openstack.ironic
 
+  'G@roles:sahara':
+    - match: compound
+    - openstack.sahara
+
