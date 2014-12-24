@@ -10,7 +10,7 @@ salt-cloud -m openstack-rax.map -y # or openstac-do.map
 NAME=$1
 
 salt -t 300 -v -G cluster_name:$NAME \
-        saltutil.sync_all &&
+        saltutil.sync_all
 salt -t 300 -v -G cluster_name:$NAME \
         state.sls base,openstack,salt-minion
 salt -t 300 -v -G cluster_name:$NAME \
