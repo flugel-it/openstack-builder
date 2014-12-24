@@ -2,10 +2,25 @@ Openstack Deployment procedures
 ===============================
 
 ```
-saltutil.sync_all
-state.sls hostsfile,salt-minion,openstack.minion
-*controller* state.sls mysql,rabbitmq
-state.highstate
+cd /root/openstack-builder/saltstack/salt-cloud
+salt-cloud -m openstack-rax.map -y # or openstac-do.map
+```
+
+```
+NAME=$1
+
+salt -t 300 -v -G cluster_name:$NAME \
+        saltutil.sync_all &&
+salt -t 300 -v -G cluster_name:$NAME \
+        state.sls base,openstack,salt-minion
+salt -t 300 -v -G cluster_name:$NAME \
+        state.sls salt-minion,hostsfile,openstack.minion 
+salt -t 300 -v -C "G@cluster_name:$NAME and G@roles:openstack-controller" \
+        state.sls salt-minion,mysql,rabbitmq 
+salt -t 300 -v -C "G@cluster_name:$NAME and G@roles:openstack-controller" \
+        state.sls openstack,openstack.controller,openstack.keystone
+salt -t 300 -v -G cluster_name:$NAME \
+        state.highstate
 ```
 
 ```
