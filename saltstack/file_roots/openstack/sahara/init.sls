@@ -96,7 +96,7 @@ sahara-service-endpoint:
 sahara-endpoint:
   keystone.endpoint_present:
     - name: sahara
-    - publicurl: http://{{ salt.openstack.get_controller() }}:8386/v1.1/%(tenant_id)s
+    - publicurl: http://{{ salt.openstack.get_controller_public() }}:8386/v1.1/%(tenant_id)s
     - internalurl: http://{{ salt.openstack.get_controller() }}:8386/v1.1/%(tenant_id)s
     - adminurl: http://{{ salt.openstack.get_controller() }}:8386/v1.1/%(tenant_id)s
     - region: {{ pillar.openstack.region }}

@@ -93,7 +93,7 @@ glance-keystone-service:
 glance-keypoint-endpoint:
   keystone.endpoint_present:
     - name: glance
-    - publicurl: http://{{ salt.openstack.get_controller() }}:9292
+    - publicurl: http://{{ salt.openstack.get_controller_public() }}:9292
     - internalurl: http://{{ salt.openstack.get_controller() }}:9292
     - adminurl: http://{{ salt.openstack.get_controller() }}:9292
 

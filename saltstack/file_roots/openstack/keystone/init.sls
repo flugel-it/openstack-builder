@@ -98,7 +98,7 @@ keystone-openstack-service:
 keystone-endpoint:
   keystone.endpoint_present:
     - name: keystone
-    - publicurl: http://{{ salt.openstack.get_controller() }}:5000/v2.0
+    - publicurl: http://{{ salt.openstack.get_controller_public() }}:5000/v2.0
     - internalurl: http://{{ salt.openstack.get_controller() }}:5000/v2.0
     - adminurl: http://{{ salt.openstack.get_controller() }}:35357/v2.0
     - region: {{ pillar.openstack.region }}
