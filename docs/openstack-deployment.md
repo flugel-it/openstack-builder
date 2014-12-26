@@ -2,11 +2,27 @@ Openstack Deployment procedures
 ===============================
 
 ```
-saltutil.sync_all
-state.sls hostsfile,salt-minion,openstack.minion
-*controller* state.sls mysql,rabbitmq
-state.highstate
+wget -O bootstrap-salt.sh https://bootstrap.saltstack.com
+sh bootstrap-salt.sh -P -A 188.166.54.47  git v2014.7.0
 ```
+
+## With salt-cloud ##
+
+```
+cd /root/openstack-builder/saltstack/salt-cloud
+salt-cloud -m openstack-rax.map -y # or openstac-do.map
+```
+
+## Without salt-cloud ##
+
+```
+salt '*' grains.setval cluster_name [cluster_name]
+
+salt [controller_node] grains.setval roles ['openstack-controller']
+salt [network_node] grains.setval roles ['openstack-network']
+salt [compute_node] grains.setval roles ['openstack-compute']
+```
+
 
 ```
 neutron net-create ext-net --shared --router:external True \

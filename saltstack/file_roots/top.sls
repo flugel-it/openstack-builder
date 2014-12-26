@@ -3,6 +3,7 @@ base:
     - base
     - hostsfile
     - salt-minion
+    - swap
 
   'G@roles:nagios':
     - match: compound
