@@ -1,29 +1,40 @@
-#XXX: move this to other place.
-db_root_pass: 08637e971b61355cbe75
+db_root_pass: 5dda51f6a814c3611057
 
 openstack:
-  admin_pass: 11b48e6cf489ffa58645
-  ceilometer_dbpass: 0208d9a664b06cce853c
-  ceilometer_pass: 90fe37aa6bbd7b9ca622
-  cinder_dbpass: 449cf49e5938cdcb5c31
-  cinder_pass: 32c7f1b1a8ba83c7bbe7
-  dashboard_dbpass: 09fea1294c9525a7b807
-  glance_dbpass: 4c75efa230e49f974e56
-  glance_pass: 3c59b21f6507b0fcb5be
-  heat_dbpass: 096e40461587f6e1e7a3
-  heat_pass: b9207dcef0a832a45dfd
-  ironic_dbpass: aa370e7cafbf14d982aa
-  ironic_pass: bc4bc0b1470368b7b835
-  keystone_dbpass: 907ebba1206fd2527d20
-  keystone_token: 8188e1724fc119cceea6
-  metadata_proxy_secret: 73536d4f61889b62ccd0
-  neutron_dbpass: d8bc1c5db0e3bed07543
-  neutron_pass: 342998dc933111cc8185
-  nova_dbpass: 56841e5db87dca4a23ee
-  nova_pass: 51e93b39dde738a2aef4
-  rabbit_user: 9ffed40e9b7d07d715a8
-  rabbit_pass: 9ffed40e9b7d07d715a8
-  sahara_pass: c525207e9c700fe79947
-  sahara_dbpass: c525207e9c700fe79947
-  trove_dbpass: c525207e9c700fe79947
-  trove_pass: 9cc9d6ed59222b35c9fc
+  admin_pass: 953397e5d84a8348395f
+  ceilometer_dbpass: 6f735aee020499861f74
+  ceilometer_pass: bec26b07dfe475942664
+  cinder_dbpass: b908994fa5db38d0515d
+  cinder_dbuser: b572adf4390ac03698e9
+  cinder_pass: 275b33bdf97712ce7f24
+  dash_dbpass: fdd3c7c8226bbc0459c1
+  database: 5dda51f6a814c3611057
+  database_user: 2c04335062e00e331445
+  demo_pass: 97b0025ef8c544de0d20
+  glance_dbpass: 17aae421054519670b58
+  glance_dbuser: aa4f5dcc4828a991c3cd
+  glance_pass: 31260c421517a4373cc6
+  heat_dbpass: ce8e528aeb934e2682d7
+  heat_dbuser: 209b85f3d36131e68e93
+  heat_pass: 97b21366e2998abd98c2
+  ironic_dbpass: cc34777625f0265fbad9
+  ironic_dbuser: 301e5a26232515003e4a
+  ironic_pass: 986fbf3bcac9cf59cef9
+  keystone_admin_pass: c0907d2af7172c35eb85
+  keystone_dbpass: 2db3ffabbe061bbe2d76
+  keystone_dbuser: fb0cc97f20452c72b887
+  keystone_token: 638699703713f3edbc45
+  metadata_proxy_secret: 9e8bd2c29e730a3ec817
+  neutron_dbpass: 0628257d5ce3bda4f21f
+  neutron_dbuser: b49c27763863f6bf76bd
+  neutron_pass: d95bef35e8da59f07aba
+  nova_dbpass: f92d7f7d5e1e72e5dcdc
+  nova_dbuser: bb001c04c620ad6acb2f
+  nova_pass: 22902d59cdefb7cf3fa4
+  proxy_secret: e4a23429056819c991b6
+  rabbit_pass: f28d65b0bd3748e55c1b
+  rabbit_user: dd2d513506236f6d3d8d
+  sahara_dbpass: 4d5b06a0afe1ab83a25c
+  sahara_pass: cdff18e77268867a3032
+  trove_dbpass: fc8b7e991081c0a6298a
+  trove_pass: 75ec0bb7d23855f0a895

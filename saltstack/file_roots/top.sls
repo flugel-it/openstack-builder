@@ -1,7 +1,6 @@
 base:
   '*':
     - base
-    - swap
     - hostsfile
     - salt-minion
 
