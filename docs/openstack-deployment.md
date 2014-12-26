@@ -1,11 +1,40 @@
 Openstack Deployment procedures
 ===============================
 
+## With salt-cloud ##
+
 ```
-saltutil.sync_all
-state.sls hostsfile,salt-minion,openstack.minion
-*controller* state.sls mysql,rabbitmq
-state.highstate
+cd /root/openstack-builder/saltstack/salt-cloud
+salt-cloud -m openstack-rax.map -y # or openstac-do.map
+```
+
+## Without salt-cloud ##
+
+```
+salt '*' grains.setval cluster_name [cluster_name]
+
+salt [controller_node] grains.setval roles ['openstack-controller']
+salt [network_node] grains.setval roles ['openstack-network']
+salt [compute_node] grains.setval roles ['openstack-compute']
+```
+
+## All ##
+
+```
+NAME=$1
+
+salt -t 300 -v -G cluster_name:$NAME \
+        saltutil.sync_all
+salt -t 300 -v -G cluster_name:$NAME \
+        state.sls base,openstack,salt-minion
+salt -t 300 -v -G cluster_name:$NAME \
+        state.sls salt-minion,hostsfile,openstack.minion 
+salt -t 300 -v -C "G@cluster_name:$NAME and G@roles:openstack-controller" \
+        state.sls salt-minion,mysql,rabbitmq 
+salt -t 300 -v -C "G@cluster_name:$NAME and G@roles:openstack-controller" \
+        state.sls openstack,openstack.controller,openstack.keystone
+salt -t 300 -v -G cluster_name:$NAME \
+        state.highstate
 ```
 
 ```
