@@ -1,10 +1,19 @@
 #!/bin/sh
 # You can optionally connect to the VM with
 # virt-viewer -c qemu:///system Debian7
+
+#
+# usage:
+#
+#      install-controller.sh [kvm_server]
+#
+
 export OS=Ubuntu-14.04
- 
+
+DEST=$1
+
 virt-install \
---connect qemu+ssh://root@172.21.22.12/system \
+--connect qemu+ssh://root@${DEST}/system \
 --name ${OS} \
 --ram 512 \
 --vcpus 1 \
