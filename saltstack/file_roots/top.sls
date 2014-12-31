@@ -1,9 +1,9 @@
 base:
   '*':
     - base
-    - swap
     - hostsfile
     - salt-minion
+    - swap
 
   'G@roles:nagios':
     - match: compound

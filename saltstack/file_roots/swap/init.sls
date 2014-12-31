@@ -1,4 +1,3 @@
-
 {%- if salt.ps.swap_memory()['total'] == 0 %}
 
 create-swap-file:
@@ -13,6 +12,5 @@ init-swap-file:
 
 /.swap:
   mount.swap
-
 {%- endif %}
 

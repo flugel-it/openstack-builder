@@ -108,12 +108,12 @@ glance-registry-service:
 
 glance_db:
   mysql_database.present:
-    - connection_pass: {{ pillar['DATABASE'] }}
+    - connection_pass: {{ pillar['database'] }}
     - name: {{ pillar['GLANCE_DBNAME'] }}
     - connection_host: localhost
   mysql_user.present:
-    - name: {{ pillar['GLANCE_DBUSER'] }}
-    - password: {{ pillar['GLANCE_DBPASS'] }}
+    - name: {{ pillar['glance_dbuser'] }}
+    - password: {{ pillar['glance_dbpass'] }}
     - allow_passwordless: False
     - connection_host: localhost
 =======
@@ -125,35 +125,35 @@ glance_db:
 
 ironic_db:
   mysql_database.present:
-    - connection_pass: {{ pillar['DATABASE'] }}
+    - connection_pass: {{ pillar['database'] }}
 
     - name: ironic
     - connection_host: controller
   mysql_user.present:
-    - name: {{ pillar['IRONIC_DBUSER'] }}
-    - password: {{ pillar['IRONIC_DBPASS'] }}
+    - name: {{ pillar['ironic_dbuser'] }}
+    - password: {{ pillar['ironic_dbpass'] }}
     - allow_passwordless: False
     - connection_host: controller
 >>>>>>> 61b9e060f0b534f6d3b52f271da566df2d2be132
     - host: "%"
-    - connection_pass: {{ pillar['DATABASE'] }}
+    - connection_pass: {{ pillar['database'] }}
   mysql_grants.present:
     - grant: all privileges
 <<<<<<< HEAD
     - database: glance.*
     - host: "%"
-    - user: {{ pillar['GLANCE_DBUSER'] }}
-    - password: {{ pillar['GLANCE_DBPASS'] }}
-    - connection_pass: {{ pillar['DATABASE'] }}
+    - user: {{ pillar['glance_dbuser'] }}
+    - password: {{ pillar['glance_dbpass'] }}
+    - connection_pass: {{ pillar['database'] }}
     - connection_host: localhost
     - require:
-      - mysql_user: {{ pillar['GLANCE_DBUSER'] }}
+      - mysql_user: {{ pillar['glance_dbuser'] }}
 
 Glance fix-db-access.sh:
   cmd.run:
-    - name: /usr/local/bin/fix-db-access.sh {{ pillar['GLANCE_DBUSER'] }} {{ pillar['GLANCE_DBPASS'] }} {{ pillar['DATABASE'] }} glance
+    - name: /usr/local/bin/fix-db-access.sh {{ pillar['glance_dbuser'] }} {{ pillar['glance_dbpass'] }} {{ pillar['database'] }} glance
     - user: root
-    - unless: test -f /etc/salt/.{{ pillar['GLANCE_DBUSER'] }}-access-fixed
+    - unless: test -f /etc/salt/.{{ pillar['glance_dbuser'] }}-access-fixed
 
 glance-initdb:
   cmd.run:
@@ -169,22 +169,22 @@ Glance tenants:
 glance_user:
   keystone.user_present:
     - name: glance
-    - password: {{ pillar['GLANCE_PASS'] }}
+    - password: {{ pillar['glance_pass'] }}
 =======
     - database: ironic.*
     - host: "%"
-    - user: {{ pillar['IRONIC_DBUSER'] }}
-    - password: {{ pillar['IRONIC_DBPASS'] }}
-    - connection_pass: {{ pillar['DATABASE'] }}
+    - user: {{ pillar['ironic_dbuser'] }}
+    - password: {{ pillar['ironic_dbpass'] }}
+    - connection_pass: {{ pillar['database'] }}
     - connection_host: controller
     - require:
-      - mysql_user: {{ pillar['IRONIC_DBUSER'] }}
+      - mysql_user: {{ pillar['ironic_dbuser'] }}
 
 Ironic fix-db-access.sh:
   cmd.run:
-    - name: /usr/local/bin/fix-db-access.sh {{ pillar['IRONIC_DBUSER'] }} {{ pillar['IRONIC_DBPASS'] }} {{ pillar['DATABASE'] }} ironic
+    - name: /usr/local/bin/fix-db-access.sh {{ pillar['ironic_dbuser'] }} {{ pillar['ironic_dbpass'] }} {{ pillar['database'] }} ironic
     - user: root
-    - unless: test -f /etc/salt/.{{ pillar['IRONIC_DBUSER'] }}-access-fixed
+    - unless: test -f /etc/salt/.{{ pillar['ironic_dbuser'] }}-access-fixed
 
 ironic-initdb:
   cmd.run:
@@ -203,7 +203,7 @@ Ironic tenants:
 ironic_user:
   keystone.user_present:
     - name: ironic
-    - password: {{ pillar['IRONIC_PASS'] }}
+    - password: {{ pillar['ironic_pass'] }}
 >>>>>>> 61b9e060f0b534f6d3b52f271da566df2d2be132
     - email: infradevs@flugel.it
     - roles:

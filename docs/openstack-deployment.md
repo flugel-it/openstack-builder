@@ -1,16 +1,34 @@
 Openstack Deployment procedures
 ===============================
 
+## With salt-cloud ##
+
 ```
 cd /root/openstack-builder/saltstack/salt-cloud
 salt-cloud -m openstack-rax.map -y # or openstac-do.map
 ```
 
+## Without salt-cloud ##
+
+```
+<<<<<<< HEAD
+wget -O bootstrap-salt.sh https://bootstrap.saltstack.com
+sh bootstrap-salt.sh -P -A 188.166.54.47  git v2014.7.0
+=======
+salt '*' grains.setval cluster_name [cluster_name]
+
+salt [controller_node] grains.setval roles ['openstack-controller']
+salt [network_node] grains.setval roles ['openstack-network']
+salt [compute_node] grains.setval roles ['openstack-compute']
+```
+
+## All ##
+
 ```
 NAME=$1
 
 salt -t 300 -v -G cluster_name:$NAME \
-        saltutil.sync_all &&
+        saltutil.sync_all
 salt -t 300 -v -G cluster_name:$NAME \
         state.sls base,openstack,salt-minion
 salt -t 300 -v -G cluster_name:$NAME \
@@ -21,7 +39,26 @@ salt -t 300 -v -C "G@cluster_name:$NAME and G@roles:openstack-controller" \
         state.sls openstack,openstack.controller,openstack.keystone
 salt -t 300 -v -G cluster_name:$NAME \
         state.highstate
+>>>>>>> 5c31e243052625494172f4eae9d1862ea11d38bb
 ```
+
+## With salt-cloud ##
+
+```
+cd /root/openstack-builder/saltstack/salt-cloud
+salt-cloud -m openstack-rax.map -y # or openstac-do.map
+```
+
+## Without salt-cloud ##
+
+```
+salt '*' grains.setval cluster_name [cluster_name]
+
+salt [controller_node] grains.setval roles ['openstack-controller']
+salt [network_node] grains.setval roles ['openstack-network']
+salt [compute_node] grains.setval roles ['openstack-compute']
+```
+
 
 ```
 neutron net-create ext-net --shared --router:external True \

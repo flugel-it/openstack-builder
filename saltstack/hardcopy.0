@@ -1,0 +1,36 @@
+     Started: 15:39:28.270796
+    Duration: 1122.046 ms
+     Changes:
+
+Summary
+------------
+Succeeded: 1
+Failed:    0
+------------
+Total states run:     1
+controller01:
+----------
+          ID: /etc/hosts
+    Function: file.managed
+      Result: True
+     Comment: File /etc/hosts is in the correct state
+     Started: 15:39:28.418169
+    Duration: 1388.348 ms
+     Changes:
+
+Summary
+------------
+Succeeded: 1
+Failed:    0
+------------
+Total states run:     1
+root@saltmaster:~/openstack-builder/scripts# salt -G 'cluster_name:luisv' opesntack.get_private_ip
+saltmaster.luisv.com.ar:
+    'opesntack.get_private_ip' is not available.
+compute01:
+    'opesntack.get_private_ip' is not available.
+network01:
+    'opesntack.get_private_ip' is not available.
+controller01:
+    'opesntack.get_private_ip' is not available.
+root@saltmaster:~/openstack-builder/scripts#

@@ -13,8 +13,8 @@ volumes_dir = /var/lib/cinder/volumes
 
 rpc_backend = rabbit
 rabbit_host = controller
-rabbit_userid = {{ pillar['RABBIT_USER'] }}
-rabbit_password = {{ pillar["RABBIT_PASS"] }}
+rabbit_userid = {{ pillar['rabbit_user'] }}
+rabbit_password = {{ pillar["rabbit_pass"] }}
 
 auth_strategy = keystone
 
@@ -46,13 +46,13 @@ restore_discard_excess_bytes=true
 verbose = True
 
 [database]
-connection = mysql://{{ pillar["CINDER_DBUSER"] }}:{{ pillar["CINDER_DBPASS"] }}@controller/cinder
+connection = mysql://{{ pillar["cinder_dbuser"] }}:{{ pillar["cinder_dbpass"] }}@controller/cinder
 
 [keystone_authtoken]
 auth_uri = http://controller:5000/v2.0
 identity_uri = http://controller:35357
 admin_tenant_name = service
 admin_user = cinder
-admin_password = {{ pillar['CINDER_PASS'] }}
+admin_password = {{ pillar['cinder_pass'] }}
 revocation_cache_time = 10
 

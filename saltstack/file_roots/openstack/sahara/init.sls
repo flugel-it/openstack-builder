@@ -87,7 +87,7 @@ openstack-sahara-user:
       - service:
         - admin
 
-sahara-service:
+sahara-service-endpoint:
   keystone.service_present:
     - name: sahara
     - service_type: data_processing
