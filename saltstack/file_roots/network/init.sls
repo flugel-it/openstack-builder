@@ -2,11 +2,12 @@
 {%- set public_iface = salt.openstack.external_iface() %}
 {%- set cluster_name = grains['cluster_name'] %}
 
-bridge-utils:
-  pkg.installed
-
-vlan:
-  pkg.installed
+networking_pkgs:
+  pkg.installed:
+    - pkgs:
+      - bridge-utils
+      - vlan
+      - ifenslave
 
 /etc/network/interfaces.new:
   file.managed:
