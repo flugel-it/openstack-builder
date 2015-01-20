@@ -8,7 +8,7 @@
 #      install-controller.sh [kvm_server]
 #
 
-export OS=Ubuntu-14.04
+export OS=pe-den-con-01
 
 DEST=$1
 
@@ -17,9 +17,9 @@ virt-install \
 --name ${OS} \
 --ram 512 \
 --vcpus 1 \
---file /var/lib/libvirt/images/FileName.img \
---file-size=10 \
---location http://mirrors.usc.edu/pub/linux/distributions/ubuntu/dists/trusty/main/installer-amd64/ \
+--file /var/lib/libvirt/images/${OS}.img \
+--file-size=15 \
+--location http://us.archive.ubuntu.com/ubuntu/dists/trusty/main/installer-amd64/ \
 --virt-type kvm \
 --os-variant ubuntutrusty \
 --network bridge=virbr0 \
