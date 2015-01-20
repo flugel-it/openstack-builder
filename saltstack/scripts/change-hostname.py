@@ -1,5 +1,11 @@
 #!/usr/bin/env python
 
+#
+# Usage:
+#
+#   change-hostname.py [current_name] [new_name]
+# 
+
 import os
 import sys
 import warnings

@@ -8,6 +8,11 @@
 #      install-controller.sh [kvm_server]
 #
 
+<<<<<<< HEAD
+=======
+export OS=pe-den-con-01
+
+>>>>>>> 29a27fe232974c2a5a66473e92a543b271239aee
 DEST=$1
 OS=$2
 
@@ -20,8 +25,13 @@ virt-install \
 --name ${OS} \
 --ram 512 \
 --vcpus 1 \
+<<<<<<< HEAD
 --file /var/lib/libvirt/images/openstack_controller.img \
 --file-size=10 \
+=======
+--file /var/lib/libvirt/images/${OS}.img \
+--file-size=15 \
+>>>>>>> 29a27fe232974c2a5a66473e92a543b271239aee
 --location http://us.archive.ubuntu.com/ubuntu/dists/trusty/main/installer-amd64/ \
 --virt-type kvm \
 --os-variant ubuntutrusty \

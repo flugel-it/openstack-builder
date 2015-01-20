@@ -6,7 +6,6 @@ base:
   'P@roles:openstack.*':
     - match: compound
     - openstack
-    - openstack.luisv.passwords
     - openstack.keystone
     - openstack.networking
     - openstack.glance
@@ -24,3 +23,12 @@ base:
     - match: compound
     - providers
     - providers.hosting
+    - passwords.hosting
+
+  'G@cluster_name:peak':
+    - match: compound
+    - providers
+    - providers.peak
+    - passwords.peak
+
+
