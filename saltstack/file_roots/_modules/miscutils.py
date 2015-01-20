@@ -10,7 +10,8 @@ def set_hostname(hostname):
     except OSError:
         pass
     os.system("hostname " + hostname)
+    os.system("sed -i 's/^id:.*/id: %s/' /etc/salt/minion" % (hostname))
     os.system("restart salt-minion")
 
-    return 'OK'
+    return "OK"
 
