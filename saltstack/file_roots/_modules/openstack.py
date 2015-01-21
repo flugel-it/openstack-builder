@@ -56,9 +56,13 @@ def get_public_ip():
     return False
 
 def get_private_ip():
-    for ip in __grains__["ipv4"]:
-        if IP(ip).iptype() == "PRIVATE" and ip != "127.0.0.1":
-            return ip
+    for iface, ips in __grains__["ip4_interfaces"].iteritems():
+        print iface, ips
+        if iface.startswith("tun"):
+            continue
+        for ip in ips:
+            if IP(ip).iptype() == "PRIVATE" and ip != "127.0.0.1":
+                return ip
 
     return False
 
