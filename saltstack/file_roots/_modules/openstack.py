@@ -57,7 +57,6 @@ def get_public_ip():
 
 def get_private_ip():
     for iface, ips in __grains__["ip4_interfaces"].iteritems():
-        print iface, ips
         if iface.startswith("tun"):
             continue
         for ip in ips:
