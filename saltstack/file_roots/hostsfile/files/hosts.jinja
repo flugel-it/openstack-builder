@@ -1,0 +1,12 @@
+127.0.0.1 localhost.localdomain localhost
+
+{%- set addrs = salt['mine.get']('cluster_name:' + grains.cluster_name, 'openstack.get_private_ip', expr_form="grain") %}
+{%- if addrs is defined %}
+
+{%- for name, addr in addrs.items() %}
+{{ addr }} {{ name }}.{{ pillar["domain"] }} {{ name }}
+{%- endfor %}
+
+{%- endif %}
+
+
