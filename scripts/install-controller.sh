@@ -27,4 +27,4 @@ virt-install \
 --virt-type kvm \
 --os-variant ubuntutrusty \
 --network bridge=virbr0 \
---extra-args "auto=true hostname=${OS} domain=flugel.it url=http://www.ppmg.com.ar/openstack-builder.seed"
+--extra-args "auto=true hostname=${OS} domain=flugel.it url=http://salt-master.flugel.it/openstack-builder.seed"
