@@ -39,31 +39,22 @@ def get_controller_ip():
     if minion is None:
         return None
 
-    for iface, ips in grains["ip4_interfaces"].iteritems():
-        if iface.startswith("tun"):
-            continue
-        for ip in ips:
-            if IP(ip).iptype() == "PRIVATE" and ip != "127.0.0.1":
-                return ip
-
-    return False
+    return _get_ip("public", grains)
 
 def has_role(role):
     return role in __grains__.get("roles", [])
 
 def get_public_ip():
-    for ip in __grains__["ipv4"]:
-        if IP(ip).iptype() == "PUBLIC":
-            return ip
-
-    return False
+    return _get_ip("public", __grains__)
 
 def get_private_ip():
-    for iface, ips in __grains__["ip4_interfaces"].iteritems():
-        if iface.startswith("tun"):
-            continue
+    return _get_ip("private", __grains__)
+
+def _get_ip(network, grains):
+    net = __pillar__["networks"][network]
+    for iface, ips in grains["ip4_interfaces"].iteritems():
         for ip in ips:
-            if IP(ip).iptype() == "PRIVATE" and ip != "127.0.0.1":
+            if IP(net).overlaps(ip):
                 return ip
 
     return False
@@ -72,9 +63,10 @@ def external_iface():
     try:
         return __pillar__["openstack"]["external_iface"]
     except KeyError:
+        net = __pillar__["networks"]["public"]
         for iface, ips in __grains__["ip4_interfaces"].iteritems():
             for ip in ips:
-                if IP(ip).iptype() == "PUBLIC":
+                if IP(net).overlaps(ip):
                     return iface
 
     return False
