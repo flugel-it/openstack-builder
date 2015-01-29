@@ -11,7 +11,6 @@ salt-cloud -m openstack-rax.map -y # or openstac-do.map
 ## Without salt-cloud ##
 
 ```
-<<<<<<< HEAD
 wget -O bootstrap-salt.sh https://bootstrap.saltstack.com
 sh bootstrap-salt.sh -P -A 188.166.54.47  git v2014.7.0
 =======
@@ -25,21 +24,20 @@ salt [compute_node] grains.setval roles ['openstack-compute']
 ## All ##
 
 ```
-NAME=$1
+CLUSTERNAME=$1
 
-salt -t 300 -v -G cluster_name:$NAME \
+salt -t 300 -v -G cluster_name:$CLUSTERNAME \
         saltutil.sync_all
-salt -t 300 -v -G cluster_name:$NAME \
+salt -t 300 -v -G cluster_name:$CLUSTERNAME \
         state.sls base,openstack,salt-minion
-salt -t 300 -v -G cluster_name:$NAME \
+salt -t 300 -v -G cluster_name:$CLUSTERNAME \
         state.sls salt-minion,hostsfile,openstack.minion 
-salt -t 300 -v -C "G@cluster_name:$NAME and G@roles:openstack-controller" \
+salt -t 300 -v -C "G@cluster_name:$CLUSTERNAME and G@roles:openstack-controller" \
         state.sls salt-minion,mysql,rabbitmq 
-salt -t 300 -v -C "G@cluster_name:$NAME and G@roles:openstack-controller" \
+salt -t 300 -v -C "G@cluster_name:$CLUSTERNAME and G@roles:openstack-controller" \
         state.sls openstack,openstack.controller,openstack.keystone
-salt -t 300 -v -G cluster_name:$NAME \
+salt -t 300 -v -G cluster_name:$CLUSTERNAME \
         state.highstate
->>>>>>> 5c31e243052625494172f4eae9d1862ea11d38bb
 ```
 
 ## With salt-cloud ##
