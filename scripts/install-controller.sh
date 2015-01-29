@@ -8,15 +8,13 @@
 #      install-controller.sh [kvm_server]
 #
 
-<<<<<<< HEAD
-=======
-export OS=pe-den-con-01
-
->>>>>>> 29a27fe232974c2a5a66473e92a543b271239aee
+# export OS=pe-den-con-01
 DEST=$1
 OS=$2
+DIR=$3
 
 [ "$OS" == "" ] && OS=Ubuntu-14.04
+[ "$DIR" == "" ] && DIR=/var/lib/libvirt/images
 
 #--file /var/lib/libvirt/images/openstack_controller.img \
 
@@ -25,15 +23,10 @@ virt-install \
 --name ${OS} \
 --ram 512 \
 --vcpus 1 \
-<<<<<<< HEAD
---file /var/lib/libvirt/images/openstack_controller.img \
---file-size=10 \
-=======
---file /var/lib/libvirt/images/${OS}.img \
+--file ${DIR}/${OS}.img \
 --file-size=15 \
->>>>>>> 29a27fe232974c2a5a66473e92a543b271239aee
 --location http://us.archive.ubuntu.com/ubuntu/dists/trusty/main/installer-amd64/ \
 --virt-type kvm \
 --os-variant ubuntutrusty \
 --network bridge=virbr0 \
---extra-args "auto=true hostname=${OS} domain=flugel.it url=http://www.ppmg.com.ar/openstack-builder.seed"
+--extra-args "auto=true hostname=${OS} domain=flugel.it url=http://cluod-master.flugel.it/openstack-builder.seed"

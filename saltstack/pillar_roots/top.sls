@@ -31,5 +31,6 @@ base:
     - providers
     - providers.peak
     - passwords.peak
+    - configs.peak
 
 

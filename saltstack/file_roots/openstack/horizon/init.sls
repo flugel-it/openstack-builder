@@ -75,3 +75,25 @@ openstack-dashboard-rewrite:
     - watch_in:
       - service: apache2
 
+{%- if pillar['customlookandfeel'] %}
+openstack-dashboard-ubuntu-theme:
+   pkg.removed
+
+logo:
+  file.managed:
+    - source: salt://openstack/horizon/files/{{ grains['cluster_name'] }}/logo.png
+    - name: /usr/share/openstack-dashboard/openstack_dashboard/static/dashboard/img/logo.png
+    - mode: 644
+
+logo-splash:
+  file.managed:
+    - source: salt://openstack/horizon/files/{{ grains['cluster_name'] }}/logo-splash.png
+    - name: /usr/share/openstack-dashboard/openstack_dashboard/static/dashboard/img/logo-splash.png
+    - mode: 644
+
+favicon:
+  file.managed:
+    - source: salt://openstack/horizon/files/{{ grains['cluster_name'] }}/favicon.ico
+    - name: /usr/share/openstack-dashboard/openstack_dashboard/static/dashboard/img/favicon.ico
+    - mode: 644
+{% endif %}
