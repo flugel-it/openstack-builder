@@ -22,9 +22,9 @@ base:
 
   'G@cluster_name:hosting':
     - match: compound
-    - providers
-    - providers.hosting
-    #- passwords.hosting
+    - clusters
+    - clusters.hosting
+    - clusters.hosting-password
 
   'G@cluster_name:peak':
     - match: compound
