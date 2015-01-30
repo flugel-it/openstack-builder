@@ -24,6 +24,7 @@ base-pkgs:
       - vlan
       - ifenslave
       - ethtool
+      - arping
 
 ntp:
   service.running:
