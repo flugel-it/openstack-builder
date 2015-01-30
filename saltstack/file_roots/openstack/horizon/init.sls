@@ -75,7 +75,7 @@ openstack-dashboard-rewrite:
     - watch_in:
       - service: apache2
 
-{%- if pillar['customlookandfeel'] %}
+{%- if pillar.get('customlookandfeel') %}
 openstack-dashboard-ubuntu-theme:
    pkg.removed
 
