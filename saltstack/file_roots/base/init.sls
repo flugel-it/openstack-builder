@@ -15,6 +15,7 @@ base-pkgs:
       - tcpdump
       - ntp
       - sysstat
+      - dstat
       - vim
       - unzip
       - git
@@ -22,6 +23,7 @@ base-pkgs:
       - bridge-utils
       - vlan
       - ifenslave
+      - ethtool
 
 ntp:
   service.running:
