@@ -33,4 +33,10 @@ base:
     - passwords.peak
     - configs.peak
 
+  'G@cluster_name:luis-peak':
+    - match: compound
+    - providers
+    - openstack.passwords
+    - configs.luis-peak
+
 
