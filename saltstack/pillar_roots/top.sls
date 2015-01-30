@@ -26,6 +26,12 @@ base:
     - clusters.hosting
     - clusters.hosting-password
 
+  'G@cluster_name:globant':
+    - match: compound
+    - clusters
+    - clusters.globant
+    - clusters.globant-password
+
   'G@cluster_name:peak':
     - match: compound
     - providers
