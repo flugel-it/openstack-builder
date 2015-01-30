@@ -1,1 +1,1 @@
-domain: hos.cloudxos.io
+domain: flugel.it
