@@ -1,6 +1,29 @@
 Openstack Deployment procedures
 ===============================
 
+## Controller VM
+
+```
+apt-get install virtinst qemu-kvm virt-viewer
+virt-install \
+--connect qemu:///system \
+--name globant-glx-co01 \
+--ram 4096 \
+--vcpus 2 \
+--file /var/lib/libvirt/images/globant-glx-co01.img \
+--file-size=25 \
+--location http://us.archive.ubuntu.com/ubuntu/dists/trusty/main/installer-amd64/ \
+--virt-type kvm \
+--vnc \
+--os-variant ubuntutrusty \
+--network bridge=br0 \
+--extra-args "auto=true 
+url=http://cloud-master.flugel.it/openstack-builder.seed
+netcfg/get_ipaddress=172.28.152.10 netcfg/get_netmask=255.255.255.0
+netcfg/get_gateway=172.28.152.254 netcfg/get_nameservers=8.8.8.8
+netcfg/disable_dhcp=true"
+```
+
 ## With salt-cloud ##
 
 ```
@@ -9,7 +32,7 @@ salt-cloud -m openstack-rax.map -y # or openstac-do.map
 ```
 
 ## Without salt-cloud ##
-
+ 
 ```
 wget -O bootstrap-salt.sh https://bootstrap.saltstack.com
 sh bootstrap-salt.sh -P -A 188.166.54.47  git v2014.7.0
@@ -22,12 +45,14 @@ salt [compute_node] grains.setval roles ['openstack-compute']
 ```
 
 ## All ##
-
+ 
 ```
 CLUSTERNAME=$1
 
 salt -t 300 -v -G cluster_name:$CLUSTERNAME \
         saltutil.sync_all
+salt -t 300 -v -G cluster_name:$CLUSTERNAME \
+        saltutil.refresh_pillar
 salt -t 300 -v -G cluster_name:$CLUSTERNAME \
         state.sls base,openstack,salt-minion
 salt -t 300 -v -G cluster_name:$CLUSTERNAME \
