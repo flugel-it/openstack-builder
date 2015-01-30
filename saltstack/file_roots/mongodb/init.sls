@@ -48,25 +48,6 @@ mongod:
       - pkg: mongodb
 {% endif %}
 
-{%- if grains.get("environment") != "vagrant" %}
-
-{{ pillar["nrpe_conf_dir"] }}/mongodb.cfg:
-  file.managed:
-    - user: root
-    - group: root
-    - mode: 644
-    - source: salt://mongodb/files/mongodb-nrpe.conf
-    - template: jinja
-    - watch_in:
-      - service: nrpe
-
-/etc/dws-backup.d/mongo-backup.sh:
-  file.managed:
-    - source: salt://mongodb/files/mongo-backup.sh
-    - mode: 755
-
-{% endif %}
-
 /etc/mongod.conf:
   file.append:
     - text: smallfiles = true
