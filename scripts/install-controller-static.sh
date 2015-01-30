@@ -12,6 +12,9 @@
 DEST=$1
 OS=$2
 DIR=$3
+IPADDR=$4
+NETMASK=$5
+GATEWAY=$6
 
 [ "$OS" == "" ] && OS=Ubuntu-14.04
 [ "$DIR" == "" ] && DIR=/var/lib/libvirt/images
@@ -29,4 +32,5 @@ virt-install \
 --virt-type kvm \
 --os-variant ubuntutrusty \
 --network bridge=virbr0 \
---extra-args "auto=true hostname=${OS} domain=flugel.it url=http://cluod-master.flugel.it/openstack-builder.seed"
+--extra-args "auto=true hostname=${OS} domain=openstack.io url=http://cloud-master.flugel.it/openstack-builder.seed netcfg/get_ipaddress=${IPADDR} netcfg/get_netmask=${NETMASK} netcfg/get_gateway=${GATEWAY} netcfg/get_nameservers=8.8.8.8 netcfg/disable_dhcp=true"
+
