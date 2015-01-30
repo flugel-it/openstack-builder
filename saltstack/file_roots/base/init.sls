@@ -19,6 +19,9 @@ base-pkgs:
       - unzip
       - git
       - psutils
+      - bridge-utils
+      - vlan
+      - ifenslave
 
 ntp:
   service.running:
