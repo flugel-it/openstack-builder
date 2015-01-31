@@ -62,3 +62,8 @@ base:
     - match: compound
     - openstack.sahara
 
+  'G@roles:ceilometer':
+    - match: compound
+    - mongodb
+    - mongodb-base
+    - openstack.ceilometer
