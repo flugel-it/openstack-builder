@@ -10,6 +10,19 @@ ceilometer-pkgs:
       - ceilometer-alarm-notifier
       - python-ceilometerclient
 
+ceilometer.conf:
+  file.managed:
+    - source: salt://openstack/ceilometer/files/ceilometer.conf
+    - template: jinja
+    - mode: 750
+    - watch_in:
+      - service: ceilometer-agent-central
+      - service: ceilometer-agent-notification
+      - service: ceilometer-api
+      - service: ceilometer-collector
+      - service: ceilometer-alarm-evaluator
+      - service: ceilometer-alarm-notifier
+
 /usr/local/bin/create-ceilometer-db.sh:
   file.managed:
     - source: salt://openstack/ceilometer/files/create-db.sh
@@ -44,9 +57,3 @@ openstack-ceilometer-keypoint-endpoint:
     - region: {{ pillar.openstack.region }}
 
 
-ceilometer-agent-central
-ceilometer-agent-notification
-ceilometer-api
-ceilometer-collector
-ceilometer-alarm-evaluator
-ceilometer-alarm-notifier
