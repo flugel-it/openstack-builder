@@ -65,5 +65,5 @@ base:
   'G@roles:ceilometer':
     - match: compound
     - mongodb
-    - mongodb-base
     - openstack.ceilometer
+
