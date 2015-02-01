@@ -10,6 +10,7 @@ nova-common:
 
 /etc/nova:
   file.directory:
+
     - user: nova
     - group: nova
     - mode: 750
@@ -29,4 +30,18 @@ nova-common:
       public_ip: {{ salt.openstack.get_public_ip() }}
       private_ip: {{ salt.openstack.get_private_ip() }}
 
+# NO ESTOY MUY SEGURO DE ESTA LINEA
+{%- if pillar.get('ceilometer') and "openstack-compute" in grains.get("roles", []) %}
+ceilometer-agent-compute:
+  pkg.installed
 
+# USO EL LA MISMA CONF FILE, QUE SE DA CUENTA SI ES UN COMPUTE
+# Y COMENTA LA CONNECCION A LA DB
+ceilometer.conf:
+  file.managed:
+    - source: salt://openstack/ceilometer/files/ceilometer.conf
+    - template: jinja
+    - mode: 750
+    - watch_in:
+      - service: ceilometer-agent-central
+{%- endif %}
