@@ -1,37 +1,33 @@
 
-ceilometer-pkgs:
-  pkg.installed:
-    - pkgs:
-      - ceilometer-api
-      - ceilometer-collector
-      - ceilometer-agent-central
-      - ceilometer-agent-notification
-      - ceilometer-alarm-evaluator
-      - ceilometer-alarm-notifier
-      - python-ceilometerclient
+python-ceilometerclient:
+  pkg.installed
 
-ceilometer.conf:
+pymongo:
+  pip.installed
+
+{%- for pkg in pillar.openstack.ceilometer.controller_pkgs %}
+
+{{ pkg }}:
+  pkg.installed: []
+  service.running:
+    - watch:
+      - file: /etc/ceilometer/ceilometer.conf
+
+{%- endfor %}
+
+/etc/ceilometer/ceilometer.conf:
   file.managed:
     - source: salt://openstack/ceilometer/files/ceilometer.conf
     - template: jinja
-    - mode: 750
-    - watch_in:
-      - service: ceilometer-agent-central
-      - service: ceilometer-agent-notification
-      - service: ceilometer-api
-      - service: ceilometer-collector
-      - service: ceilometer-alarm-evaluator
-      - service: ceilometer-alarm-notifier
-
-/usr/local/bin/create-ceilometer-db.sh:
-  file.managed:
-    - source: salt://openstack/ceilometer/files/create-db.sh
+    - context:
+      controller: {{ salt.openstack.get_controller() }}
     - mode: 750
 
-openstack-ceilometer-initdb:
-  cmd.run:
-    - name: salt://openstack/ceilometer/files/create-db.sh touch /etc/ceilometer/.already_synced
-    - unless: test -f /etc/ceilometer/.already_synced
+ceilometer-create-user:
+  mongodb_user.present:
+    - name: ceilometer
+    - passwd: {{ pillar.openstack.ceilometer_dbpass }}
+    - database: ceilometer
 
 openstack-ceilometer-user:
   keystone.user_present:
@@ -45,7 +41,7 @@ openstack-ceilometer-user:
 openstack-ceilometer-keystone-service:
   keystone.service_present:
     - name: ceilometer
-    - service_type: Metering
+    - service_type: metering
     - description: Openstack Telemetry Service
 
 openstack-ceilometer-keypoint-endpoint:

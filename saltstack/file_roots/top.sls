@@ -33,6 +33,7 @@ base:
     - openstack.minion
     - openstack.nova
     - openstack.nova.compute
+    - openstack.nova.ceilometer
     - openstack.neutron
     - openstack.neutron.compute
 

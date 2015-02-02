@@ -1,6 +1,12 @@
 
+{%- if "openstack-controller" in grains.get("roles", {}) %}
+keystone.endpoint: http://localhost:35357/v2.0
+{%- endif %}
+
 openstack:
   region: RegionOne
-  cinder: {}
-  horizon: {'ssl_key': ""}
+  cinder:
+    driver: null
+  horizon: 
+    ssl_key: null
 

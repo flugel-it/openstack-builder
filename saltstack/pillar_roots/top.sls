@@ -10,6 +10,7 @@ base:
     - openstack.keystone
     - openstack.networking
     - openstack.glance
+    - openstack.ceilometer
 
   'G@os:Ubuntu or G@os:Debian':
     - match: compound
@@ -32,6 +33,12 @@ base:
     - clusters.globant
     - clusters.globant-password
 
+  'G@cluster_name:raxlab':
+    - match: compound
+    - clusters
+    - clusters.raxlab
+    - clusters.raxlab-password
+
   'G@cluster_name:peak':
     - match: compound
     - providers
@@ -44,3 +51,4 @@ base:
     - providers.luis-peak
     - openstack.passwords
     - configs.luis-peak
+
