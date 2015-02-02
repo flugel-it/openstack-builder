@@ -20,18 +20,6 @@ mysql:
     - require:
       - service: mysql
 
-/etc/salt/minion.d/mysql.conf:
-  file.managed:
-    - source: salt://mysql/files/mysql.minion.conf
-    - template: jinja
-    - user: root
-    - group: root
-    - mode: 640
-    - require:
-      - mysql_user: mysql
-    - watch_in:
-      - service: salt-minion
-  
 {{ pillar.paths.my_cnf }}:
   file.managed:
     - source: salt://mysql/files/my.cnf.template
