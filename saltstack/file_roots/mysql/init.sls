@@ -16,7 +16,7 @@ mysql:
     - enable: true
   mysql_user.present:
     - name: root
-    - password: {{ pillar.db_root_pass }}
+    - password: {{ pillar.get("mysql.pass") }}
     - require:
       - service: mysql
 
