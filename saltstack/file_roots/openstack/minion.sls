@@ -4,3 +4,6 @@
 python-keystoneclient:
   pkg.installed
 
+/etc/salt/minion.d/openstack.conf:
+  file.absent
+

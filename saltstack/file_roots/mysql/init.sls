@@ -32,3 +32,6 @@ mysql:
     - watch_in:
       - service: mysql
 
+/etc/salt/minion.d/mysql.conf:
+  file.absent
+
