@@ -10,7 +10,6 @@ nova-common:
 
 /etc/nova:
   file.directory:
-
     - user: nova
     - group: nova
     - mode: 750
@@ -45,3 +44,4 @@ ceilometer.conf:
     - watch_in:
       - service: ceilometer-agent-central
 {%- endif %}
+

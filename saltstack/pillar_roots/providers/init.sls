@@ -1,0 +1,1 @@
+domain: hos.cloudxos.io

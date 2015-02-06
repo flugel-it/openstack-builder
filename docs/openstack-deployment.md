@@ -32,7 +32,8 @@ salt-cloud -m openstack-rax.map -y # or openstac-do.map
 ```
 
 ## Without salt-cloud ##
- 
+
+
 ```
 wget -O bootstrap-salt.sh https://bootstrap.saltstack.com
 sh bootstrap-salt.sh -P -A 188.166.54.47  git v2014.7.0
@@ -45,15 +46,18 @@ salt [compute_node] grains.setval roles ['openstack-compute']
 ```
 
 ## All ##
- 
+
 ```
 CLUSTERNAME=$1
 
 salt -t 300 -v -G cluster_name:$CLUSTERNAME \
         saltutil.sync_all
 salt -t 300 -v -G cluster_name:$CLUSTERNAME \
+<<<<<<< HEAD
         saltutil.refresh_pillar
 salt -t 300 -v -G cluster_name:$CLUSTERNAME \
+=======
+>>>>>>> f53cedf95100bb61a1a05ff574028996e49416fc
         state.sls base,openstack,salt-minion
 salt -t 300 -v -G cluster_name:$CLUSTERNAME \
         state.sls salt-minion,hostsfile,openstack.minion 
