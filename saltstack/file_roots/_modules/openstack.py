@@ -51,7 +51,17 @@ def get_private_ip():
     return _get_ip("private", __grains__)
 
 def _get_ip(network, grains):
-    net = __pillar__["networks"][network]
+    try:
+        net = __pillar__["networks"][network]
+    except KeyError:
+        gateways = netifaces.gateways()
+        default_iface = gateways["default"][netifaces.AF_INET][1]
+        for iface, ips in grains["ip4_interfaces"].iteritems():
+            if iface == default_iface:
+                return ips[0]
+
+        return None
+
     for iface, ips in grains["ip4_interfaces"].iteritems():
         for ip in ips:
             if IP(net).overlaps(ip):
