@@ -67,6 +67,8 @@ keystone-syncdb:
     - name: keystone-manage db_sync && touch /etc/keystone/.already_synced
     - unless: test -f /etc/keystone/.already_synced
     - user: keystone
+    - watch_in:
+      - service: keystone
 
 keystone-tenants:
   keystone.tenant_present:
