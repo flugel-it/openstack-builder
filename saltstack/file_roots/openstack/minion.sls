@@ -5,5 +5,11 @@ python-keystoneclient:
   pkg.installed
 
 /etc/salt/minion.d/openstack.conf:
-  file.absent
+  file.managed:
+    - source: salt://openstack/files/openstack.minion.conf
+    - template: jinja
+    - context:
+      controller: {{  salt.openstack.get_controller() }}
+    - watch:
+      - service: salt-minion
 
