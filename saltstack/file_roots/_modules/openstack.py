@@ -73,10 +73,10 @@ def external_iface():
     try:
         return __pillar__["openstack"]["external_iface"]
     except KeyError:
-        net = __pillar__["networks"]["public"]
+        gateways = netifaces.gateways()
+        default_iface = gateways["default"][netifaces.AF_INET][1]
         for iface, ips in __grains__["ip4_interfaces"].iteritems():
-            for ip in ips:
-                if IP(net).overlaps(ip):
+            if iface == default_iface:
                     return iface
 
     return False
