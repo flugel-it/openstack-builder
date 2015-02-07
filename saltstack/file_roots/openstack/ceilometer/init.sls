@@ -12,6 +12,7 @@ pymongo:
   service.running:
     - watch:
       - file: /etc/ceilometer/ceilometer.conf
+      - keystone: openstack-ceilometer-keystone-service
 
 {%- endfor %}
 
