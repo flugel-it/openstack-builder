@@ -1,4 +1,5 @@
 
+
 openstack-horizon-pkgs:
   pkg.installed:
     - pkgs:
@@ -11,6 +12,12 @@ openstack-horizon-pkgs:
 apache2:
   service.running:
     - enable: True
+
+# Removal will fail if apache2 is not runing
+openstack-dashboard-ubuntu-theme:
+   pkg.removed:
+     - require:
+       - service: apache2
 
 local_settings.py:
   file.managed:
@@ -74,9 +81,6 @@ openstack-dashboard-rewrite:
     - unless: test -f /etc/apache2/mods-enabled/rewrite.conf
     - watch_in:
       - service: apache2
-
-openstack-dashboard-ubuntu-theme:
-   pkg.removed
 
 {%- if pillar.get('customlookandfeel') %}
 
