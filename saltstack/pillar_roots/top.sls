@@ -39,16 +39,9 @@ base:
     - clusters.raxlab
     - clusters.raxlab-password
 
-  'G@cluster_name:peak':
+  'G@cluster_name:cloudxos-peak':
     - match: compound
-    - providers
-    - providers.peak
-    - passwords.peak
-    - configs.peak
-
-  'G@cluster_name:luis-peak':
-    - match: compound
-    - providers.luis-peak
-    - openstack.passwords
-    - configs.luis-peak
+    - clusters
+    - clusters.peak
+    - clusters.peak-password
 
