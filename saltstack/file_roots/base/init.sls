@@ -25,6 +25,7 @@ base-pkgs:
       - ifenslave
       - ethtool
       - arping
+      - curl
 
 ntp:
   service.running:
