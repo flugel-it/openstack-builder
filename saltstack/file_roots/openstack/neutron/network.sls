@@ -18,6 +18,7 @@ neutron-network-pkgs:
       - neutron-plugin-openvswitch-agent
       - neutron-l3-agent
       - neutron-dhcp-agent
+      - neutron-lbaas-agent
 
 neutron-plugin-openvswitch-agent:
   service.running:
@@ -43,9 +44,23 @@ neutron-metadata-agent:
       - file: /etc/neutron/metadata_agent.ini
       - file: /etc/neutron/neutron.conf
 
+neutron-lbaas-agent:
+  service.running:
+    - watch:
+      - file: /etc/neutron/lbaas_agent.ini
+      - file: /etc/neutron/neutron.conf
+
 /etc/neutron/l3_agent.ini:
   file.managed:
     - source: salt://openstack/neutron/files/l3_agent.ini
+    - template: jinja
+    - user: neutron
+    - group: neutron
+    - mode: 640
+
+/etc/neutron/lbaas_agent.ini:
+  file.managed:
+    - source: salt://openstack/neutron/files/lbaas_agent.ini
     - template: jinja
     - user: neutron
     - group: neutron
