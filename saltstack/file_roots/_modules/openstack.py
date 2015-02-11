@@ -39,7 +39,7 @@ def get_controller_ip():
     if minion is None:
         return None
 
-    return _get_ip("public", grains)
+    return _get_ip("private", grains)
 
 def has_role(role):
     return role in __grains__.get("roles", [])
