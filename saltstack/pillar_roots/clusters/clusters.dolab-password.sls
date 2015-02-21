@@ -1,0 +1,43 @@
+
+keystone.token: b3a1849a8b0f804907bf
+mysql.pass: e97b95aecf07fc0671a2
+
+openstack:
+  admin_pass: d39abbe3d041da48724c
+  ceilometer_dbpass: 97a330e1b81dc5bf8cab
+  ceilometer_pass: 04675fc1b510fb84cd54
+  cinder_dbpass: 66bfed5d4dfcd3df807e
+  cinder_dbuser: 4e3413ee1889eab265dd
+  cinder_pass: 2f51a5e647b24b3be5e8
+  dash_dbpass: b88414672cba58a83047
+  database: e97b95aecf07fc0671a2
+  database_user: a05089e31cc11c0b2578
+  demo_pass: e82acb7336db5123f997
+  glance_dbpass: 27a54cdf44378a3c0bde
+  glance_dbuser: b3e45c836f1c213453bc
+  glance_pass: 46936b0f9948a1f18070
+  heat_dbpass: f455ae8eb442d6110d4c
+  heat_dbuser: 12d342b324f264cb67b6
+  heat_pass: d09bab900cdcfd1b8944
+  ironic_dbpass: ef84497a7b791f8c4869
+  ironic_dbuser: c7e0bea186480b2741ce
+  ironic_pass: 10613b17b0c92f763f4b
+  keystone_admin_pass: 6fbc4445fafa85b32929
+  keystone_dbpass: a2d3c21a93357e2242cb
+  keystone_dbuser: e15a609c9e7657d9891e
+  keystone_token: b3a1849a8b0f804907bf
+  metadata_proxy_secret: 14eea605e244bcb78c4c
+  metering_secret: 17039b4d18468c465d20
+  neutron_dbpass: 5e61b19ac6f8d9a4e2ba
+  neutron_dbuser: 42409fd52bb5be45494d
+  neutron_pass: 2f907dbbb5aed92c0638
+  nova_dbpass: 50ca4fab537f13680c55
+  nova_dbuser: ef5276417f202abebaf1
+  nova_pass: 5370e31445263dd43e75
+  proxy_secret: 30e4522f26f1fd365059
+  rabbit_pass: 88c4b7f54bbb8fbb4caa
+  rabbit_user: af6711c517bd87ff10b4
+  sahara_dbpass: 94214b9658c5333a4b45
+  sahara_pass: f16ce97d9e797da9178e
+  trove_dbpass: 0b5514c2b9cd5467725b
+  trove_pass: e65888086935cede13e7
