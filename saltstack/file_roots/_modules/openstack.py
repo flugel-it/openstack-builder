@@ -73,13 +73,7 @@ def external_iface():
     try:
         return __pillar__["openstack"]["external_iface"]
     except KeyError:
-        gateways = netifaces.gateways()
-        default_iface = gateways["default"][netifaces.AF_INET][1]
-        for iface, ips in __grains__["ip4_interfaces"].iteritems():
-            if iface == default_iface:
-                    return iface
-
-    return False
+        raise Exception("Pillar openstack.external_iface required.")
 
 def iface_info(iface):
     info = netifaces.ifaddresses(iface)
