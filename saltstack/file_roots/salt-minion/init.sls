@@ -3,17 +3,36 @@
 salt-mine-pkgs:
   pkg.installed:
     - pkgs:
-      - python-psutil
-      - python-ipy
-      - python-pip
       - python-dev
       - build-essential
+
+python-pip:
+  pkg.removed
+
+python-psutil:
+  pkg.removed
+
+python-ipy:
+  pkg.removed
 
 python-netifaces:
   pkg.removed
 
-netifaces:
-  pip.installed
+pip-install:
+  cmd.run:
+    - name: easy_install pip
+    - unless: test -f /usr/local/bin/pip
+
+{%- for pip_pkg in [ "psutil", "IPy", "netifaces" ] %}
+
+{{ pip_pkg }}:
+  pip.installed:
+    - require:
+      - cmd: pip-install
+    - watch_in:
+      - service: salt-minion
+
+{%- endfor %}
 
 salt-minion:
   service.running:
