@@ -7,3 +7,7 @@ openstack:
     ssl_key: null
 
 
+  glance:
+    images:
+      - ubuntu-14.04
+
