@@ -101,9 +101,11 @@ glance-download-cache:
   file.directory:
     - name: /var/cache/openstack-builder/
 
-{%- for img in pillar.glance.default_images %}
+{%- for img in pillar.glance.default_images if not img.get("disabled") %}
 
-{%- if not img.get("disabled") %}
+{%- set images = pillar.openstack.glance.get("images") %}
+
+{%- if not images or img.slug in images %}
 
 glance-download-{{ img.slug }}-image:
   file.managed:
