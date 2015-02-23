@@ -16,24 +16,17 @@ passwd_desc = {
 
 os_passwd_desc = {
     'keystone_dbpass': 'Database password of Identity service',
-    'keystone_dbuser': 'keystone',
     'demo_pass': 'Password for user demo',
-    'keystone_admin_pass': 'Password for user Keystone admin',
     'admin_pass': ':Password for user admin',
-    'glance_dbuser': 'glance',
     'glance_dbpass': 'Database password for Image Service',
     'glance_pass': 'Password for Image Service user glance',
-    'nova_dbuser': 'nova',
     'nova_dbpass': 'Database password for Compute service',
     'nova_pass': 'Password for Compute service user nova',
     'dash_dbpass': 'Database password for the dashboard',
     'cinder_dbpass': 'Database password for the Block Storage service',
-    'cinder_dbuser': 'Database user for the Block Storage service',
     'cinder_pass': 'Password for Block Storage service user cinder',
-    'neutron_dbuser': 'neutron',
     'neutron_dbpass': 'Database password for the Networking service',
     'neutron_pass':'Password for Networking service user neutron',
-    'heat_dbuser': 'heat',
     'heat_dbpass': 'Database password for the Orchestration service',
     'heat_pass': 'Password for Orchestration service user heat',
     'ceilometer_dbpass': 'Database password for the Telemetry service',
@@ -50,7 +43,6 @@ os_passwd_desc = {
     'keystone_token': 'Keystone Token',
     'ironic_dbpass': 'Database password for the Ironic service',
     'ironic_pass': 'Password for Telemetry service user ceilometer',
-    'ironic_dbuser': 'ironic',
     'proxy_secret': 'Proxy Secret'
 }
 
