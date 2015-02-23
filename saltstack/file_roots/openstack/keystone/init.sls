@@ -69,6 +69,8 @@ keystone-syncdb:
     - user: keystone
     - watch_in:
       - service: keystone
+    - require:
+      - mysql_grants: keystone_db
 
 keystone-tenants:
   keystone.tenant_present:
