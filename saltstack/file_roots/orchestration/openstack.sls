@@ -1,15 +1,23 @@
 
+clear_cache:
+  salt.runner:
+    - name: cache.clear_all
+
 sync_all:
   salt.function:
     - tgt: 'cluster_name:{{ pillar.cluster_name }}'
     - tgt_type: grain
     - name: saltutil.sync_all
+    - require:
+      - salt: clear_cache
 
 refresh_pillar:
   salt.function:
     - tgt: 'cluster_name:{{ pillar.cluster_name }}'
     - tgt_type: grain
     - name: saltutil.refresh_pillar
+    - require:
+      - salt: clear_cache
 
 stage1:
   salt.state:
@@ -54,7 +62,7 @@ controller2:
       - openstack.controller
       - openstack.keystone
     - require:
-      - salt: stage1
+      - salt: controller1
 
 highstate_all:
   salt.state:
