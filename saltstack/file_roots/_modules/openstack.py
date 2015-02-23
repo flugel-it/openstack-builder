@@ -63,6 +63,8 @@ def _get_ip(network, grains):
         return None
 
     for iface, ips in grains["ip4_interfaces"].iteritems():
+        if iface == "lo":
+            continue
         for ip in ips:
             if IP(net).overlaps(ip):
                 return ip
