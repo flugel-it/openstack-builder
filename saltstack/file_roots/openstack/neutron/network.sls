@@ -37,6 +37,7 @@ neutron-dhcp-agent:
     - watch:
       - file: /etc/neutron/dhcp_agent.ini
       - file: /etc/neutron/neutron.conf
+      - file: /etc/neutron/dnsmasq-custom.conf
 
 neutron-metadata-agent:
   service.running:
@@ -74,6 +75,14 @@ neutron-lbaas-agent:
     - group: neutron
     - mode: 640
 
+/etc/neutron/dnsmasq-custom.conf:
+  file.managed:
+    - source: salt://openstack/neutron/files/dnsmasq-custom.conf
+    - template: jinja
+    - user: neutron
+    - group: neutron
+    - mode: 640
+
 /etc/neutron/metadata_agent.ini:
   file.managed:
     - source: salt://openstack/neutron/files/metadata_agent.ini
@@ -84,6 +93,14 @@ neutron-lbaas-agent:
     - user: neutron
     - group: neutron
     - mode: 640
+
+# For development purposes only when we tset this on the cloud
+{%- if salt.openstack.external_iface() == "dummy0" %}
+neutron-modprobe-dummy:
+  cmd.run:
+    - name: modprobe dummy && echo dummy > /etc/modules
+    - unless: grep dummy /etc/modules
+{%- endif %}
 
 neutron-create-ext-br:
   cmd.run:
