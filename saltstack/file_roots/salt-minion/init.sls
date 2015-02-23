@@ -4,6 +4,7 @@ salt-mine-pkgs:
   pkg.installed:
     - pkgs:
       - python-dev
+      - python-setuptools
       - build-essential
 
 python-pip:
@@ -22,6 +23,9 @@ pip-install:
   cmd.run:
     - name: easy_install pip
     - unless: test -f /usr/local/bin/pip
+    - reload_modules: True
+    - require:
+      - pkg: salt-mine-pkgs
 
 {%- for pip_pkg in [ "psutil", "IPy", "netifaces" ] %}
 
