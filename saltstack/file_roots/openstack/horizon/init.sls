@@ -25,6 +25,7 @@ local_settings.py:
     - template: jinja
     - content:
       controller: {{ salt.openstack.get_controller() }}
+      controller_public: {{ salt.openstack.get_controller_public() }}
     - name: /etc/openstack-dashboard/local_settings.py
     - mode: 644
     - watch_in:
