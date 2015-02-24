@@ -11,3 +11,6 @@ openstack:
     images:
       - ubuntu-14.04
 
+  neutron:
+    dnsmasq_opts: []
+
