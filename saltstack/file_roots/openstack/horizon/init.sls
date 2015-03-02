@@ -9,16 +9,6 @@ openstack-horizon-pkgs:
       - python-memcache
       - openstack-dashboard
 
-apache2:
-  service.running:
-    - enable: True
-
-# Removal will fail if apache2 is not runing
-openstack-dashboard-ubuntu-theme:
-   pkg.removed:
-     - require:
-       - service: apache2
-
 local_settings.py:
   file.managed:
     - source: salt://openstack/horizon/files/local_settings.py
@@ -32,10 +22,14 @@ local_settings.py:
       - service: apache2
 
 /etc/apache2/sites-enabled/000-default.conf:
-  file.absent
+  file.absent:
+    - watch_in:
+      - service: apache2
 
 /etc/apache2/conf-enabled/openstack-dashboard.conf:
-  file.absent
+  file.absent:
+    - watch_in:
+      - service: apache2
 
 /etc/apache2/sites-available/openstack.conf:
   file.managed:
@@ -103,3 +97,14 @@ favicon:
     - name: /usr/share/openstack-dashboard/openstack_dashboard/static/dashboard/img/favicon.ico
     - mode: 644
 {% endif %}
+
+apache2:
+  service.running:
+    - enable: True
+
+# Removal will fail if apache2 is not runing
+openstack-dashboard-ubuntu-theme:
+   pkg.removed:
+     - require:
+       - service: apache2
+
