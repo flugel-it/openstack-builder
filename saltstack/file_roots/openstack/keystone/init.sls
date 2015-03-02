@@ -71,6 +71,15 @@ keystone-syncdb:
       - service: keystone
     - require:
       - mysql_grants: keystone_db
+      - mysql_database: keystone_db
+      - mysql_user: keystone_db
+
+#XXX: hmm, can we do this better?
+keystone-wait:
+  cmd.run:
+    - name: sleep 30
+    - require:
+      - cmd: keystone-syncdb
 
 keystone-tenants:
   keystone.tenant_present:
