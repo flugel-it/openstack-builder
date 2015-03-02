@@ -26,12 +26,7 @@ def get_controller_public():
     try:
         return __pillar__["openstack"]["controller_public"]
     except KeyError:
-        minion, grains = _get_controller()
-
-        if minion is None:
-            return None
-
-        return grains.get("fqdn")
+        return get_public_ip()
 
 def get_controller_ip():
     minion, grains = _get_controller()
