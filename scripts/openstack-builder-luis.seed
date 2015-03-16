@@ -33,13 +33,13 @@ d-i time/zone string UTC
 ### Mirror settings
 d-i mirror/country string manual
 d-i mirror/suite string trusty
-d-i mirror/http/hostname string ar.archive.ubuntu.com
+d-i mirror/http/hostname string de.archive.ubuntu.com
 d-i mirror/http/directory string /ubuntu/
 
-# apt-cacher auto detect
-#-i mirror/http/proxy string http://apt-cacher:3142
+# 172.21.22.103 auto detect
+d-i mirror/http/proxy string http://172.21.22.103:3142
 d-i preseed/early_command string \
-	ping -c 1 apt-cacher > /dev/null 2>&1 && debconf-set mirror/http/proxy "http://apt-cacher:3142/" || echo
+	ping -c 1 172.21.22.103 > /dev/null 2>&1 && debconf-set mirror/http/proxy "http://172.21.22.103:3142/" || echo
 
 d-i debconf/priority select critical
 d-i auto-install/enabled boolean true
@@ -117,4 +117,3 @@ d-i partman-auto/expert_recipe string \
 
 d-i preseed/late_command string /usr/bin/wget http://www.ppmg.com.ar/flugel-first-boot.conf -O /target/etc/init/flugel-first-boot.conf
 #d-i finish-install/reboot_in_progress note
-
