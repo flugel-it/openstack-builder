@@ -130,11 +130,3 @@ nova boot --flavor m1.small --image "Ubuntu 14.04 Trusty" \
   --security-group default --key-name demo-key demo-instance1
 ```
 
-
-## Orchestrated deployment
-
-```
-salt-run state.orchestrate orchestration.openstack pillar='{ cluster_name: dolab
-}' | tee /tmp/orchestrate
-```
-
