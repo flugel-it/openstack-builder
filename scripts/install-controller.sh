@@ -1,24 +1,3 @@
-    This file is part of Openstack-Builder.
-
-    Openstack-Builder is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    Openstack-Builder is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Openstack-Builder.  If not, see <http://www.gnu.org/licenses/>.
-
-    Copyright flugel.it LLC
-    Authors: Luis Vinay <luis@flugel.it>
-             Diego Woitasen <diego@flugel.it>
-
-
-
 #!/bin/bash
 # You can optionally connect to the VM with
 # virt-viewer -c qemu:///system Debian7
@@ -42,7 +21,7 @@ DIR=$3
 virt-install \
 --connect qemu+ssh://root@${DEST}/system \
 --name ${OS} \
---ram 1024 \
+--ram 2048 \
 --vcpus 2 \
 --file ${DIR}/${OS}.img \
 --file-size=30 \
@@ -50,4 +29,4 @@ virt-install \
 --virt-type kvm \
 --os-variant ubuntutrusty \
 --network bridge=virbr0 \
---extra-args "auto=true domain=flugel.it url=http://cloud-master.flugel.it/openstack-builder-luis.seed hostname=$OS"
+--extra-args "auto=true domain=flugel.it url=http://cluod-master.flugel.it/openstack-builder.seed"
