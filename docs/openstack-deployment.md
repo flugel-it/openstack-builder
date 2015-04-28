@@ -36,16 +36,60 @@ salt-cloud -m openstack-rax.map -y # or openstac-do.map
 
 ```
 wget -O bootstrap-salt.sh https://bootstrap.saltstack.com
-sh bootstrap-salt.sh -P -A 188.166.54.47  git v2014.7.0
-=======
-salt '*' grains.setval cluster_name [cluster_name]
+sh bootstrap-salt.sh -P -A 188.166.54.47  git v2014.7.5
+
+salt 'cluster*' grains.setval cluster_name [cluster_name]
 
 salt [controller_node] grains.setval roles ['openstack-controller']
 salt [network_node] grains.setval roles ['openstack-network']
 salt [compute_node] grains.setval roles ['openstack-compute']
 ```
 
-## All ##
+## Before deploy
+
+1. Define the pillar for cluster. Examples below
+2. Generate the password pillar sls.
+
+pillars/top.sls:
+
+```
+  'G@cluster_name:newcluster':
+    - match: compound
+    - clusters
+    - clusters.newcluster
+    - clusters.newcluster-password
+```
+
+pillars/cluster/newcluster.sls:
+
+```
+networks:
+  public: 0.0.0.0/0
+  private: 0.0.0.0/0
+
+openstack:
+  external_iface: dummy0
+  cinder:
+    driver: null
+
+  horizon:
+    ssl_key: null
+    ssl_crt: null
+
+  neutron:
+    dnsmasq_opts:
+      - dhcp-option-force=26,1450
+
+```
+
+## Orchestrated deploy
+
+```
+salt-run state.orchestrate orchestration.openstack pillar='{ cluster_name: dolab
+}' | tee /tmp/orchestrate
+```
+
+## Manual deploy ##
 
 ```
 CLUSTERNAME=$1
