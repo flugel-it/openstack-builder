@@ -24,27 +24,6 @@ netcfg/get_gateway=172.28.152.254 netcfg/get_nameservers=8.8.8.8
 netcfg/disable_dhcp=true"
 ```
 
-## With salt-cloud ##
-
-```
-cd /root/openstack-builder/saltstack/salt-cloud
-salt-cloud -m openstack-rax.map -y # or openstac-do.map
-```
-
-## Without salt-cloud ##
-
-
-```
-wget -O bootstrap-salt.sh https://bootstrap.saltstack.com
-sh bootstrap-salt.sh -P -A 188.166.54.47  git v2014.7.5
-
-salt 'cluster*' grains.setval cluster_name [cluster_name]
-
-salt [controller_node] grains.setval roles ['openstack-controller']
-salt [network_node] grains.setval roles ['openstack-network']
-salt [compute_node] grains.setval roles ['openstack-compute']
-```
-
 ## Before deploy
 
 1. Define the pillar for cluster. Examples below
@@ -80,6 +59,27 @@ openstack:
     dnsmasq_opts:
       - dhcp-option-force=26,1450
 
+```
+
+## With salt-cloud ##
+
+```
+cd /root/openstack-builder/saltstack/salt-cloud
+salt-cloud -m openstack-rax.map -y # or openstac-do.map
+```
+
+## Without salt-cloud ##
+
+
+```
+wget -O bootstrap-salt.sh https://bootstrap.saltstack.com
+sh bootstrap-salt.sh -P -A 188.166.54.47  git v2014.7.5
+
+salt 'cluster*' grains.setval cluster_name [cluster_name]
+
+salt [controller_node] grains.setval roles ['openstack-controller']
+salt [network_node] grains.setval roles ['openstack-network']
+salt [compute_node] grains.setval roles ['openstack-compute']
 ```
 
 ## Orchestrated deploy
