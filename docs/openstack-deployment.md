@@ -97,11 +97,8 @@ CLUSTERNAME=$1
 salt -t 300 -v -G cluster_name:$CLUSTERNAME \
         saltutil.sync_all
 salt -t 300 -v -G cluster_name:$CLUSTERNAME \
-<<<<<<< HEAD
         saltutil.refresh_pillar
 salt -t 300 -v -G cluster_name:$CLUSTERNAME \
-=======
->>>>>>> f53cedf95100bb61a1a05ff574028996e49416fc
         state.sls base,openstack,salt-minion
 salt -t 300 -v -G cluster_name:$CLUSTERNAME \
         state.sls salt-minion,hostsfile,openstack.minion 
