@@ -9,22 +9,27 @@ setup_hostname(){
 
 		NEWHOSTNAME=${CURRHOSTNAME}-$MAC
 		echo ${NEWHOSTNAME} > /etc/hostname
-
-		if [ -f /etc/salt/minion_id ]; then
-			echo ${NEWHOSTNAME} > /etc/salt/minion_id
-			stop salt-minion
-			start salt-minion
-		fi
-
-		reboot
+		hostname $NEWHOSTNAME
 
 	fi
 
 }
 
+install_salt(){
+
+	test -d /etc/salt && return
+
+	wget -O install_salt.sh https://bootstrap.saltstack.com &&
+	sh install_salt.sh -i $(cat /etc/hostname) \
+		-A cloud-master.flugel.it git v2014.7.5 &&
+	return 0
+
+	return 1
+
+}
+
 setup_hostname &&
-wget -O install_salt.sh https://bootstrap.saltstack.com &&
-sh install_salt.sh -i $HOSTNAME -A cloud-master.flugel.it git v2014.7.0 &&
+install_salt &&
 exit 0
 
 exit 1

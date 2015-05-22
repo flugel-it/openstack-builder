@@ -24,6 +24,43 @@ netcfg/get_gateway=172.28.152.254 netcfg/get_nameservers=8.8.8.8
 netcfg/disable_dhcp=true"
 ```
 
+## Before deploy
+
+1. Define the pillar for cluster. Examples below
+2. Generate the password pillar sls.
+
+pillars/top.sls:
+
+```
+  'G@cluster_name:newcluster':
+    - match: compound
+    - clusters
+    - clusters.newcluster
+    - clusters.newcluster-password
+```
+
+pillars/cluster/newcluster.sls:
+
+```
+networks:
+  public: 0.0.0.0/0
+  private: 0.0.0.0/0
+
+openstack:
+  external_iface: dummy0
+  cinder:
+    driver: null
+
+  horizon:
+    ssl_key: null
+    ssl_crt: null
+
+  neutron:
+    dnsmasq_opts:
+      - dhcp-option-force=26,1450
+
+```
+
 ## With salt-cloud ##
 
 ```
@@ -36,16 +73,23 @@ salt-cloud -m openstack-rax.map -y # or openstac-do.map
 
 ```
 wget -O bootstrap-salt.sh https://bootstrap.saltstack.com
-sh bootstrap-salt.sh -P -A 188.166.54.47  git v2014.7.0
-=======
-salt '*' grains.setval cluster_name [cluster_name]
+sh bootstrap-salt.sh -P -A 188.166.54.47  git v2014.7.5
+
+salt 'cluster*' grains.setval cluster_name [cluster_name]
 
 salt [controller_node] grains.setval roles ['openstack-controller']
 salt [network_node] grains.setval roles ['openstack-network']
 salt [compute_node] grains.setval roles ['openstack-compute']
 ```
 
-## All ##
+## Orchestrated deploy
+
+```
+salt-run state.orchestrate orchestration.openstack pillar='{ cluster_name: dolab
+}' | tee /tmp/orchestrate
+```
+
+## Manual deploy ##
 
 ```
 CLUSTERNAME=$1
@@ -53,11 +97,8 @@ CLUSTERNAME=$1
 salt -t 300 -v -G cluster_name:$CLUSTERNAME \
         saltutil.sync_all
 salt -t 300 -v -G cluster_name:$CLUSTERNAME \
-<<<<<<< HEAD
         saltutil.refresh_pillar
 salt -t 300 -v -G cluster_name:$CLUSTERNAME \
-=======
->>>>>>> f53cedf95100bb61a1a05ff574028996e49416fc
         state.sls base,openstack,salt-minion
 salt -t 300 -v -G cluster_name:$CLUSTERNAME \
         state.sls salt-minion,hostsfile,openstack.minion 
