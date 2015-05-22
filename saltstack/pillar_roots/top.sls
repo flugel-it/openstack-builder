@@ -51,3 +51,9 @@ base:
     - clusters.peak
     - clusters.peak-password
 
+  'G@cluster_name:quantum':
+    - match: compound
+    - clusters
+    - clusters.quantum
+    - clusters.quantum-password
+
