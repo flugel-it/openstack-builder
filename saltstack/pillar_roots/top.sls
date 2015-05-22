@@ -51,3 +51,10 @@ base:
     - clusters.peak
     - clusters.peak-password
 
+  'G@cluster_name:mobile-lab':
+    - match: compound
+    - clusters
+    - clusters.mobile-lab
+    - clusters.mobile-lab-password
+
+
