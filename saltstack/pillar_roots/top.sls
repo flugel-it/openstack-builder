@@ -57,3 +57,9 @@ base:
     - clusters.quantum
     - clusters.quantum-password
 
+  'G@cluster_name:mobile-lab':
+    - match: compound
+    - clusters
+    - clusters.mobile-lab
+    - clusters.mobile-lab-password
+
