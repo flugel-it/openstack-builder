@@ -11,7 +11,7 @@ def set_hostname(hostname):
         pass
     os.system("hostname " + hostname)
     os.system("sed -i 's/^id:.*/id: %s/' /etc/salt/minion" % (hostname))
-    os.system("restart salt-minion")
+    os.system("service salt-minion restart")
 
     return "OK"
 
