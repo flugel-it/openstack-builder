@@ -39,6 +39,12 @@ base:
     - clusters.raxlab
     - clusters.raxlab-password
 
+  'G@cluster_name:dodgp':
+    - match: compound
+    - clusters
+    - clusters.dolab
+    - clusters.dolab-password
+
   'G@cluster_name:dolab':
     - match: compound
     - clusters
