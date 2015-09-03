@@ -10,6 +10,6 @@ python-keystoneclient:
     - template: jinja
     - context:
       controller: {{  salt.openstack.get_controller() }}
-    - watch:
+    - watch_in:
       - service: salt-minion
 
