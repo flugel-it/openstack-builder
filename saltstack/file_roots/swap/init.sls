@@ -12,5 +12,6 @@ init-swap-file:
 
 /.swap:
   mount.swap
+
 {%- endif %}
 
