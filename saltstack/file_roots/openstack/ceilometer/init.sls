@@ -33,11 +33,12 @@ ceilometer-create-user:
 openstack-ceilometer-user:
   keystone.user_present:
     - name: ceilometer
+    - tenant: service
     - password: {{ pillar.openstack.ceilometer_pass }}
     - email: infradevs@flugel.it
     - roles:
-      - service:
-        - admin
+        service:
+          - admin
 
 openstack-ceilometer-keystone-service:
   keystone.service_present:

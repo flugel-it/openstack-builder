@@ -45,11 +45,12 @@ neutron-initdb:
 neutron-user:
   keystone.user_present:
     - name: neutron
+    - tenant: service
     - password: {{ pillar.openstack.neutron_pass }}
     - email: infradevs@flugel.it
     - roles:
-      - service:
-        - admin
+        service:
+          - admin
 
 neutron-keystone-service:
   keystone.service_present:
@@ -70,4 +71,9 @@ neutron-keystone-endpoint:
     - watch_in:
       - service: neutron-service
 
+python-neutron-lbaas:
+  pkg.installed
+
+python-neutron-vpnaas:
+  pkg.installed
 

@@ -76,11 +76,12 @@ heat_stack_owner:
 heat-user:
   keystone.user_present:
     - name: heat
+    - tenant: service
     - password: {{ pillar.openstack.heat_pass }}
     - email: infradevs@flugel.it
     - roles:
-      - service:
-        - admin
+        service:
+          - admin
 
 heat-keystone-service:
   keystone.service_present:

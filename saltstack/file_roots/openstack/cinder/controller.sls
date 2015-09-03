@@ -54,13 +54,12 @@ cinder-initdb:
 cinder_user:
   keystone.user_present:
     - name: cinder
+    - service: service
     - password: {{ pillar.openstack.cinder_pass }}
     - email: infradevs@flugel.it
     - roles:
-      - service:
-        - admin
-      - require:
-        - keystone: cinder-tenants
+        service:
+          - admin
 
 cinder-keystone-service:
   keystone.service_present:
