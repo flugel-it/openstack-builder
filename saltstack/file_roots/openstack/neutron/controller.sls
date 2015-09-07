@@ -37,7 +37,7 @@ neutron-initdb:
   cmd.run:
     - name: >
         neutron-db-manage --config-file /etc/neutron/neutron.conf 
-        --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade juno && 
+        --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head &&
         touch /etc/neutron/.already_synced
     - user: neutron
     - unless: test -f /etc/neutron/.already_synced

@@ -23,7 +23,6 @@ python-neutronclient:
     - template: jinja
     - context:
       controller: {{ salt.openstack.get_controller() }}
-      tenant_id: {{ salt.keystone.tenant_get(name="service").service.id }}
     - user: neutron
     - group: neutron
     - mode: 640

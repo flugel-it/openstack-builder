@@ -13,6 +13,17 @@ openstack-{{ pkg }}:
 
 {%- endfor %}
 
+/var/lib/nova:
+  file.directory:
+    - user: nova
+    - group: nova
+    - file_mode: 640
+    - dir_mode: 750
+    - recurse:
+      - mode
+      - user
+      - group
+
 /root/.nova:
   file.managed:
     - source: salt://openstack/nova/files/dot_nova
