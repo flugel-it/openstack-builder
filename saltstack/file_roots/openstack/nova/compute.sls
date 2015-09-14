@@ -17,7 +17,6 @@ openstack-{{ pkg }}:
 
 {%- endfor %}
 
-
 /etc/nova/nova-compute.conf:
   file.managed:
     - source: salt://openstack/nova/files/nova-compute.conf

@@ -8,6 +8,17 @@ nova-common:
 /var/lib/nova/nova.db:
   file.absent
 
+/var/lib/nova:
+  file.directory:
+    - user: nova
+    - group: nova
+    - file_mode: 644
+    - dir_mode: 755
+    - recurse:
+      - mode
+      - user
+      - group
+
 /etc/nova:
   file.directory:
     - user: nova
