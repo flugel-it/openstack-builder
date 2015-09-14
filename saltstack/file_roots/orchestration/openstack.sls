@@ -86,3 +86,14 @@ highstate_all:
     - require:
       - salt: controller2
 
+images:
+  salt.state:
+    - tgt: 'G@cluster_name:{{ pillar.cluster_name }} and G@roles:openstack-controller'
+    - tgt_type: compound
+    - timeout: 300
+    - failhard: True
+    - sls:
+      - openstack.glance.images
+    - require:
+      - salt: highstate_all
+
