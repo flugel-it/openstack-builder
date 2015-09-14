@@ -129,7 +129,7 @@ salt [compute_node] grains.setval roles ['openstack-compute']
 
 
 ```
-neutron net-create ext-net --shared --router:external True \
+neutron net-create ext-net --shared --router:external \
   --provider:physical_network external --provider:network_type flat
 neutron subnet-create ext-net --name ext-subnet \
   --allocation-pool start=162.243.213.238,end=162.243.213.238 \
@@ -145,7 +145,7 @@ neutron router-gateway-set demo-router ext-net
 ```
 nova keypair-add --pub-key ~/.ssh/authorized_keys demo-key
 NET_ID=$(neutron net-show demo-net | grep '| id' | awk '{ print $4; }')
-nova boot --flavor m1.small --image "Ubuntu 14.04 Trusty" \
+nova boot --flavor m1.small --image "Ubuntu 14.04 Trusty 64-bit" \
   --nic net-id=$NET_ID \
   --security-group default --key-name demo-key demo-instance1
 ```
