@@ -2,20 +2,57 @@
 sysfsutils:
   pkg.installed
 
-{%- for pkg in pillar.pkgs.nova_compute %}
+{%- if pillar.openstack.nova.compute == "nova-compute-lxd" %}
 
-openstack-{{ pkg }}:
-  pkg.installed:
-    - name: {{ pkg }}
+nclxd:
+  pip.installed:
+    - name: git+https://github.com/lxc/nova-compute-lxd@stable/kilo
 
-{{ pkg }}-service:
+lxd_ppa:
+  pkgrepo.managed:
+    - ppa: ubuntu-lxc/lxd-stable
+
+lxd:
+  pkg.installed
+
+/etc/subuid:
+  file.managed:
+    - mode: 644
+    - contents: |
+        lxd:100000:65536
+        nova:100000:65536
+        root:100000:65536
+
+/etc/subgid:
+  file.managed:
+    - mode: 644
+    - contents: |
+        lxd:100000:65536
+        nova:100000:65536
+        root:100000:65536
+
+lxd_group:
+  group.present:
+    - name: lxd
+    - members:
+      - nova
+
+/var/lib/lxd/lxc:
+  file.directory
+
+{%- else %}
+
+{{ pillar.openstack.nova.compute }}:
+  pkg.installed
+
+{%- endif %}
+
+nova-compute:
+  pkg.installed: []
   service.running:
-    - name: {{ pkg }}
     - watch:
       - file: /etc/nova/nova.conf
       - file: /etc/nova/nova-compute.conf
-
-{%- endfor %}
 
 /etc/nova/nova-compute.conf:
   file.managed:
