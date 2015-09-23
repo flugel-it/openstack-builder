@@ -97,3 +97,7 @@ libssl1.0.0:
   file.managed:
     - contents: "nameserver 8.8.8.8\n"
 
+#XXX: add the profiles required for OpenSack and Ceph.
+apparmor:
+  pkg.purged
+

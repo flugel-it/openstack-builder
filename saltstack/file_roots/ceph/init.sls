@@ -1,18 +1,13 @@
 {%- import 'ceph/settings.sls' as ceph %}
 
-ceph-get-key:
-  cmd.run:
-    - name: gpg --keyserver pgpkeys.mit.edu --recv-key 7EBFDD5D17ED316D
-    - unless: gpg --list-keys | grep 17ED316D
-
 ceph-add-key:
   cmd.run:
-    - name: gpg -a --export 7EBFDD5D17ED316D | apt-key add -
+    - name: wget -q -O- 'https://ceph.com/git/?p=ceph.git;a=blob_plain;f=keys/release.asc' | sudo apt-key add -
     - unless: apt-key list | grep 17ED316D
 
 ceph-repo:
   pkgrepo.managed:
-    - name: deb http://download.ceph.com/ceph/latest/ubuntu/ {{ grains['lsb_distrib_codename'] }} main
+    - name: deb http://download.ceph.com/debian-hammer/ {{ grains['lsb_distrib_codename'] }} main
     - humanname: Ceph Repo
     - dist: {{ grains['lsb_distrib_codename'] }}
     - file: /etc/apt/sources.list.d/ceph.list
@@ -20,8 +15,10 @@ ceph-repo:
       - cmd: ceph-add-key
 
 ceph:
-  pkg.installed:
-    - refresh: true
+  pkg.installed
+
+python-ceph:
+  pkg.installed
 
 /etc/ceph/ceph.conf:
   file.managed:
@@ -46,16 +43,6 @@ ceph-admin-keyring:
   file.managed:
     - name: {{ ceph.admin_keyring }}
     - source: salt://ceph/files/ceph.client.admin.keyring
-    - mode: 644
-
-/etc/ceph/ceph.client.cinder.keyring:
-  file.managed:
-    - source: salt://ceph/files/ceph.client.cinder.keyring
-    - mode: 644
-
-/etc/ceph/ceph.client.cinder-backup.keyring:
-  file.managed:
-    - source: salt://ceph/files/ceph.client.cinder-backup.keyring
     - mode: 644
 
 ceph-all:
