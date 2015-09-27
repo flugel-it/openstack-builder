@@ -31,7 +31,7 @@ def get_controller_public():
         if minion is None:
             return None
 
-        return grains.get("fqdn")
+        return _get_ip("public", grains)
 
 def get_controller_ip():
     minion, grains = _get_controller()
