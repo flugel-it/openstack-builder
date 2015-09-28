@@ -85,8 +85,8 @@ salt [compute_node] grains.setval roles ['openstack-compute']
 ## Orchestrated deploy
 
 ```
-salt-run state.orchestrate orchestration.openstack pillar='{ cluster_name: dolab
-}' | tee /tmp/orchestrate
+salt-run state.orchestrate orchestration.openstack pillar=' cluster_name: dolab
+' | tee /tmp/orchestrate
 ```
 
 ## Manual deploy ##
@@ -95,19 +95,19 @@ salt-run state.orchestrate orchestration.openstack pillar='{ cluster_name: dolab
 CLUSTERNAME=$1
 TIMEOUT=300
 
-salt -t ${TIMEOUT} -v -G cluster_name:$CLUSTERNAME \
+salt -t $TIMEOUT -v -G cluster_name:$CLUSTERNAME \
         saltutil.sync_all
-salt -t ${TIMEOUT} -v -G cluster_name:$CLUSTERNAME \
+salt -t $TIMEOUT -v -G cluster_name:$CLUSTERNAME \
         saltutil.refresh_pillar
-salt -t ${TIMEOUT} -v -G cluster_name:$CLUSTERNAME \
+salt -t $TIMEOUT -v -G cluster_name:$CLUSTERNAME \
         state.sls base,openstack,salt-minion
-salt -t ${TIMEOUT} -v -G cluster_name:$CLUSTERNAME \
+salt -t $TIMEOUT -v -G cluster_name:$CLUSTERNAME \
         state.sls salt-minion,hostsfile,openstack.minion 
-salt -t ${TIMEOUT} -v -C "G@cluster_name:$CLUSTERNAME and G@roles:openstack-controller" \
+salt -t $TIMEOUT -v -C "G@cluster_name:$CLUSTERNAME and G@roles:openstack-controller" \
         state.sls salt-minion,mysql,rabbitmq 
-salt -t ${TIMEOUT} -v -C "G@cluster_name:$CLUSTERNAME and G@roles:openstack-controller" \
+salt -t $TIMEOUT -v -C "G@cluster_name:$CLUSTERNAME and G@roles:openstack-controller" \
         state.sls openstack,openstack.controller,openstack.keystone
-salt -t ${TIMEOUT} -v -G cluster_name:$CLUSTERNAME \
+salt -t $TIMEOUT -v -G cluster_name:$CLUSTERNAME \
         state.highstate
 ```
 
@@ -145,7 +145,7 @@ neutron router-gateway-set demo-router ext-net
 
 ```
 nova keypair-add --pub-key ~/.ssh/authorized_keys demo-key
-NET_ID=$(neutron net-show demo-net | grep '| id' | awk '{ print $4; }')
+NET_ID=$(neutron net-show demo-net | grep '| id' | awk ' print $4; ')
 nova boot --flavor m1.small --image "Ubuntu 14.04 Trusty" \
   --nic net-id=$NET_ID \
   --security-group default --key-name demo-key demo-instance1
