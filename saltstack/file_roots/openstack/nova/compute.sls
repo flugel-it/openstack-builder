@@ -56,3 +56,38 @@ libvirt-ceph-secret-set:
 
 {%- endif %}
 
+# Config for migration/live-migration
+# XXX: fix harcoded user
+# XXX: fix harcoded keys, they should in a pillar
+
+/var/lib/nova/.ssh:
+   file.directory:
+    - user: nova
+    - group: nova
+    - mode: 750
+
+/var/lib/nova/.ssh/id_rsa:
+  file.managed:
+    - source: salt://openstack/nova/files/nova.key
+    - user: nova
+    - group: nova
+    - mode: 600
+
+/var/lib/nova/.ssh/id_rsa.pub:
+  file.managed:
+    - source: salt://openstack/nova/files/nova.key.pub
+    - user: nova
+    - group: nova
+
+/var/lib/nova/.ssh/authorized_keys:
+  file.managed:
+    - source: salt://openstack/nova/files/nova.key.pub
+    - user: nova
+    - group: nova
+
+/var/lib/nova/.ssh/config:
+  file.managed:
+    - source: salt://openstack/nova/files/ssh_config
+    - user: nova
+    - group: nova
+    - mode: 644
