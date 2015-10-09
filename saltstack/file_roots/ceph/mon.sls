@@ -3,7 +3,7 @@
 {%- set mon_map = "/etc/ceph/monmap" %}
 {%- set map_create_cmd = [ "monmaptool --create --clobber --fsid " + pillar["ceph_fsid"] ]%}
 {%- for ceph_mon_hostname, ceph_mon_ip in ceph.ceph_mons.items() %}
-{%- do map_create_cmd.append("--add " + ceph_mon_hostname + " " + ceph_mon_ip|first + ":6789") %}
+{%- do map_create_cmd.append("--add " + ceph_mon_hostname + " " + ceph_mon_ip.fqdn_ip4|first + ":6789") %}
 {%- endfor %}
 {%- do map_create_cmd.append(mon_map) %}
 

@@ -38,3 +38,27 @@ open-iscsi-setup:
 
 {% endif %}
 
+{%- if pillar.openstack.cinder.driver == "ceph" %}
+
+/etc/ceph/ceph.client.cinder.keyring:
+  file.managed:
+    - source: salt://openstack/cinder/files/ceph.client.cinder.keyring
+    - mode: 644
+
+/etc/ceph/ceph.client.cinder-backup.keyring:
+  file.managed:
+    - source: salt://openstack/cinder/files/ceph.client.cinder-backup.keyring
+    - mode: 644
+
+ceph_cinder_key:
+  cmd.run:
+    - name: ceph auth import -i /etc/ceph/ceph.client.cinder.keyring
+    - unless: ceph auth get client.cinder
+
+ceph_cinder_backup_key:
+  cmd.run:
+    - name: ceph auth import -i /etc/ceph/ceph.client.cinder-backup.keyring
+    - unless: ceph auth get client.cinder-backup
+
+{% endif %}
+

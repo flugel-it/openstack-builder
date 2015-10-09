@@ -69,3 +69,9 @@ base:
     - clusters.mobile-lab
     - clusters.mobile-lab-password
 
+  'G@cluster_name:gcoop':
+    - match: compound
+    - clusters
+    - clusters.gcoop
+    - clusters.gcoop-password
+

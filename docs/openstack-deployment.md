@@ -85,28 +85,29 @@ salt [compute_node] grains.setval roles ['openstack-compute']
 ## Orchestrated deploy
 
 ```
-salt-run state.orchestrate orchestration.openstack pillar='{ cluster_name: dolab
-}' | tee /tmp/orchestrate
+salt-run state.orchestrate orchestration.openstack pillar=' cluster_name: dolab
+' | tee /tmp/orchestrate
 ```
 
 ## Manual deploy ##
 
 ```
 CLUSTERNAME=$1
+TIMEOUT=300
 
-salt -t 300 -v -G cluster_name:$CLUSTERNAME \
+salt -t $TIMEOUT -v -G cluster_name:$CLUSTERNAME \
         saltutil.sync_all
-salt -t 300 -v -G cluster_name:$CLUSTERNAME \
+salt -t $TIMEOUT -v -G cluster_name:$CLUSTERNAME \
         saltutil.refresh_pillar
-salt -t 300 -v -G cluster_name:$CLUSTERNAME \
+salt -t $TIMEOUT -v -G cluster_name:$CLUSTERNAME \
         state.sls base,openstack,salt-minion
-salt -t 300 -v -G cluster_name:$CLUSTERNAME \
+salt -t $TIMEOUT -v -G cluster_name:$CLUSTERNAME \
         state.sls salt-minion,hostsfile,openstack.minion 
-salt -t 300 -v -C "G@cluster_name:$CLUSTERNAME and G@roles:openstack-controller" \
+salt -t $TIMEOUT -v -C "G@cluster_name:$CLUSTERNAME and G@roles:openstack-controller" \
         state.sls salt-minion,mysql,rabbitmq 
-salt -t 300 -v -C "G@cluster_name:$CLUSTERNAME and G@roles:openstack-controller" \
+salt -t $TIMEOUT -v -C "G@cluster_name:$CLUSTERNAME and G@roles:openstack-controller" \
         state.sls openstack,openstack.controller,openstack.keystone
-salt -t 300 -v -G cluster_name:$CLUSTERNAME \
+salt -t $TIMEOUT -v -G cluster_name:$CLUSTERNAME \
         state.highstate
 ```
 
