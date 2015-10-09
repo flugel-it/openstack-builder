@@ -40,6 +40,12 @@ lxd_group:
 /var/lib/lxd/lxc:
   file.directory
 
+/etc/nova/rootwrap.d/tar.filters:
+  file.managed:
+    - contents: |
+        [Filters]
+        tar: CommandFilter, tar, root
+
 {%- else %}
 
 {{ pillar.openstack.nova.compute }}:

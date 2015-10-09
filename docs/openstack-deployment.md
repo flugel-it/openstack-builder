@@ -150,3 +150,16 @@ nova boot --flavor m1.small --image "Ubuntu 14.04 Trusty 64-bit" \
   --security-group default --key-name demo-key demo-instance1
 ```
 
+## Using nova-compute-lxd
+
+```
+wget
+https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-root.tar.gz
+glance image-create --name='trusty-lxc' --container-format=bare --disk-format=raw \
+< trusty-server-cloudimg-amd64-root.tar.gz
+nova keypair-add --pub-key ~/.ssh/authorized_keys demo-key
+NET_ID=$(neutron net-show demo-net | grep '| id' | awk '{ print $4; }')
+nova boot --flavor m1.small --image "trusty-lxc" \
+  --nic net-id=$NET_ID \
+  --security-group default --key-name demo-key demo-instance1
+```
