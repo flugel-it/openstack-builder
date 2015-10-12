@@ -4,9 +4,27 @@ sysfsutils:
 
 {%- if pillar.openstack.nova.compute == "nova-compute-lxd" %}
 
+nclxd_reqs:
+  file.managed:
+    - name: /var/tmp/nclxd_reqs.txt
+    - source: https://raw.githubusercontent.com/flugel-it/nova-compute-lxd/master/requirements.txt
+    - source_hash: md5=1a7e9be21215dbe02708c79a875dd378
+  pip.installed:
+    - requirements: /var/tmp/nclxd_reqs.txt
+
+pylxd:
+  pip.installed:
+    - name: git+https://github.com/flugel-it/pylxd
+    - require:
+      - file: nclxd_reqs
+
 nclxd:
   pip.installed:
-    - name: git+https://github.com/lxc/nova-compute-lxd@stable/kilo
+    - name: git+https://github.com/flugel-it/nova-compute-lxd
+    - require:
+      - pip: pylxd
+    - watch_in:
+      - service: nova-compute
 
 lxd_ppa:
   pkgrepo.managed:
@@ -45,6 +63,15 @@ lxd_group:
     - contents: |
         [Filters]
         tar: CommandFilter, tar, root
+
+# We need to run this because it needs to initialize some certificates.
+# BTW, check it again in the future.
+lxc list:
+  cmd.run
+
+# We need it in Ubuntu 14.04 because we need support for overlayfs.
+linux-image-3.19.0-28-generic:
+  pkg.installed
 
 {%- else %}
 
