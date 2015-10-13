@@ -101,3 +101,11 @@ libssl1.0.0:
 apparmor:
   pkg.purged
 
+
+{% if grains.get("apt-proxy-address") != "" %}
+/etc/apt/apt.conf.d/01proxy:
+  file.managed:
+    - mode: 0644
+    - template: jinja
+    - source: salt://base/files/01proxy
+{% endif %}
