@@ -46,11 +46,12 @@ openstack-nova-initdb:
 openstack-nova-user:
   keystone.user_present:
     - name: nova
+    - tenant: service
     - password: {{ pillar.openstack.nova_pass }}
     - email: infradevs@flugel.it
     - roles:
-      - service:
-        - admin
+        service:
+          - admin
 
 openstack-nova-keystone-service:
   keystone.service_present:

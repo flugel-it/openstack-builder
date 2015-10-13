@@ -42,20 +42,6 @@ openstack-glance:
     - group: glance
     - mode: 640
 
-glance-api-service:
-  service.running:
-    - name: glance-api
-    - enable: true
-    - watch:
-      - file: /etc/glance/glance-api.conf
-
-glance-registry-service:
-  service.running:
-    - name: glance-registry
-    - enable: true
-    - watch:
-      - file: /etc/glance/glance-registry.conf
-
 glance_db:
   mysql_database.present:
     - name: glance
@@ -81,8 +67,8 @@ glance-user:
     - password: {{ pillar.openstack.glance_pass }}
     - email: infradevs@flugel.it
     - roles:
-      - service:
-        - admin
+        service:
+          - admin
 
 glance-keystone-service:
   keystone.service_present:
@@ -101,36 +87,17 @@ glance-download-cache:
   file.directory:
     - name: /var/cache/openstack-builder/
 
-{%- for img in pillar.glance.default_images if not img.get("disabled") %}
+glance-api-service:
+  service.running:
+    - name: glance-api
+    - enable: true
+    - watch:
+      - file: /etc/glance/glance-api.conf
 
-{%- set images = pillar.openstack.glance.get("images") %}
-
-{%- if not images or img.slug in images %}
-
-glance-download-{{ img.slug }}-image:
-  file.managed:
-    - name: /var/cache/openstack-builder/{{ img.slug }}
-    - source: {{ img.url }}
-    - source_hash: {{ img.hash_url }}
-    - unless: glance image-list | grep "{{ img.name }}"
-
-glance-create-{{ img.slug }}-image:
-  cmd.run:
-    - name: >
-        glance image-create --name "{{ img.name }}"
-        --file /var/cache/openstack-builder/{{ img.slug}} 
-        --disk-format {{ img.format}} 
-        --container-format {{ img.container_format }} 
-        --is-public True
-    - unless: glance image-list | grep "{{ img.name }}"
-    - env:
-      - OS_USERNAME: admin
-      - OS_PASSWORD: {{ pillar.openstack.admin_pass }}
-      - OS_TENANT_NAME: admin
-      - OS_AUTH_URL: http://{{ salt.openstack.get_controller() }}:35357/v2.0
-    - require:
-      - file: glance-download-{{ img.slug }}-image
-
-{%- endif %}
-{%- endfor %}
+glance-registry-service:
+  service.running:
+    - name: glance-registry
+    - enable: true
+    - watch:
+      - file: /etc/glance/glance-registry.conf
 

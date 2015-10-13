@@ -96,11 +96,12 @@ keystone-roles:
 openstack-admin:
   keystone.user_present:
     - name: admin
+    - tenant: admin
     - password: {{ pillar.openstack.admin_pass }}
     - email: infradevs@flugel.it
     - roles:
-      admin:
-        - admin
+        admin:
+          - admin
 
 keystone-openstack-service:
   keystone.service_present:

@@ -37,7 +37,7 @@ neutron-initdb:
   cmd.run:
     - name: >
         neutron-db-manage --config-file /etc/neutron/neutron.conf 
-        --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade juno && 
+        --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head &&
         touch /etc/neutron/.already_synced
     - user: neutron
     - unless: test -f /etc/neutron/.already_synced
@@ -45,11 +45,12 @@ neutron-initdb:
 neutron-user:
   keystone.user_present:
     - name: neutron
+    - tenant: service
     - password: {{ pillar.openstack.neutron_pass }}
     - email: infradevs@flugel.it
     - roles:
-      - service:
-        - admin
+        service:
+          - admin
 
 neutron-keystone-service:
   keystone.service_present:
@@ -70,4 +71,9 @@ neutron-keystone-endpoint:
     - watch_in:
       - service: neutron-service
 
+python-neutron-lbaas:
+  pkg.installed
+
+python-neutron-vpnaas:
+  pkg.installed
 
