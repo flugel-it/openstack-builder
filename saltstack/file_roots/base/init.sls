@@ -102,7 +102,7 @@ apparmor:
   pkg.purged
 
 
-{% if grains.get("apt-proxy-address") != "" %}
+{% if pillar.get("apt-proxy-address") != None %}
 /etc/apt/apt.conf.d/01proxy:
   file.managed:
     - mode: 0644
