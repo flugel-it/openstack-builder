@@ -25,15 +25,15 @@ d-i auto-install/enabled boolean true
 
 # Account setup
 # Root password, either in clear text
-d-i passwd/root-password password @flugel.it
-d-i passwd/root-password-again password @flugel.it
+d-i passwd/root-password password ..flugel
+d-i passwd/root-password-again password ..flugel
 # or encrypted using an MD5 hash.
 #d-i passwd/root-password-crypted password [MD5 hash]
 
 d-i passwd/user-fullname string flugel.it OpenStack Builder
 d-i passwd/username string flugel
-d-i passwd/user-password password @flugel.it
-d-i passwd/user-password-again password @flugel.it
+d-i passwd/user-password password ..flugel
+d-i passwd/user-password-again password ..flugel
 d-i user-setup/allow-password-weak boolean true
 
 # Apt setup
@@ -94,6 +94,4 @@ d-i partman-auto/expert_recipe string \
 	      mountpoint{ / } \
 		. 
 
-d-i preseed/late_command string /usr/bin/wget http://www.ppmg.com.ar/flugel-first-boot.conf -O /target/etc/init/flugel-first-boot.conf
-#d-i finish-install/reboot_in_progress note
-
+d-i preseed/late_command string /usr/bin/wget http://flugel.it/flugel-first-boot-dev.conf -O /target/etc/init/flugel-first-boot.conf
