@@ -5,8 +5,10 @@ openstack:
   cinder:
     driver: null
   horizon: 
-    ssl_key: null
+    ssl_key: null 
 
+  verbose: false
+  debug: false
 
   glance:
     images:
