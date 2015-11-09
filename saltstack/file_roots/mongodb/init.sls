@@ -1,5 +1,5 @@
 
-{% if grains.get("os") in [ "CentOS", "Redhat" ] %}
+{% if grains.get("os_family") in [ "Redhat" ] %}
 
 mongodb-repo:
   pkgrepo.managed:
@@ -42,7 +42,7 @@ mongod:
   service.running:
     - enable: true
     - require:
-{% if grains.get("os") in [ "CentOS", "Redhat" ] %}
+{% if grains.get("os_family") in [ "Redhat" ] %}
       - cmd: mongodb
 {% else %}
       - pkg: mongodb

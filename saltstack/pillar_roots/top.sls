@@ -12,7 +12,7 @@ base:
     - openstack.glance
     - openstack.ceilometer
 
-  'G@os:Ubuntu or G@os:Debian':
+  'G@os_family:Debian':
     - match: compound
     - ubuntu.pkgs
     - ubuntu.paths

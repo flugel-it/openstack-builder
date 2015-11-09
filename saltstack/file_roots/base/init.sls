@@ -1,4 +1,4 @@
-{%- set hostname = grains['id'] %}
+{%- set hos_familytname = grains['id'] %}
 
 /root/.ssh:
   file.directory:
@@ -31,7 +31,7 @@ ntp:
   service.running:
     - enable: true
 
-{% if grains.get("os") == "Ubuntu" %}
+{% if grains.get("os_family") == "Debian" %}
 
 /etc/apt/sources.list:
   file.replace:
@@ -53,7 +53,7 @@ apt-get update:
 
 {% endif %}
 
-{% if grains.get("os") in [ "CentOS", "Redhat" ] %}
+{% if grains.get("os_family") in [ "RedHat", "Redhat" ] %}
 
 selinux-disabled:
   file:
@@ -71,12 +71,12 @@ sysstat:
       - pkg: base-pkgs
 
 #OpenSSL always the latest version, Heartbleed protection :)
-{% if grains.get("os") == "CentOS" %}
+{% if grains.get("os_family") == "RedHat" %}
 
 openssl:
   pkg.latest
 
-{% elif grains.get("os") == "Ubuntu" %}
+{% elif grains.get("os_family") == "Debian" %}
 
 openssl:
   pkg.latest
