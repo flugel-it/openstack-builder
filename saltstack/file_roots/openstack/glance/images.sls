@@ -19,7 +19,7 @@ glance-create-{{ img.slug }}-image:
         --file /var/cache/openstack-builder/{{ img.slug}} 
         --disk-format {{ img.format}} 
         --container-format {{ img.container_format }} 
-        --is-public True
+        --visibility public
     - unless: glance image-list | grep "{{ img.name }}"
     - env:
       - OS_USERNAME: admin

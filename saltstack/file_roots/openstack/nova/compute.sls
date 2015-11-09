@@ -80,7 +80,7 @@ ceilometer.conf:
       - service: ceilometer-agent-central
 {%- endif %}
 
-{%- if pillar.ceph.enabled %}
+{% if pillar.get("ceph", {}).get("enabled") %}
 
 /var/tmp/libvirt-ceph.xml:
   file.managed:
