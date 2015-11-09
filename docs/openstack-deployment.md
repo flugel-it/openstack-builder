@@ -24,6 +24,16 @@ netcfg/get_gateway=172.28.152.254 netcfg/get_nameservers=8.8.8.8
 netcfg/disable_dhcp=true"
 ```
 
+## Apt-cacher-ng Important notes
+
+Using apt-cacher-ng saves you a lot of precious time, speccially if you don't have 100mbit connection or you have lots of computers to deploy. I run into troubles when using APCNG, but I'm not so sure is it's fault if you get an error message that it cannot install a package like: 'python-openstackclient' you can fix the problem sending this two commands to the minions:
+
+```
+# apt-get clean
+
+# rm -rf /var/lib/apt/lists/*
+```
+
 ## Before deploy
 
 1. Define the pillar for cluster. Examples below
