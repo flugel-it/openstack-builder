@@ -1,6 +1,6 @@
 
 openstack:
-  release: kilo
+  release: juno
   region: RegionOne
   cinder:
     driver: null
