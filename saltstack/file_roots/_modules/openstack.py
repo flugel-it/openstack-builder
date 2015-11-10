@@ -1,5 +1,6 @@
 
 from IPy import IP
+from string import split
 import netifaces
 
 def _get_controller():
@@ -52,6 +53,9 @@ def get_public_ip():
 
 def get_private_ip():
     return _get_ip("private", __grains__)
+
+def get_last_octet():
+    return split(_get_ip("public", __grains__), '.')[-1]
 
 def _get_ip(network, grains):
     try:
