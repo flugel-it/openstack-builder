@@ -50,7 +50,7 @@ openstack-nova-user:
     - password: {{ pillar.openstack.nova_pass }}
     - email: infradevs@flugel.it
     - roles:
-        service:
+      - service:
           - admin
 
 openstack-nova-keystone-service:

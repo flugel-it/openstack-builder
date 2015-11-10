@@ -84,7 +84,7 @@ openstack-sahara-user:
     - password: {{ pillar.openstack.sahara_pass }}
     - email: infradevs@flugel.it
     - roles:
-        service:
+      - service:
           - admin
 
 sahara-service-endpoint:

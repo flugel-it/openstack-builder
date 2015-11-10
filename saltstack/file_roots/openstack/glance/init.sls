@@ -67,7 +67,7 @@ glance-user:
     - password: {{ pillar.openstack.glance_pass }}
     - email: infradevs@flugel.it
     - roles:
-        service:
+      - service:
           - admin
 
 glance-keystone-service:

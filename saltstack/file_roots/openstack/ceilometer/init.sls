@@ -37,7 +37,7 @@ openstack-ceilometer-user:
     - password: {{ pillar.openstack.ceilometer_pass }}
     - email: infradevs@flugel.it
     - roles:
-        service:
+      - service:
           - admin
 
 openstack-ceilometer-keystone-service:

@@ -100,7 +100,7 @@ openstack-admin:
     - password: {{ pillar.openstack.admin_pass }}
     - email: infradevs@flugel.it
     - roles:
-        admin:
+      - admin:
           - admin
 
 keystone-openstack-service:

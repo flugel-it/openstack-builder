@@ -58,7 +58,7 @@ cinder_user:
     - password: {{ pillar.openstack.cinder_pass }}
     - email: infradevs@flugel.it
     - roles:
-        service:
+      - service:
           - admin
 
 cinder-keystone-service:

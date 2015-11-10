@@ -49,7 +49,7 @@ neutron-user:
     - password: {{ pillar.openstack.neutron_pass }}
     - email: infradevs@flugel.it
     - roles:
-        service:
+      - service:
           - admin
 
 neutron-keystone-service:

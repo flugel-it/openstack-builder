@@ -207,7 +207,7 @@ ironic_user:
 >>>>>>> 61b9e060f0b534f6d3b52f271da566df2d2be132
     - email: infradevs@flugel.it
     - roles:
-        service:
+      - service:
           - admin
       - require:
 <<<<<<< HEAD

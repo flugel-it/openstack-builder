@@ -80,7 +80,7 @@ heat-user:
     - password: {{ pillar.openstack.heat_pass }}
     - email: infradevs@flugel.it
     - roles:
-        service:
+      - service:
           - admin
 
 heat-keystone-service:
