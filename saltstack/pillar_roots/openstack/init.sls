@@ -1,12 +1,14 @@
 
 openstack:
   release: juno
-  region: RegionOne
+  region: lxc-lab
   cinder:
     driver: null
   horizon: 
     ssl_key: null
 
+  nova:
+    compute: kvm
 
   glance:
     images:
