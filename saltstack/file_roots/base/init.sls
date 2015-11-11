@@ -16,6 +16,7 @@ base-pkgs:
       - ntp
       - sysstat
       - dstat
+      - python-pip
       - vim
       - unzip
       - git
