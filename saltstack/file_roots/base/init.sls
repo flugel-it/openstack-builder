@@ -23,6 +23,7 @@ base-pkgs:
       - bridge-utils
       - python-pip
       - vlan
+      - python-pip
       - ifenslave
       - ethtool
       - arping
