@@ -75,3 +75,9 @@ base:
     - clusters.gcoop
     - clusters.gcoop-password
 
+  'G@cluster_name:dla-qro':
+    - match: compound
+    - clusters
+    - clusters.dla-qro
+    - clusters.dla-qro-password
+
