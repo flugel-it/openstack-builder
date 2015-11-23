@@ -79,7 +79,8 @@ then
 
 if ! [[ -f /etc/libvirt/.skipstorage ]]
 then
-  virsh pool-define-as storage  dir - - - - /var/lib/libvirt/storag
+  mkdir -p /var/lib/libvirt/images
+  virsh pool-define-as storage  dir - - - - /var/lib/libvirt/images
   virsh pool-build storage
   virsh pool-start storage
   virsh pool-autostart storage
