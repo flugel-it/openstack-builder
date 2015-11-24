@@ -100,7 +100,6 @@ neutron-modprobe-dummy:
   cmd.run:
     - name: modprobe dummy && echo dummy > /etc/modules
     - unless: grep dummy /etc/modules
-{%- endif %}
 
 neutron-create-ext-br:
   cmd.run:
@@ -111,3 +110,4 @@ neutron-create-ext-br:
     - user: root
     - unless: test -f /etc/neutron/.ovs.configured
 
+{%- endif %}
