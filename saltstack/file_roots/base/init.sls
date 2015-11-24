@@ -21,7 +21,6 @@ base-pkgs:
       - git
       - psutils
       - bridge-utils
-      - python-pip
       - vlan
       - python-pip
       - ifenslave
