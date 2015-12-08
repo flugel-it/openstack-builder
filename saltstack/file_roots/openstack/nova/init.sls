@@ -1,4 +1,14 @@
 
+{%- set memar = '1.5' %}
+{%- if grains.get('memar') %}
+{%- set memar = grains.get("memar") %}
+{% endif %}
+
+{%- set cpuar = '16.0' %}
+{%- if grains.get('cpuar') %}
+{%- set cpuar = grains.get("cpuar") %}
+{% endif %}
+
 python-novaclient:
   pkg.installed
 
@@ -40,4 +50,6 @@ nova-common:
       controller_public: {{ salt.openstack.get_controller_public() }}
       public_ip: {{ salt.openstack.get_public_ip() }}
       private_ip: {{ salt.openstack.get_private_ip() }}
+      memar: {{ memar }}
+      cpuar: {{ cpuar }}
 

@@ -1,12 +1,16 @@
+{%- set hypervisor = pillar.openstack.hypervisor %}
+{%- if grains.hypervisor %}
+{%- set hypervisor = grains.get("hypervisor") %}
+{% endif %}
 
 sysfsutils:
   pkg.installed
 
-{%- if pillar.openstack.nova.compute == "nova-compute-lxd" %}
+{%- if hypervisor == "lxd" or hypervisor == "lxc" %}
 
 nclxd:
   pip.installed:
-    - name: git+https://github.com/lxc/nova-compute-lxd@stable/kilo
+    - name: git+https://github.com/lxc/nova-lxd@stable/kilo
 
 lxd_ppa:
   pkgrepo.managed:
@@ -48,7 +52,7 @@ lxd_group:
 
 {%- else %}
 
-{{ pillar.openstack.nova.compute }}:
+nova-compute-{{ hypervisor }}:
   pkg.installed
 
 {%- endif %}
@@ -62,7 +66,8 @@ nova-compute:
 
 /etc/nova/nova-compute.conf:
   file.managed:
-    - source: salt://openstack/nova/files/nova-compute.conf
+    - source: salt://openstack/nova/files/nova-compute.conf.{{ hypervisor }}
+    - context:
     - template: jinja
 
 {%- if pillar.get('ceilometer') %}
