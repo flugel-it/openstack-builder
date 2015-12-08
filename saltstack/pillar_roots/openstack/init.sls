@@ -9,6 +9,7 @@ openstack:
 
   verbose: false
   debug: false
+  hypervisor: kvm
 
   glance:
     images:
