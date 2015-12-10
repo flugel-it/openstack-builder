@@ -14,6 +14,6 @@ images_type=rbd
 images_rbd_pool=openstack
 images_rbd_ceph_conf=/etc/ceph/ceph.conf
 rbd_user=admin
-rbd_secret_uuid=457eb676-33da-42ec-9a8c-9293d545c337
+rbd_secret_uuid=ThisKeyHasToBeChanged
 {%- endif %}
 

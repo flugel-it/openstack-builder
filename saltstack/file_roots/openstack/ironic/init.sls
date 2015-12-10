@@ -262,7 +262,7 @@ libvirt-ceph-secret-define:
 
 libvirt-ceph-secret-set:
   cmd.run:
-    - name: virsh secret-set-value --secret 457eb676-33da-42ec-9a8c-9293d545c337 --base64 $(ceph auth get-key client.cinder)
+    - name: virsh secret-set-value --secret ThisKeyHasToBeChanged --base64 $(ceph auth get-key client.cinder)
 
 {%- endif %}
 >>>>>>> 61b9e060f0b534f6d3b52f271da566df2d2be132
