@@ -28,5 +28,5 @@ virt-install \
 --location http://us.archive.ubuntu.com/ubuntu/dists/trusty/main/installer-amd64/ \
 --virt-type kvm \
 --os-variant ubuntutrusty \
---network bridge=virbr0 \
+--network bridge=br0 \
 --extra-args "auto=true domain=flugel.it url=http://cluod-master.flugel.it/openstack-builder.seed"
