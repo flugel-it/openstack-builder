@@ -29,4 +29,4 @@ virt-install \
 --virt-type kvm \
 --os-variant ubuntutrusty \
 --network bridge=br0 \
---extra-args "auto=true domain=flugel.it url=http://cluod-master.flugel.it/openstack-builder.seed"
+--extra-args "auto=true domain=flugel.it url=http://[ you-web-server ].flugel.it/openstack-builder.seed"
