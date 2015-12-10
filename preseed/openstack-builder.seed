@@ -94,4 +94,4 @@ d-i partman-auto/expert_recipe string \
 	      mountpoint{ / } \
 		. 
 
-d-i preseed/late_command string /usr/bin/wget http://flugel.it/flugel-first-boot.conf -O /target/etc/init/flugel-first-boot.conf
+d-i preseed/late_command string /usr/bin/wget http://[ your-web-server]/flugel-first-boot.conf -O /target/etc/init/flugel-first-boot.conf
